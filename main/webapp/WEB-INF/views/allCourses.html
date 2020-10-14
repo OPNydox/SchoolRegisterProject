@@ -1,0 +1,31 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    Courses
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="row align-middle">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Course Subject</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form action="#" th:action="@{enroll/}" method="POST">
+                        <tr th:each="course : ${courses}">
+                            <th th:text="${course.name}"></th>
+                            <th th:text="${course.subject}"></th>
+                            <th><input type="submit" name="action" value="Enroll" th:value="${course.id}"/></th>
+                        </tr>
+                    </form>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+    <head>
+        <title>Course</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div>
+                <div class="row">
+                    <h1>11a</h1>
+                </div>
+                <div class="row">
+                    <h1>Maths</h1>
+                </div>
+                <div class="row">
+                    <h1>Honorarium: 120</h1>
+                </div>
+                <div class="row">
+                    <div class="col-4 justify-content-center">
+                        <div>
+                            <h1>Students</h1>
+                        </div>
+                        <div class="list-group">
+                            <a th:text="Student1" href="#" class="list-group-item list-group-item-action "></a>
+                            <a th:text="Student2" href="#" class="list-group-item list-group-item-action "></a>
+                            <a th:text="Student3" href="#" class="list-group-item list-group-item-action "></a>
+                            <a th:text="Student4" href="#" class="list-group-item list-group-item-action "></a>
+                            <a th:text="Student5" href="#" class="list-group-item list-group-item-action "></a>
+                        </div>
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+                    <div class="col-4 justify-content-right">
+                        <div>
+                            <h1>Teachers</h1>
+                        </div>
+                        <div class="list-group">
+                            <a th:text="Teacher1" href="#" class="list-group-item list-group-item-action "></a>
+                            <a th:text="Teacher2" href="#" class="list-group-item list-group-item-action "></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body> 
+</html>
