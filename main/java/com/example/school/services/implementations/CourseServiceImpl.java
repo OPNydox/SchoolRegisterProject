@@ -16,6 +16,7 @@ import com.example.school.repositories.CourseRepository;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.services.interfaces.ITeacherService;
+import com.example.school.utilities.NumberHandler;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.UserEntityHelper;
 import com.example.school.utilities.Verificator;
@@ -166,15 +167,16 @@ public class CourseServiceImpl implements ICourseService {
 	}
 
 	private Long parseStringToLong(String string) {
+		ServiceReturnResult longResult;
 		Long result = null;
 
-		try {
-			result = Long.parseLong(string);
-		} catch (NumberFormatException e) {
-			this.currentResult.addErrorMsg(e.getMessage());
+		longResult = NumberHandler.parseStringToLong(string);
+
+		if (!longResult.isSuccessful()) {
+			this.currentResult.addErrorMsg(longResult.getErrorMessages());
 		}
 
-		return result;
+		return (Long) longResult.getReturnResultObject();
 	}
 
 	private Course getCourseFromRepo(Long id) {

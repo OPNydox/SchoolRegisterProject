@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.school.database.entities.Course;
 import com.example.school.database.entities.Student;
 import com.example.school.database.entities.Teacher;
@@ -21,6 +24,7 @@ import com.example.school.exceptions.ValueException;
 import com.example.school.repositories.StudentRepository;
 import com.example.school.repositories.UserRepository;
 import com.example.school.services.interfaces.ICourseService;
+import com.example.school.services.interfaces.IStudentCourseService;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.services.interfaces.ITeacherService;
 import com.example.school.utilities.ControllerHelper;
@@ -33,6 +37,10 @@ public class CourseController {
 	
 	@Autowired
 	private ICourseService courseService;
+
+	@Autowired
+	private IStudentCourseService studentCourseService;
+
 	
 	@GetMapping("/coursefind/{name}")
 	public ReturnResult courseTesting(@PathVariable String name) {
@@ -91,19 +99,33 @@ public class CourseController {
 
 	@GetMapping(value = "/course")
 	public String getCoursePage(@RequestParam String id ,Model model) {
-		CourseViewModel courseResult;
-		ServiceReturnResult serviceResult;
+		CourseViewModel course;
+		Iterable<Student> students = new ArrayList<>();
+		ServiceReturnResult courseResult;
+		ServiceReturnResult studentsResult;
+		ServiceReturnResult teachersResult;
 
-		serviceResult = courseService.getCourseVMById(id);
+		courseResult = courseService.getCourseVMById(id);
 
-		if (!serviceResult.isSuccessful()) {
+		if (!courseResult.isSuccessful()) {
 			model.addAttribute("error", "Could not load course.");
 			return "redirect:/error";
 		}
 
-		courseResult = (CourseViewModel) serviceResult.getReturnResultObject();
+		course = (CourseViewModel) courseResult.getReturnResultObject();
 
-		model.addAttribute("course", courseResult);
+		model.addAttribute("course", course);
+
+		studentsResult = studentCourseService.getStudentsForCourse(id);
+
+		if (!courseResult.isSuccessful()) {
+			model.addAttribute("error", studentsResult.getErrorMessages());
+			return "redirect:/error";
+		}
+
+		students = (Iterable<Student>) studentsResult.getReturnResultObject();
+
+		model.addAttribute("students", students);
 
 		return "course";
 	}
