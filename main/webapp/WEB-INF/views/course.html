@@ -6,27 +6,38 @@
         <div layout:fragment="content">
             <div>
                 <div class="row">
-                    <h1>11a</h1>
+                    <h1 th:text="${course.name}"></h1>
                 </div>
                 <div class="row">
-                    <h1>Maths</h1>
+                    <h1 th:text="${course.subject}"></h1>
                 </div>
                 <div class="row">
-                    <h1>Honorarium: 120</h1>
+                    <h1 th:text="${course.honorarium}"></h1>
                 </div>
                 <div class="row">
-                    <div class="col-4 justify-content-center">
-                        <div>
-                            <h1>Students</h1>
-                        </div>
-                        <div th:each="student : ${students}" class="list-group">
-                            <a th:text="${student.name}" href="#" class="list-group-item list-group-item-action "></a>
-                        </div>
+                    <div class="col-6 col-offset-4 justify-content-left">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <h1>Students</h1>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="student : ${students}">
+                                    <th>
+                                        <a th:text="${student.name}" href="#" class="list-group-item list-group-item-action "></a>
+                                    </th>
+                                    <th>
+                                        <a th:text="Grade" href="#" th:href="@{grade/(cid=${course.id},sid=${student.id})}"></a>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-4">
-
-                    </div>
-                    <div class="col-4 justify-content-right">
+                    <div class="col-6 justify-content-right">
                         <div>
                             <h1>Teachers</h1>
                         </div>

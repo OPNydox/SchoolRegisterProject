@@ -10,8 +10,30 @@ public class NumberHandler {
             result.setReturnResultObject(paresedLong);
         } catch (NumberFormatException e) {
             result.addErrorMsg(e.getMessage());
+        } finally {
+            if (result.isSuccessful() && paresedLong == null) {
+                result.addErrorMsg("Long parse error");
+            }
         }
 
 		return result;
-	}
+    }
+    
+    public static ServiceReturnResult parseStringToDouble(String string) {
+        ServiceReturnResult result = new ServiceReturnResult();
+        Double parsedDouble = null;
+
+        try {
+            parsedDouble = Double.parseDouble(string);
+            result.setReturnResultObject(parsedDouble);
+        } catch (NumberFormatException e) {
+            result.addErrorMsg(e.getMessage());
+        } finally {
+            if (result.isSuccessful() && parsedDouble == null) {
+                result.addErrorMsg("Double parse error");
+            }
+        }
+
+        return result;
+    }
 }

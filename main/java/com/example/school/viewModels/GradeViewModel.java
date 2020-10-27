@@ -8,6 +8,10 @@ public class GradeViewModel extends ViewModel {
 	
 	private String studentEmail;
 
+	private String studentId;
+
+	private String courseId;
+
 	public GradeViewModel() { }
 	
 	public GradeViewModel(String mark, String className, String studentEmail) {
@@ -39,6 +43,22 @@ public class GradeViewModel extends ViewModel {
 
 	public void setStudentEmail(String studentEmail) {
 		this.studentEmail = studentEmail;
+	}
+
+	public String getCourseId() {
+		return courseId;
+	}
+
+	public String getStudentId() {
+		return studentId;
+	}
+
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
+
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
 	}
 
 	@Override

@@ -100,7 +100,7 @@ public class CourseController {
 	@GetMapping(value = "/course")
 	public String getCoursePage(@RequestParam String id ,Model model) {
 		CourseViewModel course;
-		Iterable<Student> students = new ArrayList<>();
+		Iterable<StudentViewModel> students = new ArrayList<>();
 		ServiceReturnResult courseResult;
 		ServiceReturnResult studentsResult;
 		ServiceReturnResult teachersResult;
@@ -123,7 +123,7 @@ public class CourseController {
 			return "redirect:/error";
 		}
 
-		students = (Iterable<Student>) studentsResult.getReturnResultObject();
+		students = (Iterable<StudentViewModel>) studentsResult.getReturnResultObject();
 
 		model.addAttribute("students", students);
 

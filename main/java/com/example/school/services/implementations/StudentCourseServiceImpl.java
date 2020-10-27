@@ -9,6 +9,8 @@ import com.example.school.services.interfaces.IStudentCourseService;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.utilities.NumberHandler;
 import com.example.school.utilities.ServiceReturnResult;
+import com.example.school.utilities.mappers.StudentMapper;
+import com.example.school.viewModels.StudentViewModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,8 @@ public class StudentCourseServiceImpl implements IStudentCourseService {
 
     @Override
     public ServiceReturnResult getStudentsForCourse(String courseId) {
-        ArrayList<Student> enrolledStudents;
+        ArrayList<Student> enrolledStudentEntities = new ArrayList<>();
+        Iterable<StudentViewModel> mappedStudents;
         Course course;
         ServiceReturnResult courseFindResult;
         ServiceReturnResult listOfstudentsResult = new ServiceReturnResult();
@@ -39,7 +42,11 @@ public class StudentCourseServiceImpl implements IStudentCourseService {
 
         course = (Course) courseFindResult.getReturnResultObject();
 
-        listOfstudentsResult.setReturnResultObject(course.getStudents());
+        enrolledStudentEntities.addAll(course.getStudents());
+
+        mappedStudents = StudentMapper.mapStudentsToViewModels(enrolledStudentEntities);
+
+        listOfstudentsResult.setReturnResultObject(mappedStudents);
 
         return listOfstudentsResult;
     }

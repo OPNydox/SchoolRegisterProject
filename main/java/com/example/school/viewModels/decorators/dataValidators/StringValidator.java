@@ -3,6 +3,9 @@ package com.example.school.viewModels.decorators.dataValidators;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.school.utilities.ServiceReturnResult;
+
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +19,7 @@ public class StringValidator {
 			fieldName = "String";
 		}
 		
-		result.addAll(checkEmpty(value, fieldName));
+		result.addAll(checkEmpty(value, fieldName).getErrorMessages());
 		
 		if (!result.isEmpty() || maxLength == null) {
 			return result;
@@ -29,14 +32,10 @@ public class StringValidator {
 		return result;
 	}
 	
-	private List<String> checkEmpty(String value, String fieldName) {
-		List<String> result = new ArrayList<String>();
-		if (value == null) {
-			result.add(fieldName + " object is empty.");
-		}
-		
-		if (value.isEmpty()) {
-			result.add(fieldName + " is empty");
+	private ServiceReturnResult checkEmpty(String value, String fieldName) {
+		ServiceReturnResult result = new ServiceReturnResult();
+		if (value == null || value.isEmpty()) {
+			result.addErrorMsg(fieldName + " is empty.");
 		}
 		
 		return result;

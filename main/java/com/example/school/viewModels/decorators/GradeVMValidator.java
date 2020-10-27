@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.school.viewModels.GradeViewModel;
 import com.example.school.viewModels.ViewModel;
+import com.example.school.viewModels.decorators.dataValidators.IdValidator;
 
 public class GradeVMValidator extends VMValidatorBase {
 
@@ -23,8 +24,8 @@ public class GradeVMValidator extends VMValidatorBase {
 			return result;
 		}
 		
-		result.addAll(stringValidator.validateString(grade.getClassName(), "Course name", 50));
-		result.addAll(emailValidator.validateEmail(grade.getStudentEmail()));
+		result.addAll(idValidator.validate(grade.getCourseId()));
+		result.addAll(idValidator.validate(grade.getStudentId()));
 		result.addAll(numberValidator.validateNumber(grade.getMark()));
 		
 		return result;
@@ -32,7 +33,7 @@ public class GradeVMValidator extends VMValidatorBase {
 
 	@Override
 	public boolean injectModel(ViewModel model) {
-		// TODO Auto-generated method stub
+		this.grade = (GradeViewModel) model;
 		return false;
 	}
 

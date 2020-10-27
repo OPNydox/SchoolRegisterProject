@@ -1,6 +1,8 @@
 package com.example.school.viewModels;
 
 public class StudentViewModel extends ViewModel {
+	private String id;
+
 	private String name;
 	
 	private String password;
@@ -37,6 +39,14 @@ public class StudentViewModel extends ViewModel {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+  <head>
+  <title>Login Page</title>
+  </head>
+  <body>
+  
+  <div layout:fragment="content">
+  
+  <div class="container">
+      <div class="row">
+        <h1>Grade:</h1>
+      </div>
+      <div class="row">
+        <h1>Ivan Dimitrov</h1>
+      </div>
+      <div class="row">
+        <h1>11A Maths</h1>
+      </div>
+	   <form name="f" th:action="@{/gradecreate(cid = ${formModel.courseId}, sid=${formModel.studentId})}" th:object="${formModel}" method="post">               
+	       <fieldset>
+			<div class="row">
+				<label for="grade">Grade:</label>
+			</div>
+			
+	        <div class="row">
+			   <input type="text" id="mark" name="mark"/>  
+			   <input type="hidden" id="studentId" name="studentId" th:value="${formModel.studentId}"/>
+			   <input type="hidden" id="courseId" name="courseId" th:value="${formModel.courseId}"/>
+			</div> 
+	        <div class="row">  
+	           <div class="form-actions">
+	               <button type="submit" class="btn">Add Grade.</button>
+	           </div>
+	        </div>
+	       </fieldset>
+	   </form>
+	  </div>
+	 </div>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 package com.example.school.services.interfaces;
 
+import java.security.Provider.Service;
 import java.util.List;
 
 import com.example.school.database.entities.Student;
@@ -11,6 +12,10 @@ public interface IStudentService {
 	Student createStudent(StudentViewModel student);
 	
 	Student findStudentByEmail(String email);
+
+	ServiceReturnResult findStudentById(String id);
+	
+	ServiceReturnResult findStudentEntityById(String id);
 	
 	List<Student> findAllStudents();
 
