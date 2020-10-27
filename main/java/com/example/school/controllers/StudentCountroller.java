@@ -74,14 +74,14 @@ public class StudentCountroller {
 		return result;
 	}
 	
-	@PostMapping(value = "/enroll/")
-	public String enrollStudent(HttpServletRequest request,
+	@GetMapping(value = "/enroll{cid}")
+	public String enrollStudent(@PathVariable("cid") String cid,
 	 							Principal principal,
 	 							Model model) {
 		StudentCoursePair studentCoursePair = new StudentCoursePair();
 		ServiceReturnResult enlistResult;
 		List<String> errors;
-		String classId = request.getParameter("action");
+		String classId = cid;
 
 		studentCoursePair.setClassId(classId);
 		studentCoursePair.setStudentMail(principal.getName());

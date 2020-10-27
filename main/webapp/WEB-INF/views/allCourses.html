@@ -15,13 +15,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <form action="#" th:action="@{enroll/}" method="POST">
-                        <tr th:each="course : ${courses}">
-                            <th th:text="${course.name}"></th>
-                            <th th:text="${course.subject}"></th>
-                            <th><input type="submit" name="action" value="Enroll" th:value="${course.id}"/></th>
-                        </tr>
-                    </form>
+                    
+                    <tr th:each="course : ${courses}">
+                        <th th:text="${course.name}"></th>
+                        <th th:text="${course.subject}"></th>
+                        <th><a href="#" th:href="@{/enroll(cid = ${course.id})}" th:text="Enroll"></a></th>
+                    </tr>
                 </tbody>
             </table>
         </div>
