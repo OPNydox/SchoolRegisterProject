@@ -36,4 +36,22 @@ public class NumberHandler {
 
         return result;
     }
+
+    public static ServiceReturnResult parseStringToInteger(String string) {
+        ServiceReturnResult result = new ServiceReturnResult();
+        Integer parsedDouble = null;
+
+        try {
+            parsedDouble = Integer.parseInt(string);
+            result.setReturnResultObject(parsedDouble);
+        } catch (NumberFormatException e) {
+            result.addErrorMsg(e.getMessage());
+        } finally {
+            if (result.isSuccessful() && parsedDouble == null) {
+                result.addErrorMsg("Integer parse error");
+            }
+        }
+
+        return result;
+    }
 }

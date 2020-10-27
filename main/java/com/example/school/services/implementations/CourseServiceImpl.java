@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.school.database.entities.Course;
 import com.example.school.database.entities.User;
 import com.example.school.exceptions.ValueException;
+import com.example.school.factories.CourseFactory;
 import com.example.school.repositories.CourseRepository;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.IStudentService;
@@ -42,24 +43,29 @@ public class CourseServiceImpl implements ICourseService {
 
 	@Override
 	@Transactional
-	public Course addCourse(final CourseViewModel course) {
-		Course newCourse = new Course();
-		final List<String> validationErrors = new ArrayList<>();
+	public ServiceReturnResult addCourse(CourseViewModel course) {
+		CourseFactory courseFactory = new CourseFactory();
+		ServiceReturnResult result = new ServiceReturnResult();
+		ServiceReturnResult createResult;
 
-		final ModelDecorator decorator = new ModelDecorator(course);
+		ModelDecorator decorator = new ModelDecorator(course);
 
-		validationErrors.addAll(decorator.validateModel(new CourseVMValidator()));
+		result.addErrorMsg(decorator.validateModel(new CourseVMValidator()));
 
-		if (!validationErrors.isEmpty()) {
-			newCourse.setEmpty();
-			writer.writeErrors(validationErrors);
-			return newCourse;
+		if (!result.isSuccessful()) {
+			return result;
 		}
 
-		newCourse = new Course(course.getSubject(), course.getName(), Integer.parseInt(course.getHonorarium()));
+		createResult = courseFactory.getEntity(course);
 
-		newCourse = repository.save(newCourse);
-		return newCourse;
+		if (!createResult.isSuccessful()) {
+			result.addErrorMsg(createResult.getErrorMessages());
+			return result;
+		}
+
+		repository.save((Course)createResult.getReturnResultObject());
+		
+		return result;
 	}
 
 	@Override

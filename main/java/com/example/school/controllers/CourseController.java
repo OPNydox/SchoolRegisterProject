@@ -63,28 +63,6 @@ public class CourseController {
 		
 		return result;
 	}
-	
-	@PostMapping(value = "/coursecreate")
-	public ReturnResult courseCreate(@RequestBody CourseViewModel course) {
-		ReturnResult result = new ReturnResult();
-		Course newCourse;
-		
-		if (course == null) {
-			return ControllerHelper.returnError("Course is empty");
-		}
-		
-		newCourse = courseService.addCourse(course);
-		
-		if (newCourse == null || newCourse.isNull()) {
-			return ControllerHelper.returnError("Course could not be created");
-		}
-		
-		result.setSuccesful(true);
-		result.setMessage("Course created");
-		result.getData().add(newCourse);
-		
-		return result;
-	}
 
 	@GetMapping(value = "/courses")
 	public String getAllCourses(Model model) {
