@@ -46,7 +46,7 @@ public class GradeController {
 			model.addAttribute("errors", gradeReturnResult.getErrorMessages());
 		}
 
-		return "grade";
+		return "redirect:/profile";
 	}
 
 	@GetMapping(value = "/grade")
