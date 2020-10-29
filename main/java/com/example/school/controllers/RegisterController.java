@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.school.database.entities.AuthGroup;
+import com.example.school.services.interfaces.IAuthGroupService;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.utilities.ControllerHelper;
+import com.example.school.utilities.enums.UserRole;
+import com.example.school.viewModels.AuthViewModel;
 import com.example.school.viewModels.RegistrationViewModel;
 import com.example.school.viewModels.StudentViewModel;
 
@@ -20,10 +24,15 @@ public class RegisterController {
 	
 	@Autowired
 	private IStudentService studentService;
+
+	@Autowired
+	private IAuthGroupService authService;
 	
 	private RegistrationViewModel registrationForm;
 	
 	private StudentViewModel studentModel;
+
+	private AuthGroup authGroup;
 
 	@GetMapping(value="/register")
 	public String registerGet(Model model) {
@@ -45,6 +54,8 @@ public class RegisterController {
 		
 		generateStudentModel();
 		studentService.createStudent(studentModel);
+		this.authService.addAuth(new AuthViewModel(view.getEmail(), UserRole.STUDENT));
+
 		
 		return "login";
 		

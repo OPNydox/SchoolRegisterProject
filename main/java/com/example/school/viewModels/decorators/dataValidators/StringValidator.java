@@ -11,6 +11,25 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StringValidator {
+
+	private String rolePrefix = "Role_";
+
+	public List<String> validateRoleString(String role) {
+		List<String> errors = new ArrayList<>();
+
+		errors.addAll(validateString(role, "role", 50));
+
+		if (!errors.isEmpty()) {
+			return errors;
+		}
+
+		if (role.startsWith(this.rolePrefix)) {
+			errors.add("Role does not match current role prefix");
+		}
+
+		return errors;
+
+	}
 	
 	public List<String> validateString(String value,@Nullable String fieldName, @Nullable Integer maxLength ) {
 		List<String> result = new ArrayList<>();
@@ -39,5 +58,13 @@ public class StringValidator {
 		}
 		
 		return result;
+	}
+
+	public String getRolePrefix() {
+		return rolePrefix;
+	}
+
+	public void setRolePrefix(String rolePrefix) {
+		this.rolePrefix = rolePrefix;
 	}
 }

@@ -54,7 +54,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure (HttpSecurity http) throws Exception{
     	System.out.println("configure motherfuckers");
     	http
-    	.authorizeRequests().antMatchers("/register").permitAll().and().authorizeRequests()
+		.authorizeRequests().antMatchers("/register").permitAll().and().authorizeRequests()
+		.antMatchers("/profile/**").hasRole("STUDENT")
+		.antMatchers("/courseCreate/**").hasRole("TEACHER")
     	.anyRequest().authenticated()
     	.and()
     	.formLogin().loginPage("/login")

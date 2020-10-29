@@ -30,9 +30,6 @@ public class StudentCountroller {
 	
 	@Autowired
 	private IStudentService studentService;
-
-	@Autowired
-	private ProfileController profileController;
 	
 	@PostMapping(value ="/studcreate", consumes="application/json", produces="application/json")
 	public ReturnResult studentTesting(@RequestBody StudentViewModel studentVM ) {
