@@ -4,26 +4,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.school.database.entities.Teacher;
 import com.example.school.exceptions.ValueException;
 import com.example.school.services.interfaces.ITeacherService;
+import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.TeacherViewModel;
 
-@Controller()
+@Controller
+@RequestMapping(value = "/teacher")
 public class TeacherController {
 	
 	@Autowired
 	private ITeacherService teacherService;
 
-	@GetMapping("/createteach")
-	public String createTeacher(Model model) {
+	@GetMapping("/create")
+	public String getCreateTeacherPage(Model model) {
 		if (!model.containsAttribute("teacherFormModel")) {
 			model.addAttribute("teacherFormModel", new TeacherViewModel());
 		}
 
 		return "teacherCreate";
+	}
+
+	@PostMapping("/create")
+	public String createTeacher(@ModelAttribute TeacherViewModel teacherViewModel, Model model) {
+		ServiceReturnResult teacherCreateResult = new ServiceReturnResult();
+
+		teacherCreateResult = teacherService.addTeacher(teacherViewModel);
+
+		if (!teacherCreateResult.isSuccessful()) {
+			model.addAttribute("teacherFormModel", teacherCreateResult);
+			model.addAttribute("errors", teacherCreateResult.getErrorMessages());
+			return "teacherCreate";
+		}
+
+		return "redirect:/profile";
 	}
 	
 	@RequestMapping(value = "techtest")

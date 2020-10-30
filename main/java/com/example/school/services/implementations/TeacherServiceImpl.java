@@ -12,9 +12,11 @@ import com.example.school.exceptions.EmailNotValidExcepiton;
 import com.example.school.exceptions.EntityException;
 import com.example.school.exceptions.ValueException;
 import com.example.school.exceptions.ValueNotFoundException;
+import com.example.school.factories.TeacherFactory;
 import com.example.school.repositories.CourseRepository;
 import com.example.school.repositories.TeacherRepository;
 import com.example.school.services.interfaces.ITeacherService;
+import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.Verificator;
 import com.example.school.utilities.interfaces.IWriter;
 import com.example.school.viewModels.TeacherViewModel;
@@ -28,31 +30,44 @@ public class TeacherServiceImpl implements ITeacherService {
 	
 	@Autowired
 	private CourseRepository courseRepository;
+
+	@Autowired
+	private TeacherFactory teacherFactory;
 	
 	@Autowired
 	private IWriter writer;
 
 	@Override
-	public Teacher addTeacher(TeacherViewModel teacherView) {
+	public ServiceReturnResult addTeacher(TeacherViewModel teacherView) {
 		Teacher newTeacher = new Teacher();
+		ServiceReturnResult teacherResult = new ServiceReturnResult();
+		ServiceReturnResult validationResult = new ServiceReturnResult();
+
 		ModelDecorator decorator = new ModelDecorator(teacherView);
-		List<String> validationResult = new ArrayList<>();
 		
-		validationResult.addAll(decorator.validateModel(new TeacherVMValidator()));
+		validationResult.addErrorMsg(decorator.validateModel(new TeacherVMValidator()));
 		
-		if (!validationResult.isEmpty()) {
-			writer.writeErrors(validationResult);
+		if (!validationResult.isSuccessful()) {
+			writer.writeErrors(validationResult.getErrorMessages());
 			newTeacher.setEmpty();
-			return newTeacher;
+			return validationResult;
 		}
+
+		ServiceReturnResult factoryResult = new ServiceReturnResult();
+
+		factoryResult = this.teacherFactory.getEntity(teacherView);
+
+		if (!factoryResult.isSuccessful()) {
+			return factoryResult;
+		}
+
+		newTeacher = (Teacher) factoryResult.getReturnResultObject();
 		
-		newTeacher.setName(teacherView.getName());
-		newTeacher.setEmail(teacherView.getEmail());
-		newTeacher.setPassword(teacherView.getPassword());
-		newTeacher.setSalary(Double.parseDouble(teacherView.getSalary()));
-		
-		Teacher result = teacherRepository.save(newTeacher);
-		return result;
+		newTeacher = teacherRepository.save(newTeacher);
+
+		teacherResult.setReturnResultObject(newTeacher);
+
+		return teacherResult;
 	}
 
 	@Override

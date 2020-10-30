@@ -25,8 +25,8 @@ public class TeacherVMValidator extends VMValidatorBase {
 		result.addAll(emailValidator.validateEmail(teacher.getEmail()));
 		result.addAll(stringValidator.validateString(teacher.getName(), "Teacher name", 50));
 		result.addAll(stringValidator.validateString(teacher.getPassword(), "Teacher password", null));
-		result.addAll(numberValidator.validateNumber(teacher.getSalary()));
-		return null;
+		
+		return result;
 	}
 
 	@Override
