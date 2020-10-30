@@ -6,6 +6,8 @@ public class TeacherViewModel extends ViewModel{
 	private String email;
 	
 	private String password;
+
+	private String passwordRepeat;
 	
 	private String salary;
 	
@@ -48,6 +50,14 @@ public class TeacherViewModel extends ViewModel{
 
 	public void setSalary(String salary) {
 		this.salary = salary;
+	}
+
+	public String getPasswordRepeat() {
+		return passwordRepeat;
+	}
+
+	public void setPasswordRepeat(String passwordRepeat) {
+		this.passwordRepeat = passwordRepeat;
 	}
 
 	@Override

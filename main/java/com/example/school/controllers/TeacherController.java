@@ -2,6 +2,8 @@ package com.example.school.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.school.database.entities.Teacher;
@@ -9,11 +11,20 @@ import com.example.school.exceptions.ValueException;
 import com.example.school.services.interfaces.ITeacherService;
 import com.example.school.viewModels.TeacherViewModel;
 
-@Controller
+@Controller()
 public class TeacherController {
 	
 	@Autowired
 	private ITeacherService teacherService;
+
+	@GetMapping("/createteach")
+	public String createTeacher(Model model) {
+		if (!model.containsAttribute("teacherFormModel")) {
+			model.addAttribute("teacherFormModel", new TeacherViewModel());
+		}
+
+		return "teacherCreate";
+	}
 	
 	@RequestMapping(value = "techtest")
 	public String teacherTesting() {
