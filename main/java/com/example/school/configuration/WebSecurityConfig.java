@@ -55,12 +55,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	System.out.println("configure motherfuckers");
     	http
 		.authorizeRequests().antMatchers("/register").permitAll().and().authorizeRequests()
-		.antMatchers("/profile/**").hasRole("STUDENT")
 		.antMatchers("/courseCreate/**").hasRole("TEACHER")
+		.antMatchers("/teacher/**").hasRole("TEACHER")
     	.anyRequest().authenticated()
     	.and()
     	.formLogin().loginPage("/login")
-    	.defaultSuccessUrl("/profile").permitAll();
+		.defaultSuccessUrl("/profile").permitAll()
+		.and()
+		.logout()
+		.logoutUrl("/profile/logout")
+		.logoutSuccessUrl("/login")
+		.invalidateHttpSession(true);
+		
+
     	
     	
     	/*http.csrf().disable().authorizeRequests()
