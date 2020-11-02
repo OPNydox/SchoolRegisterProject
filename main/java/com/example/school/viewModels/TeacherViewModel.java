@@ -1,6 +1,6 @@
 package com.example.school.viewModels;
 
-public class TeacherViewModel extends ViewModel{
+public class TeacherViewModel extends ViewModel {
 	private String name;
 	
 	private String email;

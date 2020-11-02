@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.school.database.entities.AuthGroup;
 import com.example.school.services.interfaces.IAuthGroupService;
 import com.example.school.services.interfaces.IStudentService;
+import com.example.school.services.interfaces.IUserService;
 import com.example.school.utilities.ControllerHelper;
 import com.example.school.utilities.enums.UserRole;
 import com.example.school.viewModels.AuthViewModel;
@@ -27,6 +28,9 @@ public class RegisterController {
 
 	@Autowired
 	private IAuthGroupService authService;
+
+	@Autowired
+	private IUserService userService;
 	
 	private RegistrationViewModel registrationForm;
 	
@@ -53,8 +57,9 @@ public class RegisterController {
 		}
 		
 		generateStudentModel();
-		studentService.createStudent(studentModel);
-		this.authService.addAuth(new AuthViewModel(view.getEmail(), UserRole.STUDENT));
+		userService.createUser(studentModel);
+		//studentService.createStudent(studentModel);
+		//this.authService.addAuth(new AuthViewModel(view.getEmail(), UserRole.STUDENT));
 
 		
 		return "login";

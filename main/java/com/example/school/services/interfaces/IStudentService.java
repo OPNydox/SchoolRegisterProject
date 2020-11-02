@@ -10,6 +10,8 @@ import com.example.school.viewModels.StudentViewModel;
 
 public interface IStudentService {
 	Student createStudent(StudentViewModel student);
+
+	Student createStudent(Student student);
 	
 	Student findStudentByEmail(String email);
 

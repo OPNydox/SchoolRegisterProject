@@ -123,4 +123,10 @@ public class TeacherServiceImpl implements ITeacherService {
 		return true;
 	}
 
+	@Override
+	public Teacher addTeacher(Teacher teacher) {
+		Teacher returnTeacher = this.teacherRepository.save(teacher);
+		return returnTeacher;
+	}
+
 }

@@ -24,10 +24,10 @@
       <li class="nav-item active">
         <a class="nav-link" href="/courses">All courses <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active" sec:authorize="hasRole('ROLE_TEAECHER')">
+      <li class="nav-item active" sec:authorize="hasRole('ROLE_TEACHER')">
         <a class="nav-link" href="/courseCreate">Create course <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active" sec:authorize="hasRole('ROLE_ADMIN')">
+      <li class="nav-item active">
         <a class="nav-link" href="/teacher/create">Add Teacher <span class="sr-only">(current)</span></a>
       </li>
     </ul>

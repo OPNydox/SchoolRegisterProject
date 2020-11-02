@@ -7,6 +7,8 @@ import com.example.school.database.entities.Course;
 import com.example.school.database.entities.Student;
 import com.example.school.database.entities.Teacher;
 import com.example.school.database.entities.User;
+import com.example.school.viewModels.StudentViewModel;
+import com.example.school.viewModels.ViewModel;
 
 public class UserEntityHelper {
     public static List<Course> getCoursesFromUser (User user) {
@@ -31,6 +33,13 @@ public class UserEntityHelper {
             return true;
         } 
 
+        return false;
+    }
+
+    public static boolean isUserStudent(ViewModel viewModel) {
+        if (viewModel instanceof StudentViewModel) {
+            return true;
+        }
         return false;
     }
 

@@ -9,6 +9,8 @@ import com.example.school.viewModels.TeacherViewModel;
 
 public interface ITeacherService {
 	ServiceReturnResult addTeacher(TeacherViewModel teacherView);
+
+	Teacher addTeacher(Teacher teacher);
 	
 	Teacher findTeacherByEmail(String email) throws ValueException;
 	

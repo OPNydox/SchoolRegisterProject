@@ -194,4 +194,10 @@ public class StudentServiceImpl implements IStudentService {
 		return this.returnResult;
 	}
 
+	@Override
+	public Student createStudent(Student student) {
+		Student returnStudent = this.repository.save(student);
+		return returnStudent;
+	}
+
 }

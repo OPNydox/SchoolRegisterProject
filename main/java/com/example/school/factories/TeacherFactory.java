@@ -1,15 +1,17 @@
 package com.example.school.factories;
 
 import com.example.school.database.entities.Teacher;
+import com.example.school.factories.interfaces.EntityFactory;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.TeacherViewModel;
+import com.example.school.viewModels.ViewModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TeacherFactory {
+public class TeacherFactory implements EntityFactory {
     private ServiceReturnResult returnResult;
 
     @Autowired
@@ -17,10 +19,10 @@ public class TeacherFactory {
 
     private TeacherViewModel teacherViewModel;
 
-    public ServiceReturnResult getEntity(TeacherViewModel teacherViewModel) {
+    public ServiceReturnResult getEntity(ViewModel viewModel) {
         Teacher teacherEntity = new Teacher();
 
-        initialize(teacherViewModel);
+        initialize(viewModel);
 
         teacherEntity.setEmail(teacherViewModel.getEmail());
         teacherEntity.setName(teacherViewModel.getName());
@@ -32,8 +34,8 @@ public class TeacherFactory {
         return this.returnResult;
     }
 
-    private void initialize(TeacherViewModel teacherViewModel) {
-        this.teacherViewModel = teacherViewModel;
+    private void initialize(ViewModel viewModel) {
+        this.teacherViewModel = (TeacherViewModel) viewModel;
         returnResult = new ServiceReturnResult();
     }
 

@@ -3,19 +3,21 @@ package com.example.school.factories;
 import com.example.school.database.entities.Course;
 import com.example.school.database.entities.Grade;
 import com.example.school.database.entities.Student;
+import com.example.school.factories.interfaces.EntityFactory;
 import com.example.school.services.implementations.StudentServiceImpl;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.utilities.NumberHandler;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.GradeViewModel;
+import com.example.school.viewModels.ViewModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GradeFactory {
+public class GradeFactory implements EntityFactory {
     @Autowired
     private IStudentService studentService;
 
@@ -26,13 +28,13 @@ public class GradeFactory {
 
     private ServiceReturnResult result;
 
-    public ServiceReturnResult getEntity(GradeViewModel model) {
+    public ServiceReturnResult getEntity(ViewModel viewModel) {
         Grade newGrade = new Grade();
         Double mark;
         Student student;
         Course course;
 
-        initialize(model);
+        initialize(viewModel);
 
         mark = getMark();
         student = getStudent();
@@ -50,14 +52,14 @@ public class GradeFactory {
         return this.result;
     }
 
-    private void initialize(GradeViewModel model) {
+    private void initialize(ViewModel viewModel) {
         this.result = new ServiceReturnResult();
-        this.gradeModel = model;
+        this.gradeModel = (GradeViewModel) viewModel;
     }
 
     private Double getMark() {
         ServiceReturnResult markResult;
-        
+
         markResult = NumberHandler.parseStringToDouble(gradeModel.getMark());
 
         if (!markResult.isSuccessful()) {
