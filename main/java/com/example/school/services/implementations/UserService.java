@@ -17,21 +17,24 @@ import com.example.school.services.interfaces.IStudentService;
 import com.example.school.services.interfaces.ITeacherService;
 import com.example.school.services.interfaces.IUserService;
 import com.example.school.utilities.ServiceReturnResult;
+import com.example.school.utilities.StudentCoursePair;
 import com.example.school.utilities.UserEntityHelper;
 import com.example.school.utilities.Verificator;
 import com.example.school.utilities.interfaces.IWriter;
 import com.example.school.viewModels.Interfaces.ViewModel;
+import com.example.school.viewModels.ViewModelPairs.TeacherCoursePair;
+import com.example.school.viewModels.ViewModelPairs.UserCourseIdPair;
 import com.example.school.viewModels.decorators.ModelDecorator;
 import com.example.school.viewModels.decorators.StudentVMValidator;
 import com.example.school.viewModels.decorators.TeacherVMValidator;
 import com.example.school.viewModels.decorators.VMValidator;
 
 @Service
-public class UserService implements IUserService{
-	
+public class UserService implements IUserService {
+
 	@Autowired
 	private IStudentService studentService;
-	
+
 	@Autowired
 	private ITeacherService teacherService;
 
@@ -43,7 +46,7 @@ public class UserService implements IUserService{
 
 	@Autowired
 	private AuthGroupService authGroupService;
-	
+
 	@Autowired
 	private IWriter writer;
 
@@ -52,8 +55,8 @@ public class UserService implements IUserService{
 		ServiceReturnResult userCreateResult = new ServiceReturnResult();
 		boolean isStudent;
 		isStudent = UserEntityHelper.isUserStudent(viewModel);
-		VMValidator validator = isStudent ? new StudentVMValidator() : new TeacherVMValidator(); 
-		
+		VMValidator validator = isStudent ? new StudentVMValidator() : new TeacherVMValidator();
+
 		ModelDecorator decorator = new ModelDecorator(viewModel);
 
 		userCreateResult.addErrorMsg(decorator.validateModel(validator));
@@ -71,7 +74,7 @@ public class UserService implements IUserService{
 		}
 
 		resultUser = (User) factoReturnResult.getReturnResultObject();
-		saveUser(resultUser); 
+		saveUser(resultUser);
 
 		authGroupService.addAuth(viewModel);
 
@@ -82,24 +85,24 @@ public class UserService implements IUserService{
 
 	private void saveUser(User user) {
 		if (user instanceof Student) {
-			studentService.createStudent((Student)user);
+			studentService.createStudent((Student) user);
 			return;
 		}
 		teacherService.addTeacher((Teacher) user);
 	}
-	
+
 	public User findUserByUsername(String username) {
 		User userFound;
-		
+
 		userFound = studentService.findStudentByEmail(username);
-		
+
 		if (Verificator.isEmpty(userFound)) {
 			userFound = findTeacher(username);
 		}
-		
+
 		return userFound;
 	}
-	
+
 	private User findTeacher(String username) {
 		User teacherFound = new User();
 		try {
@@ -108,8 +111,33 @@ public class UserService implements IUserService{
 			writer.writeError(e.getMessage());
 			teacherFound.setEmpty();
 		}
-		
+
 		return teacherFound;
+	}
+
+	@Override
+	public ServiceReturnResult enrollUserInClass(UserCourseIdPair userClassIdPair) {
+		User userToBeEnrolled = userClassIdPair.getUser();
+		ServiceReturnResult enrolResult = new ServiceReturnResult();
+
+		if (userToBeEnrolled instanceof Student) {
+			StudentCoursePair studentCoursePair = new StudentCoursePair();
+			studentCoursePair.setClassId(userClassIdPair.getCourseId());
+			studentCoursePair.setStudentMail(userToBeEnrolled.getEmail());
+			enrolResult = studentService.enlistStudentInCourse(studentCoursePair);
+			return enrolResult;
+		}
+
+		if (userToBeEnrolled instanceof Teacher) {
+			TeacherCoursePair teacherCoursePair = new TeacherCoursePair();
+			teacherCoursePair.setCourseId(userClassIdPair.getCourseId());
+			teacherCoursePair.setTeacherEmail(userToBeEnrolled.getEmail());
+			enrolResult = teacherService.entollTeacherInCourse(teacherCoursePair);
+			return enrolResult;
+		} else {
+			enrolResult.addErrorMsg("Enrolled user is invalid");
+		}
+		return enrolResult;
 	}
 
 }

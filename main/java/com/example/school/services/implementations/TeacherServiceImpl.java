@@ -15,11 +15,13 @@ import com.example.school.exceptions.ValueNotFoundException;
 import com.example.school.factories.TeacherFactory;
 import com.example.school.repositories.CourseRepository;
 import com.example.school.repositories.TeacherRepository;
+import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.ITeacherService;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.Verificator;
 import com.example.school.utilities.interfaces.IWriter;
 import com.example.school.viewModels.TeacherViewModel;
+import com.example.school.viewModels.ViewModelPairs.TeacherCoursePair;
 import com.example.school.viewModels.decorators.ModelDecorator;
 import com.example.school.viewModels.decorators.TeacherVMValidator;
 
@@ -27,13 +29,16 @@ import com.example.school.viewModels.decorators.TeacherVMValidator;
 public class TeacherServiceImpl implements ITeacherService {
 	@Autowired
 	private TeacherRepository teacherRepository;
-	
+
 	@Autowired
 	private CourseRepository courseRepository;
 
 	@Autowired
 	private TeacherFactory teacherFactory;
-	
+
+	@Autowired
+	private ICourseService courseService;
+
 	@Autowired
 	private IWriter writer;
 
@@ -44,9 +49,9 @@ public class TeacherServiceImpl implements ITeacherService {
 		ServiceReturnResult validationResult = new ServiceReturnResult();
 
 		ModelDecorator decorator = new ModelDecorator(teacherView);
-		
+
 		validationResult.addErrorMsg(decorator.validateModel(new TeacherVMValidator()));
-		
+
 		if (!validationResult.isSuccessful()) {
 			writer.writeErrors(validationResult.getErrorMessages());
 			newTeacher.setEmpty();
@@ -62,7 +67,7 @@ public class TeacherServiceImpl implements ITeacherService {
 		}
 
 		newTeacher = (Teacher) factoryResult.getReturnResultObject();
-		
+
 		newTeacher = teacherRepository.save(newTeacher);
 
 		teacherResult.setReturnResultObject(newTeacher);
@@ -78,13 +83,13 @@ public class TeacherServiceImpl implements ITeacherService {
 			writer.writeError(e.getMessage());
 			return null;
 		}
-		
+
 		boolean isEmailValid = Verificator.verifyEmail(email);
-		
+
 		if (isEmailValid) {
 			throw new EmailNotValidExcepiton("The email: " + email + " is not a valid email");
-		} 
-		
+		}
+
 		Teacher result = teacherRepository.findByEmail(email);
 		return result;
 	}
@@ -94,18 +99,18 @@ public class TeacherServiceImpl implements ITeacherService {
 		try {
 			Verificator.isEmpty(teacher, "Teacher object is null");
 			Verificator.isEmpty(course, "Course obect is empty");
-		} catch (ValueException e){
+		} catch (ValueException e) {
 			writer.writeError(e.getMessage());
 			return false;
 		}
-		
+
 		teacher.getCourses().add(course);
 		course.getTeachers().add(teacher);
 		return true;
 	}
 
 	@Override
-	public boolean addTeacherToCourse(String teacherEmail, String courseName)  {
+	public boolean addTeacherToCourse(String teacherEmail, String courseName) {
 		Teacher teacher;
 		Course course;
 		try {
@@ -118,7 +123,7 @@ public class TeacherServiceImpl implements ITeacherService {
 			writer.writeError(e.getMessage());
 			return false;
 		}
-		
+
 		addTeacherToCourse(teacher, course);
 		return true;
 	}
@@ -127,6 +132,43 @@ public class TeacherServiceImpl implements ITeacherService {
 	public Teacher addTeacher(Teacher teacher) {
 		Teacher returnTeacher = this.teacherRepository.save(teacher);
 		return returnTeacher;
+	}
+
+	@Override
+	public ServiceReturnResult entollTeacherInCourse(TeacherCoursePair teacherCoursePair) {
+		Teacher teacherToEnroll = new Teacher();
+		Course targetCourse = new Course();
+		ServiceReturnResult foundCourseResult = new ServiceReturnResult(); 
+		ServiceReturnResult enrollResult = new ServiceReturnResult();
+
+		try {
+			teacherToEnroll = findTeacherByEmail(teacherCoursePair.getTeacherEmail());
+		} catch (ValueException exception) {
+			enrollResult.addErrorMsg(exception.getMessage());
+			
+		}
+
+		foundCourseResult = courseService.getCourseById(teacherCoursePair.getCourseId());
+		
+		if (!foundCourseResult.isSuccessful()) {
+			return foundCourseResult;
+		}
+
+		try {
+			targetCourse = (Course) foundCourseResult.getReturnResultObject();
+			teacherToEnroll.getCourses().add(targetCourse);
+			targetCourse.getTeachers().add(teacherToEnroll);
+			saveTeacher(teacherToEnroll);
+			courseService.saveCourse(targetCourse);
+		} catch (Exception e) {
+			enrollResult.addErrorMsg(e.getMessage());
+		}
+		
+		return enrollResult;
+	}
+
+	public void saveTeacher(Teacher teacher) {
+		this.teacherRepository.save(teacher);
 	}
 
 }

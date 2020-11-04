@@ -17,6 +17,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.View;
 
+import com.example.school.authentication.MyUserPrincipal;
 import com.example.school.database.entities.Student;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.utilities.ControllerHelper;
@@ -70,26 +71,4 @@ public class StudentCountroller {
 		
 		return result;
 	}
-	
-	@GetMapping(value = "/enroll{cid}")
-	public String enrollStudent(@PathVariable("cid") String cid,
-	 							Principal principal,
-	 							Model model) {
-		StudentCoursePair studentCoursePair = new StudentCoursePair();
-		ServiceReturnResult enlistResult;
-		List<String> errors;
-		String classId = cid;
-
-		studentCoursePair.setClassId(classId);
-		studentCoursePair.setStudentMail(principal.getName());
-		
-		enlistResult = studentService.enlistStudentInCourse(studentCoursePair);
-		
-		errors = enlistResult.getErrorMessages();
-
-		model.addAttribute("errors", errors);
-
-		return "redirect:/profile";
-	}
-	
 }
