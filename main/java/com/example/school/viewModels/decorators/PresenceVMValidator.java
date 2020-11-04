@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.school.viewModels.PresenceViewModel;
-import com.example.school.viewModels.ViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
 
 public class PresenceVMValidator implements VMValidator{
 	

@@ -1,6 +1,11 @@
 package com.example.school.viewModels;
 
-public class TeacherViewModel extends ViewModel {
+import com.example.school.utilities.Constants;
+import com.example.school.utilities.enums.UserRole;
+import com.example.school.viewModels.Interfaces.IUserViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
+
+public class TeacherViewModel extends ViewModel implements IUserViewModel{
 	private String name;
 	
 	private String email;
@@ -10,6 +15,8 @@ public class TeacherViewModel extends ViewModel {
 	private String passwordRepeat;
 	
 	private String salary;
+
+	private UserRole role = UserRole.TEACHER;
 	
 	public TeacherViewModel() { }
 	
@@ -60,17 +67,7 @@ public class TeacherViewModel extends ViewModel {
 		this.passwordRepeat = passwordRepeat;
 	}
 
-	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+	public UserRole getRole() {
+		return role;
 	}
-
-	@Override
-	public boolean setEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	
 }

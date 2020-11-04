@@ -1,6 +1,11 @@
 package com.example.school.viewModels;
 
-public class RegistrationViewModel {
+import com.example.school.utilities.Constants;
+import com.example.school.utilities.enums.UserRole;
+import com.example.school.viewModels.Interfaces.IUserViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
+
+public class RegistrationViewModel extends ViewModel implements IUserViewModel{
 	String name;
 	
 	String email;
@@ -8,6 +13,8 @@ public class RegistrationViewModel {
 	String password;
 	
 	String passwordRepeat;
+
+	UserRole role = UserRole.STUDENT;
 	
 	String error;
 
@@ -61,5 +68,9 @@ public class RegistrationViewModel {
 
 	public void setError(String error) {
 		this.error = error;
+	}
+	
+	public UserRole getRole() {
+		return role;
 	}
 }

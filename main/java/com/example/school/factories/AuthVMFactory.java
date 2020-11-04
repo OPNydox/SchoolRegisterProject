@@ -1,35 +1,37 @@
 package com.example.school.factories;
 
-import com.example.school.database.entities.AuthGroup;
 import com.example.school.factories.interfaces.ModelFactory;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.AuthViewModel;
+import com.example.school.viewModels.Interfaces.IUserViewModel;
 import com.example.school.viewModels.Interfaces.ViewModel;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthFactory implements ModelFactory {
+public class AuthVMFactory implements ModelFactory {
+
     private ServiceReturnResult returnResult;
 
-    private AuthViewModel authViewModel;
+    private IUserViewModel userViewModel;
 
     @Override
     public ServiceReturnResult getEntity(ViewModel viewModel) {
-        AuthGroup authGroup = new AuthGroup();
+        AuthViewModel resultModel = new AuthViewModel();
 
-        initialize(viewModel);
+        initilize(viewModel);
 
-        authGroup.setEmail(authViewModel.getEmail());
-        authGroup.setAuthGroup(authViewModel.getUserRole());
+        resultModel.setEmail(userViewModel.getEmail());
+        resultModel.setUserRole(userViewModel.getRole());
 
-        this.returnResult.setReturnResultObject(authGroup);
-
+        this.returnResult.setReturnResultObject(resultModel);
+        
         return this.returnResult;
     }
 
-    private void initialize(ViewModel authViewModel) {
+    private void initilize(ViewModel viewModel) {
         this.returnResult = new ServiceReturnResult();
-        this.authViewModel = (AuthViewModel) authViewModel;
+        this.userViewModel = (IUserViewModel) viewModel;
     }
+    
 }

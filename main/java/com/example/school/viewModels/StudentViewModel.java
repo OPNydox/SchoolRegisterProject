@@ -1,20 +1,29 @@
 package com.example.school.viewModels;
 
-public class StudentViewModel extends ViewModel {
+import com.example.school.utilities.enums.UserRole;
+import com.example.school.viewModels.Interfaces.IUserViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
+
+public class StudentViewModel extends ViewModel implements IUserViewModel {
 	private String id;
 
 	private String name;
-	
+
 	private String password;
-	
+
 	private String email;
-	
-	public StudentViewModel() {}
+
+	private UserRole userRole;
+
+	public StudentViewModel() {
+		this.userRole = UserRole.STUDENT;
+	}
 
 	public StudentViewModel(String name, String password) {
 		super();
 		this.name = name;
 		this.password = password;
+		this.userRole = UserRole.STUDENT;
 	}
 
 	public String getName() {
@@ -33,14 +42,6 @@ public class StudentViewModel extends ViewModel {
 		this.password = password;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -49,17 +50,16 @@ public class StudentViewModel extends ViewModel {
 		this.id = id;
 	}
 
-	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override
-	public boolean setEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+	public UserRole getRole() {
+		return this.userRole;
 	}
-	
-	
 }

@@ -6,17 +6,17 @@ import com.example.school.database.entities.Course;
 import com.example.school.database.entities.Grade;
 import com.example.school.database.entities.Presence;
 import com.example.school.database.entities.Student;
-import com.example.school.factories.interfaces.EntityFactory;
+import com.example.school.factories.interfaces.ModelFactory;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.StudentViewModel;
-import com.example.school.viewModels.ViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StudentFactory implements EntityFactory {
+public class StudentFactory implements ModelFactory {
     @Autowired
     private PasswordEncoder passwordEncoder;
 

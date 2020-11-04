@@ -1,17 +1,17 @@
 package com.example.school.factories;
 
 import com.example.school.database.entities.Teacher;
-import com.example.school.factories.interfaces.EntityFactory;
+import com.example.school.factories.interfaces.ModelFactory;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.TeacherViewModel;
-import com.example.school.viewModels.ViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TeacherFactory implements EntityFactory {
+public class TeacherFactory implements ModelFactory {
     private ServiceReturnResult returnResult;
 
     @Autowired

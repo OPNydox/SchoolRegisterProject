@@ -2,7 +2,8 @@ package com.example.school.viewModels.decorators;
 
 import java.util.List;
 
-import com.example.school.viewModels.ViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
+
 
 public interface VMValidator {
 	List<String> validate();

@@ -1,16 +1,17 @@
 package com.example.school.viewModels;
 
 import com.example.school.utilities.enums.UserRole;
+import com.example.school.viewModels.Interfaces.ViewModel;
 
 public class AuthViewModel extends ViewModel {
 
     private String rolePrefix = "ROLE_";
 
-    private boolean isEmpty;
-
     private String email;
 
     private String userRole;
+
+    public AuthViewModel() {}
 
     public AuthViewModel(String email, UserRole role) {
         this.setEmail(email);
@@ -32,16 +33,4 @@ public class AuthViewModel extends ViewModel {
     public void setUserRole(UserRole userRole) {
         this.userRole = rolePrefix + userRole.name();
     }
-
-    @Override
-    public boolean isEmpty() {
-        return this.isEmpty;
-    }
-
-    @Override
-    public boolean setEmpty() {
-        this.isEmpty = true;
-        return true;
-    }
-    
 }

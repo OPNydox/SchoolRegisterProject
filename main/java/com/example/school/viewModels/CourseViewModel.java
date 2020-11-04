@@ -1,6 +1,8 @@
 package com.example.school.viewModels;
 
-public class CourseViewModel extends ViewModel{
+import com.example.school.viewModels.Interfaces.ViewModel;
+
+public class CourseViewModel extends ViewModel {
 
 	private String id;
 
@@ -9,8 +11,6 @@ public class CourseViewModel extends ViewModel{
 	private String subject;
 
 	private String honorarium;
-
-	private boolean isEmpty;
 
 	public CourseViewModel() {}
 	
@@ -52,17 +52,4 @@ public class CourseViewModel extends ViewModel{
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	@Override
-	public boolean isEmpty() {
-		return this.isEmpty;
-	}
-
-	@Override
-	public boolean setEmpty() {
-		this.isEmpty = true;
-		return true;
-	}
-	
-	
 }

@@ -1,5 +1,7 @@
 package com.example.school.viewModels;
 
+import com.example.school.viewModels.Interfaces.ViewModel;
+
 public class GradeViewModel extends ViewModel {
 	
 	private String mark;
@@ -60,18 +62,4 @@ public class GradeViewModel extends ViewModel {
 	public void setStudentId(String studentId) {
 		this.studentId = studentId;
 	}
-
-	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	
 }

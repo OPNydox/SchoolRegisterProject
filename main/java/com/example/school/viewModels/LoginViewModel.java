@@ -1,6 +1,8 @@
 package com.example.school.viewModels;
 
-public class LoginViewModel {
+import com.example.school.viewModels.Interfaces.ViewModel;
+
+public class LoginViewModel  extends ViewModel {
 	private String email;
 	
 	private String password;

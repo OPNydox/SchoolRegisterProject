@@ -20,7 +20,7 @@ import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.UserEntityHelper;
 import com.example.school.utilities.Verificator;
 import com.example.school.utilities.interfaces.IWriter;
-import com.example.school.viewModels.ViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
 import com.example.school.viewModels.decorators.ModelDecorator;
 import com.example.school.viewModels.decorators.StudentVMValidator;
 import com.example.school.viewModels.decorators.TeacherVMValidator;
@@ -42,7 +42,7 @@ public class UserService implements IUserService{
 	private TeacherFactory teacherFactory;
 
 	@Autowired
-	private UserRepository UserRepository;
+	private AuthGroupService authGroupService;
 	
 	@Autowired
 	private IWriter writer;
@@ -72,6 +72,9 @@ public class UserService implements IUserService{
 
 		resultUser = (User) factoReturnResult.getReturnResultObject();
 		saveUser(resultUser); 
+
+		authGroupService.addAuth(viewModel);
+
 		userCreateResult.setReturnResultObject(resultUser);
 
 		return userCreateResult;

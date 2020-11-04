@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.school.viewModels.GradeViewModel;
-import com.example.school.viewModels.ViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
 import com.example.school.viewModels.decorators.dataValidators.IdValidator;
 
 public class GradeVMValidator extends VMValidatorBase {

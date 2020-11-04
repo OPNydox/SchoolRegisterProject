@@ -5,7 +5,8 @@ import java.util.List;
 
 import com.example.school.database.entities.AuthGroup;
 import com.example.school.viewModels.AuthViewModel;
-import com.example.school.viewModels.ViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
+
 
 public class AuthGroupValidator extends VMValidatorBase {
 

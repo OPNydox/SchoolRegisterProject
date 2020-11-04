@@ -1,6 +1,8 @@
 package com.example.school.viewModels;
 
-public class PresenceViewModel extends ViewModel{
+import com.example.school.viewModels.Interfaces.ViewModel;
+
+public class PresenceViewModel extends ViewModel {
 	
 	private String presenceClass;
 	
@@ -28,17 +30,5 @@ public class PresenceViewModel extends ViewModel{
 
 	public void setStudentEmail(String studentEmail) {
 		this.studentEmail = studentEmail;
-	}
-
-	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setEmpty() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

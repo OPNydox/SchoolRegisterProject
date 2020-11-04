@@ -2,14 +2,16 @@ package com.example.school.services.implementations;
 
 import com.example.school.database.entities.AuthGroup;
 import com.example.school.factories.AuthFactory;
+import com.example.school.factories.AuthVMFactory;
 import com.example.school.repositories.AuthGroupRepository;
 import com.example.school.services.interfaces.IAuthGroupService;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.AuthViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
 import com.example.school.viewModels.decorators.AuthGroupValidator;
+import com.example.school.viewModels.decorators.UserVMDecorator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties.Validation;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,22 +20,34 @@ public class AuthGroupService implements IAuthGroupService {
     private AuthGroupRepository authRepository;
 
     @Autowired
+    private AuthVMFactory authVMFactory;
+
+    @Autowired
     private AuthFactory authFactory;
 
     @Override
-    public ServiceReturnResult addAuth(AuthViewModel authModel) {
+    public ServiceReturnResult addAuth(ViewModel viewModel) {
         ServiceReturnResult factoryResult = new ServiceReturnResult();
+        ServiceReturnResult vmFactoryResult = new ServiceReturnResult();
         ServiceReturnResult validatorResult = new ServiceReturnResult();
-        AuthGroupValidator decorator = new AuthGroupValidator();
+        UserVMDecorator decorator = new UserVMDecorator();
 
-        decorator.injectModel(authModel);
+        decorator.injectModel(viewModel);
         validatorResult.addErrorMsg(decorator.validate());
 
         if (!validatorResult.isSuccessful()) {
             return validatorResult;
         }
 
-        factoryResult = this.authFactory.getEntity(authModel);
+        vmFactoryResult = authVMFactory.getEntity(viewModel);
+
+        if (!vmFactoryResult.isSuccessful()) {
+            return vmFactoryResult;
+        }
+
+        ViewModel userViewModel = (ViewModel) vmFactoryResult.getReturnResultObject();
+
+        factoryResult = this.authFactory.getEntity(userViewModel);
 
         if (!validatorResult.isSuccessful()) {
             return factoryResult;

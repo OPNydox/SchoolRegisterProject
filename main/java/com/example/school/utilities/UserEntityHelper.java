@@ -8,7 +8,7 @@ import com.example.school.database.entities.Student;
 import com.example.school.database.entities.Teacher;
 import com.example.school.database.entities.User;
 import com.example.school.viewModels.StudentViewModel;
-import com.example.school.viewModels.ViewModel;
+import com.example.school.viewModels.Interfaces.ViewModel;
 
 public class UserEntityHelper {
     public static List<Course> getCoursesFromUser (User user) {
