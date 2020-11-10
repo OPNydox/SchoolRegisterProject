@@ -41,9 +41,8 @@
                         <div>
                             <h1>Teachers</h1>
                         </div>
-                        <div class="list-group">
-                            <a th:text="Teacher1" href="#" class="list-group-item list-group-item-action "></a>
-                            <a th:text="Teacher2" href="#" class="list-group-item list-group-item-action "></a>
+                        <div th:each="teacher : ${teachers}" class="list-group">
+                            <a th:text="${teacher.name}" href="#" class="list-group-item list-group-item-action "></a>
                         </div>
                     </div>
                 </div>

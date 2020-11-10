@@ -79,6 +79,7 @@ public class CourseController {
 	public String getCoursePage(@RequestParam String id ,Model model) {
 		CourseViewModel course;
 		Iterable<StudentViewModel> students = new ArrayList<>();
+		Iterable<TeacherViewModel> teachers = new ArrayList<>();
 		ServiceReturnResult courseResult;
 		ServiceReturnResult studentsResult;
 		ServiceReturnResult teachersResult;
@@ -102,6 +103,7 @@ public class CourseController {
 		}
 
 		students = (Iterable<StudentViewModel>) studentsResult.getReturnResultObject();
+		teacher = (Iterable<TeacherViewModel>)
 
 		model.addAttribute("students", students);
 
