@@ -58,9 +58,6 @@ public class RegisterController {
 		
 		generateStudentModel();
 		userService.createUser(studentModel);
-		//studentService.createStudent(studentModel);
-		//this.authService.addAuth(new AuthViewModel(view.getEmail(), UserRole.STUDENT));
-
 		
 		return "login";
 		

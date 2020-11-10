@@ -27,12 +27,12 @@ public class CourseFactory implements ModelFactory {
         Course course = new Course();
         Integer honorarium;
 
-        initialize(courseViewModel);
+        initialize(viewModel);
 
         honorarium = getHonorarium();
 
         course.setCourseName(courseViewModel.getName());
-        course.setSubject(courseViewModel.getName());
+        course.setSubject(courseViewModel.getSubject());
         course.setHonorarium(honorarium);
 
         returnResult.setReturnResultObject(course);

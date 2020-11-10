@@ -12,7 +12,9 @@ import com.example.school.utilities.mappers.TeacherMapper;
 import com.example.school.viewModels.TeacherViewModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TeacherCourseServiceImpl implements ITeacherCourseService {
 
     @Autowired
@@ -36,6 +38,7 @@ public class TeacherCourseServiceImpl implements ITeacherCourseService {
         teachersFond.addAll(course.getTeachers());
         mappedTeachers = TeacherMapper.mapTeacherEntityToViewModel(teachersFond);
 
+        getTeachReturnResult.setReturnResultObject(mappedTeachers);
 
         return getTeachReturnResult;
     }

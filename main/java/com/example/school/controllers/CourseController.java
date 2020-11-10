@@ -26,6 +26,7 @@ import com.example.school.repositories.UserRepository;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.IStudentCourseService;
 import com.example.school.services.interfaces.IStudentService;
+import com.example.school.services.interfaces.ITeacherCourseService;
 import com.example.school.services.interfaces.ITeacherService;
 import com.example.school.utilities.ControllerHelper;
 import com.example.school.utilities.ReturnResult;
@@ -41,6 +42,8 @@ public class CourseController {
 	@Autowired
 	private IStudentCourseService studentCourseService;
 
+	@Autowired
+	private ITeacherCourseService teacherCourseService;
 	
 	@GetMapping("/coursefind/{name}")
 	public ReturnResult courseTesting(@PathVariable String name) {
@@ -79,7 +82,7 @@ public class CourseController {
 	public String getCoursePage(@RequestParam String id ,Model model) {
 		CourseViewModel course;
 		Iterable<StudentViewModel> students = new ArrayList<>();
-		Iterable<TeacherViewModel> teachers = new ArrayList<>();
+		List<TeacherViewModel> teachers = new ArrayList<>();
 		ServiceReturnResult courseResult;
 		ServiceReturnResult studentsResult;
 		ServiceReturnResult teachersResult;
@@ -103,9 +106,16 @@ public class CourseController {
 		}
 
 		students = (Iterable<StudentViewModel>) studentsResult.getReturnResultObject();
-		teacher = (Iterable<TeacherViewModel>)
-
 		model.addAttribute("students", students);
+
+		teachersResult = teacherCourseService.getTeachersForCourse(id);
+
+		if (!teachersResult.isSuccessful()) {
+			model.addAttribute("error", teachersResult.getErrorMessages());
+		}
+
+		teachers = (ArrayList<TeacherViewModel>) teachersResult.getReturnResultObject();
+		model.addAttribute("teachers", teachers);
 
 		return "course";
 	}
