@@ -1,15 +1,9 @@
 package com.example.school.viewModels;
 
-import com.example.school.utilities.Constants;
 import com.example.school.utilities.enums.UserRole;
-import com.example.school.viewModels.Interfaces.IUserViewModel;
-import com.example.school.viewModels.Interfaces.ViewModel;
+import com.example.school.viewModels.Interfaces.UserViewModel;
 
-public class TeacherViewModel extends ViewModel implements IUserViewModel{
-	private String name;
-	
-	private String email;
-	
+public class TeacherViewModel extends UserViewModel {
 	private String password;
 
 	private String passwordRepeat;
@@ -21,26 +15,10 @@ public class TeacherViewModel extends ViewModel implements IUserViewModel{
 	public TeacherViewModel() { }
 	
 	public TeacherViewModel(String name, String email, String password, String salary) {
-		this.setName(name);
-		this.setEmail(email);
+		super(email, name);
+		this.setUserRole(UserRole.TEACHER);
 		this.setPassword(password);
 		this.setSalary(salary);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getPassword() {

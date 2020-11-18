@@ -1,10 +1,9 @@
 package com.example.school.viewModels;
 
 import com.example.school.utilities.enums.UserRole;
-import com.example.school.viewModels.Interfaces.IUserViewModel;
 import com.example.school.viewModels.Interfaces.ViewModel;
 
-public class StudentViewModel extends ViewModel implements IUserViewModel {
+public class StudentViewModel extends ViewModel {
 	private String id;
 
 	private String name;
@@ -58,8 +57,4 @@ public class StudentViewModel extends ViewModel implements IUserViewModel {
 		this.email = email;
 	}
 
-	@Override
-	public UserRole getRole() {
-		return this.userRole;
-	}
 }

@@ -1,50 +1,23 @@
 package com.example.school.viewModels;
 
-import com.example.school.utilities.Constants;
 import com.example.school.utilities.enums.UserRole;
-import com.example.school.viewModels.Interfaces.IUserViewModel;
-import com.example.school.viewModels.Interfaces.ViewModel;
+import com.example.school.viewModels.Interfaces.UserViewModel;
 
-public class RegistrationViewModel extends ViewModel implements IUserViewModel{
-	String name;
-	
-	String email;
-	
+public class RegistrationViewModel extends UserViewModel {
 	String password;
 	
 	String passwordRepeat;
-
-	UserRole role = UserRole.STUDENT;
 	
 	String error;
 
 	public RegistrationViewModel(String name, String email, String password, String passwordRepeat) {
-		super();
-		this.setName(name);
-		this.setEmail(email);
+		super(email, name);
+		this.setUserRole(UserRole.STUDENT);
 		this.setPassword(password);
 		this.setPasswordRepeat(passwordRepeat);
 	}
 
-	public RegistrationViewModel() {
-		super();
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
+	public RegistrationViewModel() {}
 
 	public String getPassword() {
 		return password;
@@ -68,9 +41,5 @@ public class RegistrationViewModel extends ViewModel implements IUserViewModel{
 
 	public void setError(String error) {
 		this.error = error;
-	}
-	
-	public UserRole getRole() {
-		return role;
 	}
 }
