@@ -1,63 +1,42 @@
 package com.example.school.factories;
 
-import java.security.Provider.Service;
-
 import com.example.school.database.entities.Course;
-import com.example.school.factories.interfaces.ModelFactory;
-import com.example.school.services.interfaces.ICourseService;
-import com.example.school.servicesImplementations.CourseService;
 import com.example.school.utilities.NumberHandler;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.CourseViewModel;
-import com.example.school.viewModels.Interfaces.ViewModel;
 
-import org.dom4j.Entity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest.H2ConsoleRequestMatcher;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CourseFactory implements ModelFactory {
-
-    private ServiceReturnResult returnResult;
-
-    private CourseViewModel courseViewModel;
-
-    public ServiceReturnResult getEntity(ViewModel viewModel) {
+public class CourseFactory {
+    public ServiceReturnResult<Course> getEntity(CourseViewModel courseViewModel) {
         Course course = new Course();
+        ServiceReturnResult<Course> entityResult = new ServiceReturnResult<>();
         Integer honorarium;
 
-        initialize(viewModel);
-
-        honorarium = getHonorarium();
+        honorarium = getHonorarium(courseViewModel.getHonorarium());
 
         course.setCourseName(courseViewModel.getName());
         course.setSubject(courseViewModel.getSubject());
         course.setHonorarium(honorarium);
 
-        returnResult.setReturnResultObject(course);
+        entityResult.setReturnResultObject(course);
 
-        return this.returnResult;
+        return entityResult;
 
     }
 
-    private void initialize(ViewModel viewModel) {
-        this.courseViewModel = (CourseViewModel) viewModel;
-        this.returnResult = new ServiceReturnResult();
-    }
-
-    private Integer getHonorarium() {
-        ServiceReturnResult numbResult;
+    private Integer getHonorarium(String honorariumString) {
+        ServiceReturnResult<Integer> numbResult;
         Integer honorarium;
 
-        numbResult = NumberHandler.parseStringToInteger(courseViewModel.getHonorarium());
+        numbResult = NumberHandler.parseStringToInteger(honorariumString);
 
-        if (!numbResult.isSuccessful()) {
-            this.returnResult.addErrorMsg(numbResult.getErrorMessages());
+        if (numbResult.hasErrors()) {
             return 0;
         }
 
-        honorarium = (Integer) numbResult.getReturnResultObject();
+        honorarium = numbResult.getReturnResultObject();
 
         return honorarium;
     }

@@ -1,48 +1,36 @@
 package com.example.school.factories;
 
 import com.example.school.database.entities.Teacher;
-import com.example.school.factories.interfaces.ModelFactory;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.TeacherViewModel;
-import com.example.school.viewModels.Interfaces.ViewModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TeacherFactory implements ModelFactory {
-    private ServiceReturnResult returnResult;
-
+public class TeacherFactory {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private TeacherViewModel teacherViewModel;
-
-    public ServiceReturnResult getEntity(ViewModel viewModel) {
+    public ServiceReturnResult<Teacher> getEntity(TeacherViewModel teacherViewModel) {
         Teacher teacherEntity = new Teacher();
-
-        initialize(viewModel);
+        ServiceReturnResult<Teacher> teacherResult = new ServiceReturnResult<>(); 
 
         teacherEntity.setEmail(teacherViewModel.getEmail());
         teacherEntity.setName(teacherViewModel.getName());
-        teacherEntity.setPassword(getPassword());
+        teacherEntity.setPassword(getPassword(teacherViewModel.getPassword()));
         teacherEntity.setStudent(false);
 
-        this.returnResult.setReturnResultObject(teacherEntity);
+        teacherResult.setReturnResultObject(teacherEntity);
 
-        return this.returnResult;
+        return teacherResult;
     }
 
-    private void initialize(ViewModel viewModel) {
-        this.teacherViewModel = (TeacherViewModel) viewModel;
-        returnResult = new ServiceReturnResult();
-    }
-
-    private String getPassword() {
+    private String getPassword(String password) {
         String encodedPassword;
 
-        encodedPassword = passwordEncoder.encode(teacherViewModel.getPassword());
+        encodedPassword = passwordEncoder.encode(password);
 
         return encodedPassword;
     }

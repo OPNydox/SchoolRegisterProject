@@ -1,44 +1,39 @@
 package com.example.school.factories;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.school.database.entities.Course;
 import com.example.school.database.entities.Grade;
 import com.example.school.database.entities.Student;
-import com.example.school.factories.interfaces.ModelFactory;
-import com.example.school.services.implementations.StudentServiceImpl;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.utilities.NumberHandler;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.GradeViewModel;
-import com.example.school.viewModels.Interfaces.ViewModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GradeFactory implements ModelFactory {
+public class GradeFactory {
     @Autowired
     private IStudentService studentService;
 
     @Autowired
     private ICourseService courseService;
 
-    private GradeViewModel gradeModel;
-
-    private ServiceReturnResult result;
-
-    public ServiceReturnResult getEntity(ViewModel viewModel) {
+    public ServiceReturnResult<Grade> getEntity(GradeViewModel gradeViewModel) {
+        List<String> errorContainer = new ArrayList<>();
+        ServiceReturnResult<Grade> gradeResult = new ServiceReturnResult<>();
         Grade newGrade = new Grade();
         Double mark;
         Student student;
         Course course;
 
-        initialize(viewModel);
-
-        mark = getMark();
-        student = getStudent();
-        course = getCourse();
+        mark = getMark(gradeViewModel.getMark(), errorContainer);
+        student = getStudent(gradeViewModel.getStudentId(), errorContainer);
+        course = getCourse(gradeViewModel.getCourseId(), errorContainer);
 
         newGrade.setMark(mark);
         newGrade.setStudent(student);
@@ -47,49 +42,46 @@ public class GradeFactory implements ModelFactory {
         student.getGrades().add(newGrade);
         course.getGrades().add(newGrade);
 
-        this.result.setReturnResultObject(newGrade);
+        gradeResult.addErrorMsg(errorContainer);
+        gradeResult.setReturnResultObject(newGrade);
 
-        return this.result;
+        return gradeResult;
     }
 
-    private void initialize(ViewModel viewModel) {
-        this.result = new ServiceReturnResult();
-        this.gradeModel = (GradeViewModel) viewModel;
-    }
+    private Double getMark(String markString, List<String> errorContainer) {
+        ServiceReturnResult<Double> markResult;
 
-    private Double getMark() {
-        ServiceReturnResult markResult;
+        markResult = NumberHandler.parseStringToDouble(markString);
 
-        markResult = NumberHandler.parseStringToDouble(gradeModel.getMark());
-
-        if (!markResult.isSuccessful()) {
-            this.result.addErrorMsg(markResult.getErrorMessages());
+        if (markResult.hasErrors()) {
+            return Double.NaN;
         }
 
-        return (Double) markResult.getReturnResultObject();
+        return markResult.getReturnResultObject();
     }
 
-    private Student getStudent() {
-        ServiceReturnResult studentResult = new ServiceReturnResult();
+    private Student getStudent(String studentID, List<String> errorContainer) {
+        ServiceReturnResult<Student> studentResult = new ServiceReturnResult<>();
 
-        studentResult = this.studentService.findStudentEntityById(this.gradeModel.getStudentId());
+        studentResult = this.studentService.findStudentEntityById(studentID);
 
-        if (!studentResult.isSuccessful()) {
-            this.result.addErrorMsg(studentResult.getErrorMessages());
+        if (studentResult.hasErrors()) {
+            errorContainer.addAll(studentResult.getErrorMessages());
+            return new Student();
         }
 
         return (Student) studentResult.getReturnResultObject();
     }
 
-    private Course getCourse() {
-        ServiceReturnResult courseResult;
+    private Course getCourse(String courseId, List<String> errorContainer) {
+        ServiceReturnResult<Course> courseResult = new ServiceReturnResult<>();
 
-        courseResult = this.courseService.getCourseById(this.gradeModel.getCourseId());
+        courseResult = this.courseService.getCourseById(courseId);
 
-        if (!courseResult.isSuccessful()) {
-            this.result.addErrorMsg(courseResult.getErrorMessages());
+        if (courseResult.hasErrors()) {
+            errorContainer.addAll(courseResult.getErrorMessages());
         }
 
-        return (Course) courseResult.getReturnResultObject();
+        return courseResult.getReturnResultObject();
     }
 }
