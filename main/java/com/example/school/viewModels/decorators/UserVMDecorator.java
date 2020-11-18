@@ -3,12 +3,12 @@ package com.example.school.viewModels.decorators;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.school.viewModels.Interfaces.IUserViewModel;
+import com.example.school.viewModels.Interfaces.UserViewModel;
 import com.example.school.viewModels.Interfaces.ViewModel;
 
 public class UserVMDecorator extends VMValidatorBase {
 
-    private IUserViewModel userViewModel;
+    private UserViewModel userViewModel;
 
     @Override
     public List<String> validate() {
@@ -30,7 +30,7 @@ public class UserVMDecorator extends VMValidatorBase {
 
     @Override
     public boolean injectModel(ViewModel model) {
-        this.userViewModel = (IUserViewModel) model;
+        this.userViewModel = (UserViewModel) model;
         return true;
     }
     
