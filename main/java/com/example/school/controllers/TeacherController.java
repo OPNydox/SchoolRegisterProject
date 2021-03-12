@@ -41,7 +41,7 @@ public class TeacherController {
 
 		teacherCreateResult = userService.createUser(teacherViewModel);
 
-		if (!teacherCreateResult.isSuccessful()) {
+		if (teacherCreateResult.hasErrors()) {
 			model.addAttribute("teacherFormModel", teacherCreateResult);
 			model.addAttribute("errors", teacherCreateResult.getErrorMessages());
 			return "teacherCreate";

@@ -1,9 +1,10 @@
 package com.example.school.viewModels;
 
 import com.example.school.utilities.enums.UserRole;
+import com.example.school.viewModels.Interfaces.UserViewModel;
 import com.example.school.viewModels.Interfaces.ViewModel;
 
-public class StudentViewModel extends ViewModel {
+public class StudentViewModel extends UserViewModel {
 	private String id;
 
 	private String name;

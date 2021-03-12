@@ -89,7 +89,7 @@ public class CourseController {
 
 		courseResult = courseService.getCourseVMById(id);
 
-		if (!courseResult.isSuccessful()) {
+		if (courseResult.hasErrors()) {
 			model.addAttribute("error", "Could not load course.");
 			return "redirect:/error";
 		}
@@ -100,7 +100,7 @@ public class CourseController {
 
 		studentsResult = studentCourseService.getStudentsForCourse(id);
 
-		if (!courseResult.isSuccessful()) {
+		if (courseResult.hasErrors()) {
 			model.addAttribute("error", studentsResult.getErrorMessages());
 			return "redirect:/error";
 		}
@@ -110,7 +110,7 @@ public class CourseController {
 
 		teachersResult = teacherCourseService.getTeachersForCourse(id);
 
-		if (!teachersResult.isSuccessful()) {
+		if (teachersResult.hasErrors()) {
 			model.addAttribute("error", teachersResult.getErrorMessages());
 		}
 

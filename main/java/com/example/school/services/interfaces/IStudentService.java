@@ -9,17 +9,17 @@ import com.example.school.utilities.StudentCoursePair;
 import com.example.school.viewModels.StudentViewModel;
 
 public interface IStudentService {
-	Student createStudent(StudentViewModel student);
+	ServiceReturnResult<Student> createStudent(StudentViewModel student);
 
 	Student createStudent(Student student);
 	
 	Student findStudentByEmail(String email);
 
-	ServiceReturnResult findStudentById(String id);
+	ServiceReturnResult<StudentViewModel> findStudentById(String id);
 	
-	ServiceReturnResult findStudentEntityById(String id);
+	ServiceReturnResult<Student> findStudentEntityById(String id);
 	
 	List<Student> findAllStudents();
 
-	ServiceReturnResult enlistStudentInCourse(StudentCoursePair studentCoursePair);
+	List<String> enlistStudentInCourse(StudentCoursePair studentCoursePair);
 }

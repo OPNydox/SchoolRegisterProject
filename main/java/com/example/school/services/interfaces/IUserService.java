@@ -8,7 +8,7 @@ import com.example.school.viewModels.ViewModelPairs.UserCourseIdPair;
 public interface IUserService {
 	User findUserByUsername(String username);
 
-	ServiceReturnResult createUser(ViewModel viewModel);
+	ServiceReturnResult<User> createUser(ViewModel viewModel);
 
 	ServiceReturnResult enrollUserInClass(UserCourseIdPair userClassIdPair);
 }

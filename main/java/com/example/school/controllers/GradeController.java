@@ -42,7 +42,7 @@ public class GradeController {
 
 		gradeReturnResult = gradeService.addGrade(gradeViewModel);
 
-		if (!gradeReturnResult.isSuccessful()) {
+		if (gradeReturnResult.hasErrors()) {
 			model.addAttribute("errors", gradeReturnResult.getErrorMessages());
 		}
 

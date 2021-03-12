@@ -21,26 +21,26 @@ public class TeacherCourseServiceImpl implements ITeacherCourseService {
     private ICourseService courseService;
 
     @Override
-    public ServiceReturnResult getTeachersForCourse(String courseId) {
-        ServiceReturnResult getTeachReturnResult = new ServiceReturnResult();
+    public Iterable<TeacherViewModel> getTeachersVMForCourse(String courseId) {
+        Iterable<Teacher> teacherEnteties;
+        Iterable<TeacherViewModel> teacherViewModels;
+
+        teacherEnteties = getTeachersForCourse(courseId);
+        teacherViewModels = TeacherMapper.mapTeacherEntityToViewModel(teacherEnteties);
+        return teacherViewModels;
+    }
+    
+    @Override
+    public Iterable<Teacher> getTeachersForCourse(String courseId) {
         List<Teacher> teachersFond = new ArrayList<>();
-        Iterable<TeacherViewModel> mappedTeachers = new ArrayList<>();
         Course course;
-        ServiceReturnResult courseFindResult = new ServiceReturnResult();
+        ServiceReturnResult<Course> courseFindResult = new ServiceReturnResult<>();
 
         courseFindResult = courseService.getCourseById(courseId);
 
-        if (!courseFindResult.isSuccessful()) {
-            return courseFindResult;
-        }
-
-        course = (Course) courseFindResult.getReturnResultObject();
+        course = courseFindResult.getReturnResultObject();
         teachersFond.addAll(course.getTeachers());
-        mappedTeachers = TeacherMapper.mapTeacherEntityToViewModel(teachersFond);
 
-        getTeachReturnResult.setReturnResultObject(mappedTeachers);
-
-        return getTeachReturnResult;
+        return teachersFond;
     }
-    
 }

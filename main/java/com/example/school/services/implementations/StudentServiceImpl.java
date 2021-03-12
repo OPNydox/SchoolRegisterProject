@@ -11,16 +11,14 @@ import org.springframework.stereotype.Service;
 import com.example.school.database.entities.Course;
 import com.example.school.database.entities.Student;
 import com.example.school.exceptions.ValueException;
+import com.example.school.factories.StudentFactory;
 import com.example.school.repositories.StudentRepository;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.IStudentService;
-import com.example.school.servicesImplementations.CourseService;
 import com.example.school.utilities.NumberHandler;
-import com.example.school.utilities.PasswordManager;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.StudentCoursePair;
 import com.example.school.utilities.Verificator;
-import com.example.school.utilities.checkers.StudentChecker;
 import com.example.school.utilities.interfaces.IWriter;
 import com.example.school.utilities.mappers.StudentMapper;
 import com.example.school.viewModels.StudentViewModel;
@@ -33,43 +31,40 @@ public class StudentServiceImpl implements IStudentService {
 	private ICourseService courseService;
 
 	@Autowired
+	private AuthGroupService authGroupService;
+
+	@Autowired
 	private StudentRepository repository;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private StudentFactory studentFactory;
 
 	@Autowired
 	private IWriter writer;
 
-	private Student currentStudent;
-
-	private Course currentCourse;
-
-	private ServiceReturnResult returnResult;
-
 	@Override
-	public Student createStudent(StudentViewModel student) {
-		Student newStudent = new Student();
+	public ServiceReturnResult<Student> createStudent(StudentViewModel student) {
 		List<String> validationResult = new ArrayList<>();
+		ServiceReturnResult<Student> studentCreateResult = new ServiceReturnResult<>();
+		Student createdStudent;
 
 		ModelDecorator decorator = new ModelDecorator(student);
 
 		validationResult.addAll(decorator.validateModel(new StudentVMValidator()));
 
 		if (!validationResult.isEmpty()) {
-			newStudent.setEmpty();
-			writer.writeErrors(validationResult);
-			return newStudent;
+			studentCreateResult.addErrorMsg(validationResult);
+			return studentCreateResult;
 		}
 
-		newStudent.setEmail(student.getEmail());
-		newStudent.setName(student.getName());
-		newStudent.setPassword(passwordEncoder.encode(student.getPassword()));
-		newStudent.setStudent(true);
+		studentCreateResult = studentFactory.getEntity(student);
 
-		newStudent = repository.save(newStudent);
+		createdStudent = repository.save(studentCreateResult.getReturnResultObject());
+		studentCreateResult.setReturnResultObject(createdStudent);
 
-		return newStudent;
+		authGroupService.addAuth(student);
+
+		return studentCreateResult;
 	}
 
 	@Override
@@ -94,58 +89,27 @@ public class StudentServiceImpl implements IStudentService {
 	}
 
 	@Override
-	public ServiceReturnResult enlistStudentInCourse(StudentCoursePair studentCoursePair) {
-		ServiceReturnResult result = new ServiceReturnResult();
-		ServiceReturnResult courseReturnResult;
+	public List<String> enlistStudentInCourse(StudentCoursePair studentCoursePair) {
+		List<String> result = new ArrayList<>();
+		ServiceReturnResult<Course> courseReturnResult;
+		Student studentToEnlist;
+		Course courseToBeEnlisted;
 
 		courseReturnResult = courseService.getCourseById(studentCoursePair.getCourseId());
 
-		if (!courseReturnResult.isSuccessful()) {
-			result.addErrorMsg(courseReturnResult.getErrorMessages());
+		if (courseReturnResult.hasErrors()) {
+			result.addAll(courseReturnResult.getErrorMessages());
 			return result;
 		}
 
-		this.currentStudent = findStudentByEmail(studentCoursePair.getStundentEmail());
-		this.currentCourse = (Course) courseReturnResult.getReturnResultObject();
+		studentToEnlist = findStudentByEmail(studentCoursePair.getStundentEmail());
+		courseToBeEnlisted = courseReturnResult.getReturnResultObject();
 
-		verifyStudentAndCourse(result, studentCoursePair);
+		studentToEnlist.getCourses().add(courseToBeEnlisted);
 
-		if (!result.isSuccessful()) {
-			return result;
-		}
-
-		currentStudent.getCourses().add(this.currentCourse);
-
-		updateStudent(currentStudent);
+		updateStudent(studentToEnlist);
 
 		return result;
-	}
-
-	public void verifyStudentAndCourse(ServiceReturnResult returnStatement, StudentCoursePair scp) {
-		if (Verificator.isEmpty(this.currentStudent)) {
-			returnStatement.addErrorMsg("Unable to find a student with email " + scp.getStundentEmail());
-		}
-
-		if (Verificator.isEmpty(this.currentCourse)) {
-			returnStatement.addErrorMsg("Unable to find course with id " + scp.getCourseId());
-		}
-
-		checkIfstudentEnrolledInClass(returnStatement);
-	}
-
-	private void checkIfstudentEnrolledInClass(ServiceReturnResult returnStatement) {
-		StudentChecker studentChecker;
-		boolean classExists;
-
-		studentChecker = new StudentChecker(this.currentStudent);
-
-		classExists = studentChecker.checkIfStudentEnrolledInClass(this.currentCourse.getClassId());
-
-		if (classExists) {
-			returnStatement.addErrorMsg("Student already enerolled in this course");
-		}
-
-		return;
 	}
 
 	private void updateStudent(Student studentToUpdate) {
@@ -153,45 +117,45 @@ public class StudentServiceImpl implements IStudentService {
 	}
 
 	@Override
-	public ServiceReturnResult findStudentEntityById(String id) {
+	public ServiceReturnResult<StudentViewModel> findStudentById(String id) {
+		ServiceReturnResult<Student> findStudentResult;
+		StudentViewModel studentViewModel;
+		ServiceReturnResult<StudentViewModel> returnResult = new ServiceReturnResult<>();
+
+		findStudentResult = findStudentEntityById(id);
+
+		studentViewModel = StudentMapper.mapEntityTViewModel(findStudentResult.getReturnResultObject());
+		returnResult.setReturnResultObject(studentViewModel);
+
+		return returnResult;
+	}
+
+	@Override
+	public ServiceReturnResult<Student> findStudentEntityById(String id) {
 		Long longId;
 		Optional<Student> foundStudentOptional;
-		StudentViewModel studentViewModel;
-		ServiceReturnResult convertLongResult;
-		
-		this.returnResult = new ServiceReturnResult();
+		ServiceReturnResult<Long> convertLongResult;
+		ServiceReturnResult<Student> returnResult = new ServiceReturnResult<>();
 		
 		convertLongResult = NumberHandler.parseStringToLong(id);
 
-		if (!convertLongResult.isSuccessful()) {
-			return convertLongResult;
+		if (convertLongResult.hasErrors()) {
+			returnResult.addErrorMsg(convertLongResult.getErrorMessages());
+			return returnResult;
 		}
 
-		longId = (Long) convertLongResult.getReturnResultObject();
+		longId = convertLongResult.getReturnResultObject();
 
 		foundStudentOptional = repository.findById(longId);
 
 		if (foundStudentOptional.isEmpty()) {
-			this.returnResult.addErrorMsg("Student not found");
+			returnResult.addErrorMsg("Student not found");
 			return returnResult;
 		}
 
-		this.returnResult.setReturnResultObject(foundStudentOptional.get());
+		returnResult.setReturnResultObject(foundStudentOptional.get());
 		
-		return this.returnResult;
-	}
-
-	@Override
-	public ServiceReturnResult findStudentById(String id) {
-		ServiceReturnResult studentResult;
-		StudentViewModel studentViewModel;
-
-		studentResult = findStudentEntityById(id);
-
-		studentViewModel = StudentMapper.mapEntityTViewModel((Student)studentResult.getReturnResultObject());
-		this.returnResult.setReturnResultObject(studentViewModel);
-
-		return this.returnResult;
+		return returnResult;
 	}
 
 	@Override

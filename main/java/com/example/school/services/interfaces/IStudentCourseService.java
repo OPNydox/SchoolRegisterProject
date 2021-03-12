@@ -1,7 +1,7 @@
 package com.example.school.services.interfaces;
 
-import com.example.school.utilities.ServiceReturnResult;
+import com.example.school.viewModels.StudentViewModel;
 
 public interface IStudentCourseService {
-    ServiceReturnResult getStudentsForCourse(String courseId);
+    Iterable<StudentViewModel> getStudentsForCourse(String courseId);
 }

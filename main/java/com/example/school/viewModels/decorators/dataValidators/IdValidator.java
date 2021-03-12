@@ -13,7 +13,7 @@ public class IdValidator {
     
     public List<String> validate(String id) {
         List<String> result = new ArrayList<>();
-        ServiceReturnResult parseResult;
+        ServiceReturnResult<Long> parseResult = new ServiceReturnResult<>();
         Long idNumber;
 
         if (id == null) {
@@ -23,12 +23,11 @@ public class IdValidator {
 
         parseResult = NumberHandler.parseStringToLong(id);
 
-        if (!parseResult.isSuccessful()) {
-            result.addAll(parseResult.getErrorMessages());
-            return result;
+        if (parseResult.hasErrors()) {
+            return parseResult.getErrorMessages();
         }
 
-        idNumber = (Long) parseResult.getReturnResultObject();
+        idNumber = parseResult.getReturnResultObject();
 
         if (idNumber < 0) {
             result.add("Id " + id + " is invalid.");

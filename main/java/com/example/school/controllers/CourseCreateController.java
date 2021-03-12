@@ -34,7 +34,7 @@ public class CourseCreateController {
 
         createResult = courseService.addCourse(courseModel);
 
-        if (!createResult.isSuccessful()) {
+        if (createResult.hasErrors()) {
             model.addAttribute("error", createResult.getErrorMessages());
             model.addAttribute("courseFormObject", courseModel);
 

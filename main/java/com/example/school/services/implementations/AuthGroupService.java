@@ -2,13 +2,10 @@ package com.example.school.services.implementations;
 
 import com.example.school.database.entities.AuthGroup;
 import com.example.school.factories.AuthFactory;
-import com.example.school.factories.AuthVMFactory;
 import com.example.school.repositories.AuthGroupRepository;
 import com.example.school.services.interfaces.IAuthGroupService;
 import com.example.school.utilities.ServiceReturnResult;
-import com.example.school.viewModels.AuthViewModel;
-import com.example.school.viewModels.Interfaces.ViewModel;
-import com.example.school.viewModels.decorators.AuthGroupValidator;
+import com.example.school.viewModels.Interfaces.UserViewModel;
 import com.example.school.viewModels.decorators.UserVMDecorator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,42 +17,31 @@ public class AuthGroupService implements IAuthGroupService {
     private AuthGroupRepository authRepository;
 
     @Autowired
-    private AuthVMFactory authVMFactory;
-
-    @Autowired
     private AuthFactory authFactory;
 
     @Override
-    public ServiceReturnResult addAuth(ViewModel viewModel) {
-        ServiceReturnResult factoryResult = new ServiceReturnResult();
-        ServiceReturnResult vmFactoryResult = new ServiceReturnResult();
-        ServiceReturnResult validatorResult = new ServiceReturnResult();
+    public ServiceReturnResult<AuthGroup> addAuth(UserViewModel userViewModel) {
+        ServiceReturnResult<AuthGroup> authResult = new ServiceReturnResult<>();
+        ServiceReturnResult<Void> validatorResult = new ServiceReturnResult<>();
         UserVMDecorator decorator = new UserVMDecorator();
 
-        decorator.injectModel(viewModel);
+        decorator.injectModel(userViewModel);
         validatorResult.addErrorMsg(decorator.validate());
 
-        if (!validatorResult.isSuccessful()) {
-            return validatorResult;
+        if (validatorResult.hasErrors()) {
+            authResult.addErrorMsg(validatorResult.getErrorMessages());
+            return authResult;
         }
 
-        vmFactoryResult = authVMFactory.getEntity(viewModel);
+        authResult = this.authFactory.getEntity(userViewModel);
 
-        if (!vmFactoryResult.isSuccessful()) {
-            return vmFactoryResult;
+        if (authResult.hasErrors()) {
+            return authResult;
         }
 
-        ViewModel userViewModel = (ViewModel) vmFactoryResult.getReturnResultObject();
+        saveEntity(authResult.getReturnResultObject());
 
-        factoryResult = this.authFactory.getEntity(userViewModel);
-
-        if (!validatorResult.isSuccessful()) {
-            return factoryResult;
-        }
-
-        saveEntity( (AuthGroup) factoryResult.getReturnResultObject());
-
-        return factoryResult;
+        return authResult;
     }
 
     private void saveEntity(AuthGroup entity) {

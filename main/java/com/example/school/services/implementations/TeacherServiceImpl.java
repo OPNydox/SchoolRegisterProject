@@ -43,36 +43,39 @@ public class TeacherServiceImpl implements ITeacherService {
 	private IWriter writer;
 
 	@Override
-	public ServiceReturnResult addTeacher(TeacherViewModel teacherView) {
+	public ServiceReturnResult<TeacherViewModel> addTeacher(TeacherViewModel teacherView) {
 		Teacher newTeacher = new Teacher();
-		ServiceReturnResult teacherResult = new ServiceReturnResult();
-		ServiceReturnResult validationResult = new ServiceReturnResult();
+		ServiceReturnResult<TeacherViewModel> addTeacherResult = new ServiceReturnResult<>();
+		ServiceReturnResult<Teacher> teacherResult = new ServiceReturnResult<>();
+		List<String> validationResult = new ArrayList<>();
+
+		addTeacherResult.setReturnResultObject(teacherView);
 
 		ModelDecorator decorator = new ModelDecorator(teacherView);
 
-		validationResult.addErrorMsg(decorator.validateModel(new TeacherVMValidator()));
+		validationResult.addAll(decorator.validateModel(new TeacherVMValidator()));
 
-		if (!validationResult.isSuccessful()) {
-			writer.writeErrors(validationResult.getErrorMessages());
-			newTeacher.setEmpty();
-			return validationResult;
+		if (!validationResult.isEmpty()) {
+			addTeacherResult.addErrorMsg(validationResult);
+			return addTeacherResult;
 		}
 
-		ServiceReturnResult factoryResult = new ServiceReturnResult();
+		ServiceReturnResult<Teacher> factoryResult = new ServiceReturnResult<>();
 
 		factoryResult = this.teacherFactory.getEntity(teacherView);
 
-		if (!factoryResult.isSuccessful()) {
-			return factoryResult;
+		if (factoryResult.hasErrors()) {
+			addTeacherResult.addErrorMsg(factoryResult.getErrorMessages());
+			return addTeacherResult;
 		}
 
-		newTeacher = (Teacher) factoryResult.getReturnResultObject();
+		newTeacher = factoryResult.getReturnResultObject();
 
 		newTeacher = teacherRepository.save(newTeacher);
 
 		teacherResult.setReturnResultObject(newTeacher);
 
-		return teacherResult;
+		return addTeacherResult;
 	}
 
 	@Override
@@ -110,22 +113,24 @@ public class TeacherServiceImpl implements ITeacherService {
 	}
 
 	@Override
-	public boolean addTeacherToCourse(String teacherEmail, String courseName) {
+	public ServiceReturnResult<Void> addTeacherToCourse(String teacherEmail, String courseName) {
 		Teacher teacher;
 		Course course;
+		ServiceReturnResult<Void> addTeacherResult = new ServiceReturnResult<>();
+
 		try {
 			Verificator.isEmpty(teacherEmail, "The teacher email string is empty");
 			Verificator.isEmpty(courseName, "Course name string is empty");
-			teacher = teacherRepository.findByEmail(teacherEmail);
-			Verificator.isEmpty(teacher, "Could not find teacher with email " + teacherEmail);
-			course = courseRepository.findByName(courseName);
 		} catch (ValueException e) {
-			writer.writeError(e.getMessage());
-			return false;
+			addTeacherResult.addErrorMsg(e.getMessage());
+			return addTeacherResult;
 		}
 
+		teacher = teacherRepository.findByEmail(teacherEmail);
+		course = courseRepository.findByName(courseName);
+
 		addTeacherToCourse(teacher, course);
-		return true;
+		return addTeacherResult;
 	}
 
 	@Override
@@ -135,34 +140,30 @@ public class TeacherServiceImpl implements ITeacherService {
 	}
 
 	@Override
-	public ServiceReturnResult entollTeacherInCourse(TeacherCoursePair teacherCoursePair) {
+	public ServiceReturnResult<Void> entollTeacherInCourse(TeacherCoursePair teacherCoursePair) {
 		Teacher teacherToEnroll = new Teacher();
 		Course targetCourse = new Course();
-		ServiceReturnResult foundCourseResult = new ServiceReturnResult(); 
-		ServiceReturnResult enrollResult = new ServiceReturnResult();
+		ServiceReturnResult<Course> foundCourseResult = new ServiceReturnResult<>(); 
+		ServiceReturnResult<Void> enrollResult = new ServiceReturnResult<>();
 
 		try {
 			teacherToEnroll = findTeacherByEmail(teacherCoursePair.getTeacherEmail());
 		} catch (ValueException exception) {
 			enrollResult.addErrorMsg(exception.getMessage());
-			
 		}
 
 		foundCourseResult = courseService.getCourseById(teacherCoursePair.getCourseId());
 		
-		if (!foundCourseResult.isSuccessful()) {
-			return foundCourseResult;
+		if (foundCourseResult.hasErrors()) {
+			enrollResult.addErrorMsg(foundCourseResult.getErrorMessages());
+			return enrollResult;
 		}
 
-		try {
-			targetCourse = (Course) foundCourseResult.getReturnResultObject();
-			teacherToEnroll.getCourses().add(targetCourse);
-			targetCourse.getTeachers().add(teacherToEnroll);
-			saveTeacher(teacherToEnroll);
-			courseService.saveCourse(targetCourse);
-		} catch (Exception e) {
-			enrollResult.addErrorMsg(e.getMessage());
-		}
+		targetCourse = foundCourseResult.getReturnResultObject();
+		teacherToEnroll.getCourses().add(targetCourse);
+		targetCourse.getTeachers().add(teacherToEnroll);
+		saveTeacher(teacherToEnroll);
+		courseService.saveCourse(targetCourse);
 		
 		return enrollResult;
 	}

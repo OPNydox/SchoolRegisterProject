@@ -3,46 +3,46 @@ package com.example.school.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceReturnResult implements Cloneable {
-    private boolean isSuccessful;
-
+public class ServiceReturnResult<Т> {
     private List<String> errorMessages;
 
-    private Object returnResultObject;
+    private Т returnResultObject;
 
     public ServiceReturnResult() {
         errorMessages = new ArrayList<>();
     }
 
-    public void setReturnResultObject(Object obj) {
+    public void setReturnResultObject(Т obj) {
         this.returnResultObject = obj;
     }
-    
-    public List<String> getErrorMessages() {
-        return errorMessages;
-    }
 
-    public Object getReturnResultObject() {
+    public Т getReturnResultObject() {
         return returnResultObject;
     }
 
-    public boolean isSuccessful() {
+    public void addErrorMsg(String message) {
+        errorMessages.add(message);
+        
+    }
+
+    public void addErrorMsg(ServiceReturnResult<Т> returnResult) {
+        this.addErrorMsg(returnResult.getErrorMessages());
+    }
+
+    public void addErrorMsg(List<String> errorMessages) {
+        this.errorMessages = errorMessages;
+    }
+
+    public List<String> getErrorMessages() {
+        List<String> result = new ArrayList<>();
+        result.addAll(errorMessages);
+        return result;
+    }
+
+    public Boolean hasErrors() {
         if (errorMessages.isEmpty()) {
-            return true;
+            return false;
         }
-
-        return false;
-    }
-
-    public void addErrorMsg (String msg) {
-        this.errorMessages.add(msg);
-    }
-
-    public void addErrorMsg (List<String> msgs) {
-        this.errorMessages.addAll(msgs);
-    }
-
-    public ServiceReturnResult getCopy() throws CloneNotSupportedException {
-        return (ServiceReturnResult) this.clone();
+        return true;
     }
 }

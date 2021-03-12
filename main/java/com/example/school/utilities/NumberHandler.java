@@ -1,8 +1,8 @@
 package com.example.school.utilities;
 
 public class NumberHandler {
-    public static ServiceReturnResult parseStringToLong(String string) {
-        ServiceReturnResult result = new ServiceReturnResult();
+    public static ServiceReturnResult<Long> parseStringToLong(String string) {
+        ServiceReturnResult<Long> result = new ServiceReturnResult<>();
         Long paresedLong = null;
         
         try {
@@ -11,7 +11,7 @@ public class NumberHandler {
         } catch (NumberFormatException e) {
             result.addErrorMsg(e.getMessage());
         } finally {
-            if (result.isSuccessful() && paresedLong == null) {
+            if (result.hasErrors() && paresedLong == null) {
                 result.addErrorMsg("Long parse error");
             }
         }
@@ -19,8 +19,8 @@ public class NumberHandler {
 		return result;
     }
     
-    public static ServiceReturnResult parseStringToDouble(String string) {
-        ServiceReturnResult result = new ServiceReturnResult();
+    public static ServiceReturnResult<Double> parseStringToDouble(String string) {
+        ServiceReturnResult<Double> result = new ServiceReturnResult<>();
         Double parsedDouble = null;
 
         try {
@@ -29,7 +29,7 @@ public class NumberHandler {
         } catch (NumberFormatException e) {
             result.addErrorMsg(e.getMessage());
         } finally {
-            if (result.isSuccessful() && parsedDouble == null) {
+            if (result.hasErrors() && parsedDouble == null) {
                 result.addErrorMsg("Double parse error");
             }
         }
@@ -37,8 +37,8 @@ public class NumberHandler {
         return result;
     }
 
-    public static ServiceReturnResult parseStringToInteger(String string) {
-        ServiceReturnResult result = new ServiceReturnResult();
+    public static ServiceReturnResult<Integer> parseStringToInteger(String string) {
+        ServiceReturnResult<Integer> result = new ServiceReturnResult<>();
         Integer parsedDouble = null;
 
         try {
@@ -47,7 +47,7 @@ public class NumberHandler {
         } catch (NumberFormatException e) {
             result.addErrorMsg(e.getMessage());
         } finally {
-            if (result.isSuccessful() && parsedDouble == null) {
+            if (result.hasErrors() && parsedDouble == null) {
                 result.addErrorMsg("Integer parse error");
             }
         }

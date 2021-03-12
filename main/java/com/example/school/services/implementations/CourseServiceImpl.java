@@ -39,33 +39,31 @@ public class CourseServiceImpl implements ICourseService {
 	@Autowired
 	private UserService userService;
 
-	private ServiceReturnResult currentResult = new ServiceReturnResult();
-
 	@Override
 	@Transactional
-	public ServiceReturnResult addCourse(CourseViewModel course) {
+	public ServiceReturnResult<Course> addCourse(CourseViewModel course) {
 		CourseFactory courseFactory = new CourseFactory();
-		ServiceReturnResult result = new ServiceReturnResult();
-		ServiceReturnResult createResult;
+		ServiceReturnResult<Course> courseReturnResult = new ServiceReturnResult<>();
+		ServiceReturnResult<Course> createResult;
 
 		ModelDecorator decorator = new ModelDecorator(course);
 
-		result.addErrorMsg(decorator.validateModel(new CourseVMValidator()));
+		courseReturnResult.addErrorMsg(decorator.validateModel(new CourseVMValidator()));
 
-		if (!result.isSuccessful()) {
-			return result;
+		if (courseReturnResult.hasErrors()) {
+			return courseReturnResult;
 		}
 
 		createResult = courseFactory.getEntity(course);
 
-		if (!createResult.isSuccessful()) {
-			result.addErrorMsg(createResult.getErrorMessages());
-			return result;
+		if (createResult.hasErrors()) {
+			courseReturnResult.addErrorMsg(createResult.getErrorMessages());
+			return courseReturnResult;
 		}
 
 		repository.save((Course)createResult.getReturnResultObject());
 		
-		return result;
+		return courseReturnResult;
 	}
 
 	@Override
@@ -178,7 +176,7 @@ public class CourseServiceImpl implements ICourseService {
 
 		longResult = NumberHandler.parseStringToLong(string);
 
-		if (!longResult.isSuccessful()) {
+		if (longResult.hasErrors()) {
 			this.currentResult.addErrorMsg(longResult.getErrorMessages());
 		}
 

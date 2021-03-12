@@ -50,9 +50,9 @@ public class UserService implements IUserService {
 	@Autowired
 	private IWriter writer;
 
-	public ServiceReturnResult createUser(ViewModel viewModel) {
+	public ServiceReturnResult<User> createUser(ViewModel viewModel) {
 		User resultUser = new User();
-		ServiceReturnResult userCreateResult = new ServiceReturnResult();
+		ServiceReturnResult<User> userCreateResult = new ServiceReturnResult<>();
 		boolean isStudent;
 		isStudent = UserEntityHelper.isUserStudent(viewModel);
 		VMValidator validator = isStudent ? new StudentVMValidator() : new TeacherVMValidator();
@@ -61,19 +61,19 @@ public class UserService implements IUserService {
 
 		userCreateResult.addErrorMsg(decorator.validateModel(validator));
 
-		if (!userCreateResult.isSuccessful()) {
+		if (userCreateResult.hasErrors()) {
 			return userCreateResult;
 		}
 
-		ServiceReturnResult factoReturnResult = new ServiceReturnResult();
+		ServiceReturnResult<User> factoReturnResult = new ServiceReturnResult<>();
 
 		factoReturnResult = isStudent ? studentFactory.getEntity(viewModel) : teacherFactory.getEntity(viewModel);
 
-		if (!factoReturnResult.isSuccessful()) {
+		if (factoReturnResult.hasErrors()) {
 			return factoReturnResult;
 		}
 
-		resultUser = (User) factoReturnResult.getReturnResultObject();
+		resultUser = factoReturnResult.getReturnResultObject();
 		saveUser(resultUser);
 
 		authGroupService.addAuth(viewModel);
@@ -116,9 +116,9 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public ServiceReturnResult enrollUserInClass(UserCourseIdPair userClassIdPair) {
+	public ServiceReturnResult<Void> enrollUserInClass(UserCourseIdPair userClassIdPair) {
 		User userToBeEnrolled = userClassIdPair.getUser();
-		ServiceReturnResult enrolResult = new ServiceReturnResult();
+		ServiceReturnResult<Void> enrolResult = new ServiceReturnResult<>();
 
 		if (userToBeEnrolled instanceof Student) {
 			StudentCoursePair studentCoursePair = new StudentCoursePair();
