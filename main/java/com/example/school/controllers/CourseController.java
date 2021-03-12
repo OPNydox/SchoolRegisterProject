@@ -83,9 +83,9 @@ public class CourseController {
 		CourseViewModel course;
 		Iterable<StudentViewModel> students = new ArrayList<>();
 		List<TeacherViewModel> teachers = new ArrayList<>();
-		ServiceReturnResult courseResult;
-		ServiceReturnResult studentsResult;
-		ServiceReturnResult teachersResult;
+		ServiceReturnResult<CourseViewModel> courseResult;
+		Iterable<StudentViewModel> studentsResult;
+		ServiceReturnResult<TeacherViewModel> teachersResult;
 
 		courseResult = courseService.getCourseVMById(id);
 

@@ -4,19 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.school.database.entities.Course;
 import com.example.school.database.entities.User;
-import com.example.school.exceptions.ValueException;
 import com.example.school.factories.CourseFactory;
 import com.example.school.repositories.CourseRepository;
 import com.example.school.services.interfaces.ICourseService;
-import com.example.school.services.interfaces.IStudentService;
-import com.example.school.services.interfaces.ITeacherService;
 import com.example.school.utilities.NumberHandler;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.UserEntityHelper;
@@ -69,7 +65,6 @@ public class CourseServiceImpl implements ICourseService {
 	@Override
 	public Course getCourseByName(final String courseName) {
 		Course result = new Course();
-		final CourseViewModel foundCourse = new CourseViewModel();
 		try {
 			Verificator.isEmpty(courseName, "Course name is empty");
 			result = repository.findByName(courseName);
@@ -125,62 +120,37 @@ public class CourseServiceImpl implements ICourseService {
 	}
 
 	@Override
-	public ServiceReturnResult getCourseVMById(String id) {
+	public ServiceReturnResult<CourseViewModel> getCourseVMById(String id) {
 		Course course;
 		CourseViewModel courseViewModel;
+		ServiceReturnResult<CourseViewModel> result = new ServiceReturnResult<>();
+		ServiceReturnResult<Course> courseFindResult = new ServiceReturnResult<>();
 
-		this.currentResult = getCourseById(id);
+		courseFindResult = getCourseById(id);
 		
-		if (!currentResult.isSuccessful()) {
-			return returnResult();
+		if (courseFindResult.hasErrors()) {
+			result.addErrorMsg(courseFindResult.getErrorMessages());
 		}
 
-		course = (Course) this.currentResult.getReturnResultObject();
-
+		course = courseFindResult.getReturnResultObject();
 		courseViewModel = CourseMapper.mapEtityoToCourseViewModel(course);
 
-		attachObjectToResult(courseViewModel);
+		result.setReturnResultObject(courseViewModel);
 
-		return returnResult();
+		return result;
 	}
 
 	@Override
-	public ServiceReturnResult getCourseById(String id) {
+	public ServiceReturnResult<Course> getCourseById(String id) {
 		Long courseId;
 		Course foundCourse;
+		ServiceReturnResult<Course> result  = new ServiceReturnResult<>();
 
-		checkForEmpty(id);
-
-		if (!this.currentResult.isSuccessful()) {
-			return returnResult();
-		}
-
-		courseId = parseStringToLong(id);
-
+		courseId = NumberHandler.parseStringToLong(id).getReturnResultObject();
 		foundCourse = getCourseFromRepo(courseId);
+		result.setReturnResultObject(foundCourse);
 
-		attachObjectToResult(foundCourse);
-
-		return returnResult();
-	}
-
-	private void checkForEmpty(String string) {
-		if (string == null || string.isEmpty()) {
-			this.currentResult.addErrorMsg("Input value is empty");
-		}
-	}
-
-	private Long parseStringToLong(String string) {
-		ServiceReturnResult longResult;
-		Long result = null;
-
-		longResult = NumberHandler.parseStringToLong(string);
-
-		if (longResult.hasErrors()) {
-			this.currentResult.addErrorMsg(longResult.getErrorMessages());
-		}
-
-		return (Long) longResult.getReturnResultObject();
+		return result;
 	}
 
 	private Course getCourseFromRepo(Long id) {
@@ -188,7 +158,7 @@ public class CourseServiceImpl implements ICourseService {
 		Course result;
 
 		if (!optionalCourse.isPresent()) {
-			this.currentResult.addErrorMsg("Could not find a course with Id " + id.toString());
+			writer.writeError("Could not find a course with Id " + id.toString());
 			return new Course();
 		}
 
@@ -196,29 +166,4 @@ public class CourseServiceImpl implements ICourseService {
 
 		return result;
 	}
-
-	private void attachObjectToResult(Object course) {
-		this.currentResult.setReturnResultObject(course);
-		return;
-	}
-
-	private ServiceReturnResult returnResult() {
-		ServiceReturnResult result = new ServiceReturnResult();
-		try {
-		 	result = this.currentResult.getCopy();
-		} catch (CloneNotSupportedException e) {
-			result.addErrorMsg(e.getMessage());
-			return result;
-		}
-
-		clearService();
-		return result;
-
-	}
-
-	private void clearService() {
-		this.currentResult = null;
-		this.currentResult = new ServiceReturnResult();
-	}
-
 }
