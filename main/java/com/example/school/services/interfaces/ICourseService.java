@@ -8,13 +8,13 @@ import com.example.school.viewModels.CourseViewModel;
 
 public interface ICourseService {
 	
-	ServiceReturnResult addCourse(CourseViewModel course);
+	ServiceReturnResult<Course> addCourse(CourseViewModel course);
 	
 	Course getCourseByName(String courseName);
 
-	ServiceReturnResult getCourseById(String id);
+	ServiceReturnResult<Course> getCourseById(String id);
 
-	ServiceReturnResult getCourseVMById(String id);
+	ServiceReturnResult<CourseViewModel> getCourseVMById(String id);
 	
 	void saveCourse(Course course);
 

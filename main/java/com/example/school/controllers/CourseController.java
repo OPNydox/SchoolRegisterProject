@@ -31,6 +31,7 @@ import com.example.school.services.interfaces.ITeacherService;
 import com.example.school.utilities.ControllerHelper;
 import com.example.school.utilities.ReturnResult;
 import com.example.school.utilities.ServiceReturnResult;
+import com.example.school.utilities.mappers.TeacherMapper;
 import com.example.school.viewModels.*;
 
 @Controller
@@ -82,10 +83,10 @@ public class CourseController {
 	public String getCoursePage(@RequestParam String id ,Model model) {
 		CourseViewModel course;
 		Iterable<StudentViewModel> students = new ArrayList<>();
-		List<TeacherViewModel> teachers = new ArrayList<>();
+		Iterable<TeacherViewModel> teachers;
 		ServiceReturnResult<CourseViewModel> courseResult;
 		Iterable<StudentViewModel> studentsResult;
-		ServiceReturnResult<TeacherViewModel> teachersResult;
+		Iterable<Teacher> teachersResult;
 
 		courseResult = courseService.getCourseVMById(id);
 
@@ -94,27 +95,23 @@ public class CourseController {
 			return "redirect:/error";
 		}
 
-		course = (CourseViewModel) courseResult.getReturnResultObject();
+		course = courseResult.getReturnResultObject();
 
 		model.addAttribute("course", course);
 
 		studentsResult = studentCourseService.getStudentsForCourse(id);
 
 		if (courseResult.hasErrors()) {
-			model.addAttribute("error", studentsResult.getErrorMessages());
+			model.addAttribute("error", studentsResult);
 			return "redirect:/error";
 		}
 
-		students = (Iterable<StudentViewModel>) studentsResult.getReturnResultObject();
+		students = studentsResult;
 		model.addAttribute("students", students);
 
 		teachersResult = teacherCourseService.getTeachersForCourse(id);
 
-		if (teachersResult.hasErrors()) {
-			model.addAttribute("error", teachersResult.getErrorMessages());
-		}
-
-		teachers = (ArrayList<TeacherViewModel>) teachersResult.getReturnResultObject();
+		teachers = TeacherMapper.mapTeacherEntityToViewModel(teachersResult);
 		model.addAttribute("teachers", teachers);
 
 		return "course";
