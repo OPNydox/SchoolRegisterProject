@@ -15,7 +15,7 @@ public interface ITeacherService {
 
 	Teacher addTeacher(Teacher teacher);
 	
-	ServiceReturnResult entollTeacherInCourse(TeacherCoursePair teacherCoursePair);
+	List<String> entollTeacherInCourse(TeacherCoursePair teacherCoursePair);
 	
 	Teacher findTeacherByEmail(String email) throws ValueException;
 	

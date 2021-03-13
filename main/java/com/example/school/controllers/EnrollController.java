@@ -1,15 +1,16 @@
 package com.example.school.controllers;
 
 import java.security.Principal;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.example.school.authentication.MyUserPrincipal;
-import com.example.school.services.implementations.UserService;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.services.interfaces.IUserService;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.StudentCoursePair;
 import com.example.school.viewModels.ViewModelPairs.UserCourseIdPair;
+import com.mysql.cj.protocol.Message;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,8 +34,8 @@ public class EnrollController {
 	 							Principal principal,
 	 							Model model) {
 		UserCourseIdPair studentCoursePair = new UserCourseIdPair();
-		ServiceReturnResult enlistResult;
-		List<String> errors;
+		List<String> enlistResult;
+		List<String> errors = new LinkedList<>();
 		String classId = cid;
 		
 		MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -44,7 +45,7 @@ public class EnrollController {
 		
 		enlistResult = userService.enrollUserInClass(studentCoursePair);
 		
-		errors = enlistResult.getErrorMessages();
+		errors.addAll(enlistResult);
 
 		model.addAttribute("errors", errors);
 

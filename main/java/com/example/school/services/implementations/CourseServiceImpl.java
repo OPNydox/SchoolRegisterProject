@@ -30,10 +30,10 @@ public class CourseServiceImpl implements ICourseService {
 	private CourseRepository repository;
 
 	@Autowired
-	private IWriter writer;
+	private UserService userService;
 
 	@Autowired
-	private UserService userService;
+	private IWriter writer;
 
 	@Override
 	@Transactional

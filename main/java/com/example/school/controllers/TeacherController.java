@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.school.database.entities.Teacher;
 import com.example.school.exceptions.ValueException;
-import com.example.school.services.implementations.UserService;
 import com.example.school.services.interfaces.ITeacherService;
-import com.example.school.services.interfaces.IUserService;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.TeacherViewModel;
 
@@ -22,9 +20,6 @@ public class TeacherController {
 	
 	@Autowired
 	private ITeacherService teacherService;
-
-	@Autowired
-	private IUserService userService;
 
 	@GetMapping("/create")
 	public String getCreateTeacherPage(Model model) {
@@ -37,9 +32,9 @@ public class TeacherController {
 
 	@PostMapping("/create")
 	public String createTeacher(@ModelAttribute TeacherViewModel teacherViewModel, Model model) {
-		ServiceReturnResult teacherCreateResult = new ServiceReturnResult();
+		ServiceReturnResult<TeacherViewModel> teacherCreateResult = new ServiceReturnResult<>();
 
-		teacherCreateResult = userService.createUser(teacherViewModel);
+		teacherCreateResult = teacherService.addTeacher(teacherViewModel);
 
 		if (teacherCreateResult.hasErrors()) {
 			model.addAttribute("teacherFormModel", teacherCreateResult);

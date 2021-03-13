@@ -50,7 +50,7 @@ public class UserService implements IUserService {
 	@Autowired
 	private IWriter writer;
 
-	public ServiceReturnResult<User> createUser(ViewModel viewModel) {
+	/*public ServiceReturnResult<User> createUser(ViewModel viewModel) {
 		User resultUser = new User();
 		ServiceReturnResult<User> userCreateResult = new ServiceReturnResult<>();
 		boolean isStudent;
@@ -67,7 +67,7 @@ public class UserService implements IUserService {
 
 		ServiceReturnResult<User> factoReturnResult = new ServiceReturnResult<>();
 
-		factoReturnResult = isStudent ? studentFactory.getEntity(viewModel) : teacherFactory.getEntity(viewModel);
+		factoReturnResult = isStudent ? studentFactory.getEntity(viewModel): teacherFactory.getEntity(viewModel);
 
 		if (factoReturnResult.hasErrors()) {
 			return factoReturnResult;
@@ -81,15 +81,15 @@ public class UserService implements IUserService {
 		userCreateResult.setReturnResultObject(resultUser);
 
 		return userCreateResult;
-	}
+	}*/
 
-	private void saveUser(User user) {
+	/*private void saveUser(User user) {
 		if (user instanceof Student) {
 			studentService.createStudent((Student) user);
 			return;
 		}
 		teacherService.addTeacher((Teacher) user);
-	}
+	}*/
 
 	public User findUserByUsername(String username) {
 		User userFound;
@@ -116,9 +116,9 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public ServiceReturnResult<Void> enrollUserInClass(UserCourseIdPair userClassIdPair) {
+	public List<String> enrollUserInClass(UserCourseIdPair userClassIdPair) {
 		User userToBeEnrolled = userClassIdPair.getUser();
-		ServiceReturnResult<Void> enrolResult = new ServiceReturnResult<>();
+		List<String> enrolResult = new ArrayList<>();
 
 		if (userToBeEnrolled instanceof Student) {
 			StudentCoursePair studentCoursePair = new StudentCoursePair();
@@ -135,7 +135,7 @@ public class UserService implements IUserService {
 			enrolResult = teacherService.entollTeacherInCourse(teacherCoursePair);
 			return enrolResult;
 		} else {
-			enrolResult.addErrorMsg("Enrolled user is invalid");
+			enrolResult.add("Enrolled user is invalid");
 		}
 		return enrolResult;
 	}

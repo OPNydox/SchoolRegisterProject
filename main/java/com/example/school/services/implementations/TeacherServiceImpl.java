@@ -140,22 +140,24 @@ public class TeacherServiceImpl implements ITeacherService {
 	}
 
 	@Override
-	public ServiceReturnResult<Void> entollTeacherInCourse(TeacherCoursePair teacherCoursePair) {
+	public List<String> entollTeacherInCourse(TeacherCoursePair teacherCoursePair) {
 		Teacher teacherToEnroll = new Teacher();
 		Course targetCourse = new Course();
 		ServiceReturnResult<Course> foundCourseResult = new ServiceReturnResult<>(); 
-		ServiceReturnResult<Void> enrollResult = new ServiceReturnResult<>();
+		List<String> enrollResult = new ArrayList<>();
 
 		try {
 			teacherToEnroll = findTeacherByEmail(teacherCoursePair.getTeacherEmail());
 		} catch (ValueException exception) {
-			enrollResult.addErrorMsg(exception.getMessage());
+			enrollResult.add(exception.getMessage());
 		}
 
 		foundCourseResult = courseService.getCourseById(teacherCoursePair.getCourseId());
 		
 		if (foundCourseResult.hasErrors()) {
-			enrollResult.addErrorMsg(foundCourseResult.getErrorMessages());
+			foundCourseResult.getErrorMessages().forEach(messege -> 
+				enrollResult.add(messege)
+			);
 			return enrollResult;
 		}
 
