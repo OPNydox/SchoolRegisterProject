@@ -30,7 +30,7 @@
                                     <th>
                                         <a th:text="${student.name}" href="#" class="list-group-item list-group-item-action "></a>
                                     </th>
-                                    <th>
+                                    <th sec:authorize="hasRole('ROLE_ADMIN')">
                                         <a th:text="Grade" href="#" th:href="@{grade/(cid=${course.id},sid=${student.id})}"></a>
                                     </th>
                                 </tr>
