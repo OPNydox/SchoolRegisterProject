@@ -39,60 +39,15 @@ public class UserService implements IUserService {
 	private ITeacherService teacherService;
 
 	@Autowired
-	private StudentFactory studentFactory;
-
-	@Autowired
-	private TeacherFactory teacherFactory;
-
-	@Autowired
-	private AuthGroupService authGroupService;
+	private UserRepository<User> UserRepository;
 
 	@Autowired
 	private IWriter writer;
 
-	/*public ServiceReturnResult<User> createUser(ViewModel viewModel) {
-		User resultUser = new User();
-		ServiceReturnResult<User> userCreateResult = new ServiceReturnResult<>();
-		boolean isStudent;
-		isStudent = UserEntityHelper.isUserStudent(viewModel);
-		VMValidator validator = isStudent ? new StudentVMValidator() : new TeacherVMValidator();
-
-		ModelDecorator decorator = new ModelDecorator(viewModel);
-
-		userCreateResult.addErrorMsg(decorator.validateModel(validator));
-
-		if (userCreateResult.hasErrors()) {
-			return userCreateResult;
-		}
-
-		ServiceReturnResult<User> factoReturnResult = new ServiceReturnResult<>();
-
-		factoReturnResult = isStudent ? studentFactory.getEntity(viewModel): teacherFactory.getEntity(viewModel);
-
-		if (factoReturnResult.hasErrors()) {
-			return factoReturnResult;
-		}
-
-		resultUser = factoReturnResult.getReturnResultObject();
-		saveUser(resultUser);
-
-		authGroupService.addAuth(viewModel);
-
-		userCreateResult.setReturnResultObject(resultUser);
-
-		return userCreateResult;
-	}*/
-
-	/*private void saveUser(User user) {
-		if (user instanceof Student) {
-			studentService.createStudent((Student) user);
-			return;
-		}
-		teacherService.addTeacher((Teacher) user);
-	}*/
-
 	public User findUserByUsername(String username) {
 		User userFound;
+
+		userFound = UserRepository.findByEmail(username);
 
 		userFound = studentService.findStudentByEmail(username);
 
