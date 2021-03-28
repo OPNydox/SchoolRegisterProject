@@ -33,7 +33,7 @@ public class MyUserPrincipal implements UserDetails {
 			return Collections.emptySet();
 		}
 		
-		Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet();
+		Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
 		authGroups.forEach(group -> {
 			grantedAuthorities.add(new SimpleGrantedAuthority(group.getAuthGroup()));
 		});

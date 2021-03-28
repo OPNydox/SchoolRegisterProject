@@ -58,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/courseCreate/**").hasRole("TEACHER")
 		.antMatchers("/teacher/**").hasRole("TEACHER")
 		.antMatchers("/grade/**").hasRole("TEACHER")
+		.antMatchers("/css/**").permitAll()
     	.anyRequest().authenticated()
     	.and()
     	.formLogin().loginPage("/login")
@@ -66,7 +67,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.logout()
 		.logoutUrl("/profile/logout")
 		.logoutSuccessUrl("/login")
-		.invalidateHttpSession(true);
+		.invalidateHttpSession(true)
+		.and();
 		
 
     	

@@ -4,12 +4,22 @@
 	</head>
 
 	<body>
-		<div layout:fragment="content">
-			<div class="row justify-content-center">
-				<h1>My courses</h1>
+		<div layout:fragment="content" class="row course-component">
+			<div class="col-6">
+				<div class="row">
+					<label class="main-label">My courses</label>
+				</div>
+				<div th:each="course : ${userCourses}" class="row list-group">
+					<a th:text="${course.name + ' ' + course.subject}" href="#" th:href="@{/course(id = ${course.id})}" class="list-group-item list-group-item-action text-center"></a>
+				</div>
 			</div>
-			<div th:each="course : ${userCourses}" class="row justify-content-center list-group">
-				<a th:text="${course.name + ' ' + course.subject}" href="#" th:href="@{/course(id = ${course.id})}" class="list-group-item list-group-item-action "></a>
+			<div class="col-6">
+				<div class="row">
+					<label class="main-label">Grades</label>
+				</div>
+				<div th:each="course : ${userCourses}" class="row list-group">
+					<a th:text="${course.name + ' ' + course.subject}" href="#" th:href="@{/course(id = ${course.id})}" class="list-group-item list-group-item-action text-center"></a>
+				</div>
 			</div> 
 		</div>
 	</body>

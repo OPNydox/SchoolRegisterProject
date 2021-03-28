@@ -64,7 +64,7 @@ public class UserService implements IUserService {
 			teacherFound = teacherService.findTeacherByEmail(username);
 		} catch (ValueException e) {
 			writer.writeError(e.getMessage());
-			teacherFound.setEmpty();
+			teacherFound.setEmpty(); 
 		}
 
 		return teacherFound;
