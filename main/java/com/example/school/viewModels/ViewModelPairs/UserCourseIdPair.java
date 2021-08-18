@@ -1,17 +1,18 @@
 package com.example.school.viewModels.ViewModelPairs;
 
 import com.example.school.database.entities.User;
+import com.example.school.viewModels.Interfaces.UserViewModel;
 
 public class UserCourseIdPair {
-    private User user;
+    private UserViewModel user;
 
     private String courseId;
 
-    public User getUser() {
+    public UserViewModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserViewModel user) {
         this.user = user;
     }
 

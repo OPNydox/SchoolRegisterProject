@@ -12,7 +12,7 @@ public class StudentChecker {
 
     public boolean checkIfStudentEnrolledInClass(Long classId) {
         for (Course course : student.getCourses()) {
-            if (course.getClassId() == classId) {
+            if (course.getCourseId() == classId) {
                 return true;
             }
         }

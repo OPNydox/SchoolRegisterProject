@@ -2,27 +2,22 @@ package com.example.school.database.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.data.annotation.Transient;
 
 import com.example.school.utilities.interfaces.INullable;
 
 @Entity
-@Table(name = "classes")
+@Table(name = "courses")
 public class Course implements INullable, Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long classId;
+	private long courseId;
 	
 	@Column(unique = true)
 	private String courseName;
@@ -35,13 +30,10 @@ public class Course implements INullable, Serializable {
 	private boolean isEmpty;
 	
 	@ManyToMany(mappedBy = "courses")
-	private List<Student> students;
+	private Set<User> users;
 	
-	@ManyToMany(mappedBy = "courses")
-	private List<Teacher> teachers;
-	
-	@OneToMany(mappedBy = "classGrade")
-	private List<Grade> grades;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "courseGrade")
+	private Set<Grade> grades;
 
 	public Course() {
 		super();
@@ -52,17 +44,15 @@ public class Course implements INullable, Serializable {
 		this.setSubject(subject);
 		this.setCourseName(courseName);
 		this.setHonorarium(honorarium);
-		this.setStudents(new ArrayList<Student>());
-		this.setTeachers(new ArrayList<Teacher>());
-		this.setGrades(new ArrayList<Grade>());
+		this.users = new HashSet<>();
 	}
 
-	public long getClassId() {
-		return classId;
+	public long getCourseId() {
+		return courseId;
 	}
 
-	public void setClassId(long classId) {
-		this.classId = classId;
+	public void setCourseId(long courseId) {
+		this.courseId = courseId;
 	}
 
 	public String getSubject() {
@@ -81,27 +71,49 @@ public class Course implements INullable, Serializable {
 		this.honorarium = honorarium;
 	}
 
-	public List<Teacher> getTeachers() {
-		return teachers;
+	public boolean isEmpty() {
+		return isEmpty;
 	}
 
-	public void setTeachers(ArrayList<Teacher> teachers) {
-		this.teachers = teachers;
-	} 
-	
-	public List<Student> getStudents() {
-		return students;
+	public void setEmpty(boolean empty) {
+		isEmpty = empty;
 	}
 
-	public void setStudents(ArrayList<Student> students) {
-		this.students = students;
+	public Set<Student> getStudents() {
+		Set<Student> courseStudents = new HashSet<>();
+
+		users.forEach(user -> {
+			if (user.isStudent()) {
+				courseStudents.add((Student) user);
+			}
+		});
+		return courseStudents;
 	}
 
-	public List<Grade> getGrades() {
+	public void addStudents(Set<User> students) {
+		users.addAll(students);
+	}
+
+	public Set<Teacher> getTeachers() {
+		Set<Teacher> courseTeachers = new HashSet<>();
+
+		users.forEach(user -> {
+			if (!user.isStudent()) {
+				courseTeachers.add((Teacher) user);
+			}
+		});
+		return courseTeachers;
+	}
+
+	public void setTeachers(Set<User> teachers) {
+		users.addAll(teachers);
+	}
+
+	public Set<Grade> getGrades() {
 		return grades;
 	}
 
-	public void setGrades(ArrayList<Grade> grades) {
+	public void setGrades(Set<Grade> grades) {
 		this.grades = grades;
 	}
 

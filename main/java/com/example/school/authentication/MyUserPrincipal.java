@@ -6,24 +6,28 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.example.school.viewModels.Interfaces.UserViewModel;
+import com.example.school.viewModels.StudentViewModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import com.example.school.database.entities.AuthGroup;
 import com.example.school.database.entities.Course;
 import com.example.school.database.entities.Student;
 import com.example.school.database.entities.User;
 
+@Service
 public class MyUserPrincipal implements UserDetails {
 	
-	private User user;
+	private UserViewModel user;
 	
 	private List<AuthGroup> authGroups;
 	
-	public MyUserPrincipal(User user, List<AuthGroup> authGroups) {
+	public MyUserPrincipal( List<AuthGroup> authGroups) {
 		super();
-		this.user = user;
+		//this.user = user;
 		this.authGroups = authGroups;
 	}
 
@@ -41,12 +45,12 @@ public class MyUserPrincipal implements UserDetails {
 		return grantedAuthorities;
 	}
 
-	public boolean isUserStudent () {
-		return this.user.isStudent();
+	public UserViewModel getUser() {
+		return user;
 	}
 
-	public User getUser() {
-		return this.user;
+	public void setUser(UserViewModel user) {
+		this.user = user;
 	}
 
 	@Override

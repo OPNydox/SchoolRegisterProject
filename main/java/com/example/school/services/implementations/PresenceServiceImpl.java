@@ -12,7 +12,6 @@ import com.example.school.database.entities.Presence;
 import com.example.school.database.entities.Student;
 import com.example.school.exceptions.ValueException;
 import com.example.school.repositories.PresenceRepository;
-import com.example.school.repositories.StudentRepository;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.IPresenceService;
 import com.example.school.services.interfaces.IStudentService;
@@ -31,10 +30,7 @@ public class PresenceServiceImpl implements IPresenceService{
 	
 	@Autowired
 	private ICourseService courseService;
-	
-	@Autowired
-	private StudentRepository studentRepository;
-	
+
 	@Autowired
 	private IWriter writer;
 
@@ -99,7 +95,7 @@ public class PresenceServiceImpl implements IPresenceService{
 			return Collections.emptyList();
 		}
 		
-		studentsInCourse = course.getStudents();
+		studentsInCourse = List.copyOf(course.getStudents());
 		studentsInCourse.forEach((student) -> presences.addAll(student.getPresences()));
 		return presences;
 	}
@@ -132,7 +128,7 @@ public class PresenceServiceImpl implements IPresenceService{
 			writer.writeError(e.getMessage());
 			return Collections.emptyList();
 		}
-		result = student.getPresences();
+		result = List.copyOf(student.getPresences());
 		return result;
 	}
 	

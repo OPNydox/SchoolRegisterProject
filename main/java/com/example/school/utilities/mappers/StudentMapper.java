@@ -28,7 +28,7 @@ public class StudentMapper {
         StudentViewModel result = new StudentViewModel();
 
         result.setEmail(student.getEmail());
-        result.setId(Long.toString(student.getStudentId()));
+        //result.setId(Long.toString(student.getStudentId()));
         result.setName(student.getName());
         
         return result;

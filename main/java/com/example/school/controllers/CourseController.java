@@ -21,7 +21,6 @@ import com.example.school.database.entities.Student;
 import com.example.school.database.entities.Teacher;
 import com.example.school.database.entities.User;
 import com.example.school.exceptions.ValueException;
-import com.example.school.repositories.StudentRepository;
 import com.example.school.repositories.UserRepository;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.IStudentCourseService;

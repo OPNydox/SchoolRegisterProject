@@ -3,18 +3,16 @@ package com.example.school.services.implementations;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.school.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.school.database.entities.Course;
 import com.example.school.database.entities.Teacher;
 import com.example.school.exceptions.EmailNotValidExcepiton;
-import com.example.school.exceptions.EntityException;
 import com.example.school.exceptions.ValueException;
-import com.example.school.exceptions.ValueNotFoundException;
 import com.example.school.factories.TeacherFactory;
 import com.example.school.repositories.CourseRepository;
-import com.example.school.repositories.TeacherRepository;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.ITeacherService;
 import com.example.school.utilities.ServiceReturnResult;
@@ -28,7 +26,7 @@ import com.example.school.viewModels.decorators.TeacherVMValidator;
 @Service
 public class TeacherServiceImpl implements ITeacherService {
 	@Autowired
-	private TeacherRepository teacherRepository;
+	private UserRepository userRepository;
 
 	@Autowired
 	private CourseRepository courseRepository;
@@ -71,7 +69,7 @@ public class TeacherServiceImpl implements ITeacherService {
 
 		newTeacher = factoryResult.getReturnResultObject();
 
-		newTeacher = teacherRepository.save(newTeacher);
+		newTeacher = (Teacher) userRepository.save(newTeacher);
 
 		teacherResult.setReturnResultObject(newTeacher);
 
@@ -93,7 +91,7 @@ public class TeacherServiceImpl implements ITeacherService {
 			throw new EmailNotValidExcepiton("The email: " + email + " is not a valid email");
 		}
 
-		Teacher result = teacherRepository.findByEmail(email);
+		Teacher result = (Teacher) userRepository.findByEmail(email);
 		return result;
 	}
 
@@ -126,7 +124,7 @@ public class TeacherServiceImpl implements ITeacherService {
 			return addTeacherResult;
 		}
 
-		teacher = teacherRepository.findByEmail(teacherEmail);
+		teacher = (Teacher) userRepository.findByEmail(teacherEmail);
 		course = courseRepository.findByName(courseName);
 
 		addTeacherToCourse(teacher, course);
@@ -135,7 +133,7 @@ public class TeacherServiceImpl implements ITeacherService {
 
 	@Override
 	public Teacher addTeacher(Teacher teacher) {
-		Teacher returnTeacher = this.teacherRepository.save(teacher);
+		Teacher returnTeacher = (Teacher) this.userRepository.save(teacher);
 		return returnTeacher;
 	}
 
@@ -171,7 +169,7 @@ public class TeacherServiceImpl implements ITeacherService {
 	}
 
 	public void saveTeacher(Teacher teacher) {
-		this.teacherRepository.save(teacher);
+		this.userRepository.save(teacher);
 	}
 
 }

@@ -2,82 +2,39 @@ package com.example.school.database.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.example.school.utilities.interfaces.INullable;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-@Entity
-@Table(name = "students")
+@Embeddable
+@DiscriminatorValue("1")
 public class Student extends User implements Serializable, INullable {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long studentId;
-	
-	@OneToMany(mappedBy = "student")
-	private List<Grade> grades;
-	
-	@OneToMany(mappedBy = "student")
-	private List<Presence> presences;
-	
-	@ManyToMany
-	@JoinTable(
-			name = "student_course",
-			joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "studentId"),
-			inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName="classId"))
-	private List<Course> courses;
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "student")
+	private Set<Presence> presences;
 	
 	public Student(String name, String email, String password) {
 		super(name, email, password, true);
-		setGrades(new ArrayList<Grade>());
-		setPresences(new ArrayList<Presence>());
-		setCourses(new ArrayList<Course>());
+		setPresences(new HashSet<>());
 	}
 
 	public Student() {
 		super();
 	}
 
-	public long getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(long studentId) {
-		this.studentId = studentId;
-	}
-
-	public List<Grade> getGrades() {
-		return grades;
-	}
-
-	public void setGrades(List<Grade> grades) {
-		this.grades = grades;
-	}
-
-	public List<Course> getCourses() {
-		return courses;
-	}
-
-	public void setCourses(List<Course> courses) {
-		this.courses = courses;
-	}
-
-	public List<Presence> getPresences() {
+	public Set<Presence> getPresences() {
 		return presences;
 	}
 
-	public void setPresences(List<Presence> presences) {
+	public void setPresences(Set<Presence> presences) {
 		this.presences = presences;
 	}
+
 }

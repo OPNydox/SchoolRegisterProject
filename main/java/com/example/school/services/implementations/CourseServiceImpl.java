@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.school.viewModels.Interfaces.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,25 +84,23 @@ public class CourseServiceImpl implements ICourseService {
 
 	@Override
 	public List<CourseViewModel> getAllCoursesForPerson(final String personEmail) {
-		User foundUser;
+		UserViewModel foundUser;
 		List<Course> listOfcourses;
 		List<CourseViewModel> resultList = new ArrayList<>();
 
 		foundUser = findUser(personEmail);
+		
 
-		if (Verificator.isEmpty(foundUser)) {
-			return resultList;
-		}
+		//listOfcourses = UserEntityHelper.getCoursesFromUser(foundUser);
 
-		listOfcourses = UserEntityHelper.getCoursesFromUser(foundUser);
+		//resultList = CourseMapper.mapEtityoToCourseViewModel(listOfcourses);
 
-		resultList = CourseMapper.mapEtityoToCourseViewModel(listOfcourses);
-
-		return resultList;
+		//return resultList;
+		return new ArrayList<>();
 	}
 
-	private User findUser(final String userEmail) {
-		User foundUser;
+	private UserViewModel findUser(final String userEmail) {
+		UserViewModel foundUser;
 
 		foundUser = userService.findUserByUsername(userEmail);
 

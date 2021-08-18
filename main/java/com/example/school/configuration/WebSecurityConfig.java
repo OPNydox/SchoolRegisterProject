@@ -24,9 +24,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @Order(SecurityProperties.BASIC_AUTH_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	private final MyUserDetailsService userDetailsService;
+
 	@Autowired
-	private MyUserDetailsService userDetailsService;
-	
+	public WebSecurityConfig(MyUserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
+
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();

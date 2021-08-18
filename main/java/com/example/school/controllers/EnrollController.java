@@ -41,7 +41,7 @@ public class EnrollController {
 		MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		studentCoursePair.setCourseId(classId);
-		studentCoursePair.setUser(user.getUser());
+		//studentCoursePair.setUser(user.getUser());
 		
 		enlistResult = userService.enrollUserInClass(studentCoursePair);
 		

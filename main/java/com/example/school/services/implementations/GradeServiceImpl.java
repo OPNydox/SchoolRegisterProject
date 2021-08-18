@@ -1,5 +1,6 @@
 package com.example.school.services.implementations;
 
+import com.example.school.viewModels.Interfaces.ViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,9 @@ import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.viewModels.GradeViewModel;
 import com.example.school.viewModels.decorators.GradeVMValidator;
 import com.example.school.viewModels.decorators.ModelDecorator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class GradeServiceImpl  implements IGradeService {
@@ -52,4 +56,10 @@ public class GradeServiceImpl  implements IGradeService {
 		this.gradeRepository.save(grade);
 	}
 
+	@Override
+	public List<GradeViewModel> getAllGradesForPerson(String personEmail) {
+		List<GradeViewModel> gradeViewModelResult = new ArrayList<>();
+
+		return gradeViewModelResult;
+	}
 }

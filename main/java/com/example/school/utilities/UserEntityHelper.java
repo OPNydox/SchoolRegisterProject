@@ -45,13 +45,13 @@ public class UserEntityHelper {
 
     public static List<Course> getCoursesFromStudent(Student student) {
         List<Course> resultList = new ArrayList<>();
-        resultList = student.getCourses();
+        resultList = List.copyOf(student.getCourses());
         return resultList;
     }
 
     public static List<Course> getCoursesFromTeacher(Teacher teacher) { 
         List<Course> resultList = new ArrayList<>();
-        resultList = teacher.getCourses();
+        resultList = List.copyOf(teacher.getCourses());
         return resultList; 
     }
 }

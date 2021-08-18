@@ -1,14 +1,25 @@
 package com.example.school.database.entities;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
+import com.example.school.utilities.userUtils.UserTypeUtil;
 import org.springframework.data.annotation.Transient;
+import org.springframework.stereotype.Component;
 
 import com.example.school.utilities.interfaces.INullable;
 
-@MappedSuperclass
-public class User implements INullable{
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "registry_user")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="isStudent", discriminatorType = DiscriminatorType.INTEGER)
+public class User implements INullable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long userId;
+
 	private String name;
 	
 	@Column(unique = true)
@@ -17,10 +28,20 @@ public class User implements INullable{
 	@Column(length = 60)
 	private String password;
 	
-	private boolean isStudent;
+	private int userType;
 	
 	@Transient
 	private boolean isEmpty;
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "student")
+	private Set<Grade> grades;
+
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(
+			name = "user_course",
+			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"),
+			inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName="courseID"))
+	private Set<Course> courses;
 	
 	public User() { }
 
@@ -29,6 +50,8 @@ public class User implements INullable{
 		this.setEmail(email);
 		this.setPassword(password);
 		this.setStudent(isStudent);
+		this.setGrades(new HashSet<>());
+		this.setCourses(new HashSet<>());
 	}
 
 	public String getName() {
@@ -56,11 +79,35 @@ public class User implements INullable{
 	}
 
 	public boolean isStudent() {
-		return isStudent;
+		return new UserTypeUtil(this.userType).isStudent();
 	}
 
 	public void setStudent(boolean isStudent) {
-		this.isStudent = isStudent;
+		this.userType = 1;
+	}
+
+	public Set<Grade> getGrades() {
+		return grades;
+	}
+
+	public void setGrades(Set<Grade> grades) {
+		this.grades = grades;
+	}
+
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.example.school.authentication;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.school.viewModels.Interfaces.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +15,6 @@ import com.example.school.database.entities.Student;
 import com.example.school.database.entities.User;
 import com.example.school.exceptions.ValueException;
 import com.example.school.repositories.AuthGroupRepository;
-import com.example.school.repositories.StudentRepository;
 import com.example.school.repositories.UserRepository;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.services.interfaces.ITeacherService;
@@ -30,7 +30,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	@Autowired
 	private IUserService userService;
 	
-	private User currentUser;
+	private UserViewModel currentUser;
 	
 	private String currentUsername;
 	
@@ -73,7 +73,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	}
 	
 	private boolean isCurrentUserEmpty() {
-		if (Verificator.isEmpty(this.currentUser)) {
+		if (currentUser == null) {
 			return true;
 		}
 		
@@ -81,7 +81,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	}
 	
 	private MyUserPrincipal createUserDetails() {
-		return new MyUserPrincipal(this.currentUser, this.currentAuthGroups);
+		return new MyUserPrincipal(/*this.currentUser*/ this.currentAuthGroups);
 	}
 	
 	private void clearFields() {

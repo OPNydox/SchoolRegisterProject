@@ -10,7 +10,7 @@ public class CourseMapper {
     public static CourseViewModel mapEtityoToCourseViewModel(Course course) {
         CourseViewModel resultViewModel = new CourseViewModel();
 
-        resultViewModel.setId(Long.toString(course.getClassId()));
+        resultViewModel.setId(Long.toString(course.getCourseId()));
         resultViewModel.setHonorarium(Integer.toString(course.getHonorarium()));
         resultViewModel.setName(course.getCourseName());
         resultViewModel.setSubject(course.getSubject());

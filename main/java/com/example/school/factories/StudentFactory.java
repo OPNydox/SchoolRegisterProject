@@ -1,6 +1,7 @@
 package com.example.school.factories;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import com.example.school.database.entities.Course;
 import com.example.school.database.entities.Grade;
@@ -24,10 +25,10 @@ public class StudentFactory {
 
         student.setEmail(studentViewModel.getEmail());
         student.setName(studentViewModel.getName());
-        student.setCourses(new ArrayList<Course>());
-        student.setGrades(new ArrayList<Grade>());
+        student.setCourses(new HashSet<>());
+        student.setGrades(new HashSet<>());
         student.setPassword(getPassword(studentViewModel.getPassword()));
-        student.setPresences(new ArrayList<Presence>());
+        student.setPresences(new HashSet<>());
         student.setStudent(true);
 
         studentResult.setReturnResultObject(student);

@@ -2,15 +2,10 @@ package com.example.school.database.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.Transient;
 
 import com.example.school.utilities.interfaces.INullable;
@@ -22,9 +17,9 @@ public class Presence implements INullable, Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long presenceId;
 	
-	@ManyToOne
-	@JoinColumn(name = "student_id")
-	private Student student;
+	@ManyToOne()
+	@JoinColumn(name = "userId")
+	private User student;
 	
 	@ManyToOne
 	@JoinColumn(name = "class_id")
@@ -51,12 +46,11 @@ public class Presence implements INullable, Serializable {
 		this.presenceId = presenceId;
 	}
 
-
-	public Student getStudent() {
+	public User getStudent() {
 		return student;
 	}
 
-	public void setStudent(Student student) {
+	public void setStudent(User student) {
 		this.student = student;
 	}
 

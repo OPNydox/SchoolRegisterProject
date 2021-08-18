@@ -1,4 +1,4 @@
-package com.example.school.repositories;
+/*package com.example.school.repositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,4 +13,4 @@ public interface StudentRepository extends CrudRepository <Student, Long>{
 	@Query(value = "select s from Student s where s.email = :email")
 	Student findByEmail(String email);
 
-}
+}*/

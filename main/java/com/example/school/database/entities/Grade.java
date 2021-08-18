@@ -1,21 +1,14 @@
 package com.example.school.database.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.data.annotation.Transient;
 
 import com.example.school.utilities.interfaces.INullable;
 
 @Entity
-@Table(name = "grades")
-public class Grade implements INullable{
-	
+@Table(name = "register_grades")
+public class Grade implements INullable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long gradeId;
@@ -25,13 +18,13 @@ public class Grade implements INullable{
 	@Transient
 	private boolean isEmpty;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "course_id")
-	private Course classGrade;
+	private Course courseGrade;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "student_id")
-	private Student student;
+	private User student;
 
 	public Grade() {
 		super();
@@ -40,7 +33,7 @@ public class Grade implements INullable{
 	public Grade(double mark, Course classGrade, Student student) {
 		super();
 		setMark(mark);
-		setClassGrade(classGrade);
+		setCourseGrade(classGrade);
 		setStudent(student);
 	}
 
@@ -52,12 +45,12 @@ public class Grade implements INullable{
 		this.gradeId = gradeId;
 	}
 
-	public Course getClassGrade() {
-		return classGrade;
+	public Course getCourseGrade() {
+		return courseGrade;
 	}
 
-	public void setClassGrade(Course classGrade) {
-		this.classGrade = classGrade;
+	public void setCourseGrade(Course courseGrade) {
+		this.courseGrade = courseGrade;
 	}
 
 	public double getMark() {
@@ -68,7 +61,7 @@ public class Grade implements INullable{
 		this.mark = mark;
 	}
 
-	public Student getStudent() {
+	public User getStudent() {
 		return student;
 	}
 

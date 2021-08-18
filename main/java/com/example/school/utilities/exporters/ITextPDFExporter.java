@@ -116,7 +116,7 @@ public class ITextPDFExporter implements IPDFExporter {
 	}
 	
 	private String getGradesForStudent(Student student) {
-		List<Grade> grades = student.getGrades();
+		List<Grade> grades = List.copyOf(student.getGrades());
 		List<String> numberGrades = new ArrayList<>();
 		String result;
 		

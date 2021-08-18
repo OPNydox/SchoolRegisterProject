@@ -37,7 +37,7 @@ public class GradeFactory {
 
         newGrade.setMark(mark);
         newGrade.setStudent(student);
-        newGrade.setClassGrade(course);
+        newGrade.setCourseGrade(course);
 
         student.getGrades().add(newGrade);
         course.getGrades().add(newGrade);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.school.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import com.example.school.database.entities.Course;
 import com.example.school.database.entities.Student;
 import com.example.school.exceptions.ValueException;
 import com.example.school.factories.StudentFactory;
-import com.example.school.repositories.StudentRepository;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.utilities.NumberHandler;
@@ -34,7 +34,7 @@ public class StudentServiceImpl implements IStudentService {
 	private AuthGroupService authGroupService;
 
 	@Autowired
-	private StudentRepository repository;
+	private UserRepository userRepository;
 
 	@Autowired
 	private StudentFactory studentFactory;
@@ -59,7 +59,7 @@ public class StudentServiceImpl implements IStudentService {
 
 		studentCreateResult = studentFactory.getEntity(student);
 
-		createdStudent = repository.save(studentCreateResult.getReturnResultObject());
+		createdStudent = (Student) userRepository.save(studentCreateResult.getReturnResultObject());
 		studentCreateResult.setReturnResultObject(createdStudent);
 
 		authGroupService.addAuth(student);
@@ -72,7 +72,7 @@ public class StudentServiceImpl implements IStudentService {
 		Student result = new Student();
 		try {
 			Verificator.isEmpty(email, "Email is empty");
-			result = repository.findByEmail(email);
+			result = (Student) userRepository.findByEmail(email);
 		} catch (ValueException e) {
 			writer.writeError(e.getMessage());
 			result.setEmpty();
@@ -84,7 +84,7 @@ public class StudentServiceImpl implements IStudentService {
 	public List<Student> findAllStudents() {
 		List<Student> result;
 
-		result = (List<Student>) repository.findAll();
+		result = (List<Student>) userRepository.findAll();
 		return result;
 	}
 
@@ -113,7 +113,7 @@ public class StudentServiceImpl implements IStudentService {
 	}
 
 	private void updateStudent(Student studentToUpdate) {
-		this.repository.save(studentToUpdate);
+		this.userRepository.save(studentToUpdate);
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class StudentServiceImpl implements IStudentService {
 
 		longId = convertLongResult.getReturnResultObject();
 
-		foundStudentOptional = repository.findById(longId);
+		foundStudentOptional = userRepository.findById(longId);
 
 		if (foundStudentOptional.isEmpty()) {
 			returnResult.addErrorMsg("Student not found");
@@ -160,7 +160,7 @@ public class StudentServiceImpl implements IStudentService {
 
 	@Override
 	public Student createStudent(Student student) {
-		Student returnStudent = this.repository.save(student);
+		Student returnStudent = (Student) this.userRepository.save(student);
 		return returnStudent;
 	}
 
