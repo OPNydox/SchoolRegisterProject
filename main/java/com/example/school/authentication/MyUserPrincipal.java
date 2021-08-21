@@ -25,9 +25,9 @@ public class MyUserPrincipal implements UserDetails {
 	
 	private List<AuthGroup> authGroups;
 	
-	public MyUserPrincipal( List<AuthGroup> authGroups) {
+	public MyUserPrincipal(UserViewModel user,List<AuthGroup> authGroups) {
 		super();
-		//this.user = user;
+		this.user = user;
 		this.authGroups = authGroups;
 	}
 

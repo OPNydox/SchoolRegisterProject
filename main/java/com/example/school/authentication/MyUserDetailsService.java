@@ -31,63 +31,25 @@ public class MyUserDetailsService implements UserDetailsService {
 	private IUserService userService;
 	
 	private UserViewModel currentUser;
-	
-	private String currentUsername;
-	
-	private List<AuthGroup> currentAuthGroups;
-	
+
 	public MyUserDetailsService( AuthGroupRepository authGroupRepository) {
 		super();
 		this.authGroupRepository = authGroupRepository;
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		MyUserPrincipal userDetails;
-		this.currentUsername = username;
-		
-		findUser();
-		throwExceptionIfUserEmpty();
-		findAuthGroups();
-		userDetails = createUserDetails();
-		clearFields();
-		
-		return userDetails;
-	}
-	
-	private void findUser() {
-		String username = this.currentUsername;
-		this.currentUser = this.userService.findUserByUsername(username);
-	}
-	
-	private void throwExceptionIfUserEmpty () {
-		if (isCurrentUserEmpty()) {
-			String userName = this.currentUsername;
-			clearFields();
-			throw new UsernameNotFoundException(userName); 
-		}
-	}
-	
-	private void findAuthGroups() {
-		this.currentAuthGroups = this.authGroupRepository.findByEmail(this.currentUsername);
-	}
-	
-	private boolean isCurrentUserEmpty() {
+		UserViewModel currentUser = this.userService.findUserByUsername(email);
+		List<AuthGroup> currentAuthGroups;
+
 		if (currentUser == null) {
-			return true;
+			throw new UsernameNotFoundException(email);
 		}
+
+		currentAuthGroups = this.authGroupRepository.findByEmail(email);
 		
-		return false;
-	}
-	
-	private MyUserPrincipal createUserDetails() {
-		return new MyUserPrincipal(/*this.currentUser*/ this.currentAuthGroups);
-	}
-	
-	private void clearFields() {
-		this.currentAuthGroups = null;
-		this.currentUser = null;
-		this.currentUsername = null;
+		return new MyUserPrincipal(currentUser, currentAuthGroups);
 	}
 
 }

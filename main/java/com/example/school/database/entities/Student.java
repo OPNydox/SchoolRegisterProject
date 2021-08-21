@@ -17,7 +17,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 @DiscriminatorValue("1")
 public class Student extends User implements Serializable, INullable {
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "student")
+	@OneToMany(mappedBy = "student")
 	private Set<Presence> presences;
 	
 	public Student(String name, String email, String password) {

@@ -32,7 +32,7 @@ public class Course implements INullable, Serializable {
 	@ManyToMany(mappedBy = "courses")
 	private Set<User> users;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "courseGrade")
+	@OneToMany(mappedBy = "courseGrade")
 	private Set<Grade> grades;
 
 	public Course() {

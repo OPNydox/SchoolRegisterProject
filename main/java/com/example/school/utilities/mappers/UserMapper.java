@@ -23,7 +23,7 @@ public class UserMapper {
         resultModel.setName(user.getName());
         resultModel.setId(Long.toString(user.getUserId()));
         resultModel.setEmail(user.getEmail());
-        resultModel.setCourses(CourseMapper.mapEntityToCourseViewModel(user.getCourses()));
+        resultModel.setPassword(user.getPassword());
 
         return resultModel;
     }

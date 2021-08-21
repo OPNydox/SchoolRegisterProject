@@ -33,7 +33,7 @@ public class User implements INullable {
 	@Transient
 	private boolean isEmpty;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "student")
+	@OneToMany(mappedBy = "student")
 	private Set<Grade> grades;
 
 	@ManyToMany(cascade = { CascadeType.ALL })

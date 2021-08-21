@@ -18,11 +18,11 @@ public class Grade implements INullable {
 	@Transient
 	private boolean isEmpty;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne()
 	@JoinColumn(name = "course_id")
 	private Course courseGrade;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne()
 	@JoinColumn(name = "student_id")
 	private User student;
 
