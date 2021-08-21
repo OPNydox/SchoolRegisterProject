@@ -6,7 +6,7 @@ import com.example.school.viewModels.Interfaces.UserViewModel;
 public class UserCourseIdPair {
     private UserViewModel user;
 
-    private String courseId;
+    private Long courseId;
 
     public UserViewModel getUser() {
         return user;
@@ -16,11 +16,11 @@ public class UserCourseIdPair {
         this.user = user;
     }
 
-    public String getCourseId() {
+    public Long getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(String courseId) {
+    public void setCourseId(Long courseId) {
         this.courseId = courseId;
     }
 }

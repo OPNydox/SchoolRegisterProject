@@ -9,6 +9,7 @@ import com.example.school.services.interfaces.IStudentService;
 import com.example.school.services.interfaces.IUserService;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.StudentCoursePair;
+import com.example.school.viewModels.Interfaces.UserViewModel;
 import com.example.school.viewModels.ViewModelPairs.UserCourseIdPair;
 import com.mysql.cj.protocol.Message;
 
@@ -30,22 +31,19 @@ public class EnrollController {
     private IUserService userService;
     
     @GetMapping(value = "/enroll")
-	public String enrollStudent(@RequestParam("cid") String cid,
+	public String enrollStudent(@RequestParam("cid") Long cid,
 	 							Principal principal,
 	 							Model model) {
 		UserCourseIdPair studentCoursePair = new UserCourseIdPair();
-		List<String> enlistResult;
+		ServiceReturnResult<UserViewModel> enlistResult;
 		List<String> errors = new LinkedList<>();
-		String classId = cid;
+		Long classId = cid;
 		
-		MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		MyUserPrincipal myUserPrincipal = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		enlistResult = userService.enrollUserInClass(myUserPrincipal.getUser(), classId);
 
-		studentCoursePair.setCourseId(classId);
-		//studentCoursePair.setUser(user.getUser());
-		
-		enlistResult = userService.enrollUserInClass(studentCoursePair);
-		
-		errors.addAll(enlistResult);
+		errors.addAll(enlistResult.getErrorMessages());
 
 		model.addAttribute("errors", errors);
 

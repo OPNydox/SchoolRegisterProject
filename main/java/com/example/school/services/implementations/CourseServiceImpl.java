@@ -80,7 +80,6 @@ public class CourseServiceImpl implements ICourseService {
 	@Override
 	public Set<CourseViewModel> getAllCoursesForPerson(final String userEmail) {
 		UserViewModel foundUser;
-		Set<Course> courses;
 
 		foundUser = userService.findUserByUsername(userEmail);
 
@@ -103,7 +102,7 @@ public class CourseServiceImpl implements ICourseService {
 		Course course;
 		CourseViewModel courseViewModel;
 		ServiceReturnResult<CourseViewModel> result = new ServiceReturnResult<>();
-		ServiceReturnResult<Course> courseFindResult = new ServiceReturnResult<>();
+		ServiceReturnResult<Course> courseFindResult;
 
 		courseFindResult = getCourseById(id);
 		

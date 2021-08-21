@@ -3,6 +3,7 @@ package com.example.school.authentication;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.school.services.interfaces.ICourseService;
 import com.example.school.viewModels.Interfaces.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +30,9 @@ public class MyUserDetailsService implements UserDetailsService {
 	
 	@Autowired
 	private IUserService userService;
+
+	@Autowired
+	private ICourseService courseService;
 	
 	private UserViewModel currentUser;
 
@@ -39,7 +43,6 @@ public class MyUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		MyUserPrincipal userDetails;
 		UserViewModel currentUser = this.userService.findUserByUsername(email);
 		List<AuthGroup> currentAuthGroups;
 
@@ -48,6 +51,7 @@ public class MyUserDetailsService implements UserDetailsService {
 		}
 
 		currentAuthGroups = this.authGroupRepository.findByEmail(email);
+		currentUser.setCourses(courseService.getAllCoursesForPerson(email));
 		
 		return new MyUserPrincipal(currentUser, currentAuthGroups);
 	}
