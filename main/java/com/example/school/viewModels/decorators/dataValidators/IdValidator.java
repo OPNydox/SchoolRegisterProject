@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class IdValidator {
     
-    public List<String> validate(String id) {
+    public List<String> validate(Long id) {
         List<String> result = new ArrayList<>();
         ServiceReturnResult<Long> parseResult = new ServiceReturnResult<>();
         Long idNumber;
@@ -19,12 +19,6 @@ public class IdValidator {
         if (id == null) {
             result.add("Id is null");
             return result;
-        }
-
-        parseResult = NumberHandler.parseStringToLong(id);
-
-        if (parseResult.hasErrors()) {
-            return parseResult.getErrorMessages();
         }
 
         idNumber = parseResult.getReturnResultObject();

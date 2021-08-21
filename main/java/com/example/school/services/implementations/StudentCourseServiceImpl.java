@@ -20,7 +20,7 @@ public class StudentCourseServiceImpl implements IStudentCourseService {
     private ICourseService courseService;
 
     @Override
-    public Iterable<StudentViewModel> getStudentsForCourse(String courseId) {
+    public Iterable<StudentViewModel> getStudentsForCourse(Long courseId) {
         ArrayList<Student> enrolledStudentEntities = new ArrayList<>();
         Iterable<StudentViewModel> mappedStudents;
         Course course;

@@ -17,7 +17,7 @@ public class StudentCoursePair {
         this.student.setEmail(studentEmail);
     }
 
-    public void setClassId(String courseId) {
+    public void setClassId(Long courseId) {
         this.course.setId(courseId);
     }
 
@@ -25,7 +25,7 @@ public class StudentCoursePair {
         return this.student.getEmail();
     }
 
-    public String getCourseId() {
+    public Long getCourseId() {
         return this.course.getId();
     } 
 }

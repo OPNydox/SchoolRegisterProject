@@ -8,6 +8,7 @@ import com.example.school.database.entities.Grade;
 import com.example.school.database.entities.Presence;
 import com.example.school.database.entities.Student;
 import com.example.school.utilities.ServiceReturnResult;
+import com.example.school.viewModels.RegistrationViewModel;
 import com.example.school.viewModels.StudentViewModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class StudentFactory {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ServiceReturnResult<Student> getEntity(StudentViewModel studentViewModel) {
+    public ServiceReturnResult<Student> createStudentEntity(RegistrationViewModel studentViewModel) {
         Student student = new Student();
         ServiceReturnResult<Student> studentResult = new ServiceReturnResult<>();
 

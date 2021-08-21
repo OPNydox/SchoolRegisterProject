@@ -140,8 +140,8 @@ public class TeacherServiceImpl implements ITeacherService {
 	@Override
 	public List<String> entollTeacherInCourse(TeacherCoursePair teacherCoursePair) {
 		Teacher teacherToEnroll = new Teacher();
-		Course targetCourse = new Course();
-		ServiceReturnResult<Course> foundCourseResult = new ServiceReturnResult<>(); 
+		Course targetCourse;
+		ServiceReturnResult<Course> foundCourseResult;
 		List<String> enrollResult = new ArrayList<>();
 
 		try {

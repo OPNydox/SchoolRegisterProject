@@ -79,7 +79,7 @@ public class CourseController {
 	}
 
 	@GetMapping(value = "/course")
-	public String getCoursePage(@RequestParam String id ,Model model) {
+	public String getCoursePage(@RequestParam Long id ,Model model) {
 		CourseViewModel course;
 		Iterable<StudentViewModel> students = new ArrayList<>();
 		Iterable<TeacherViewModel> teachers;

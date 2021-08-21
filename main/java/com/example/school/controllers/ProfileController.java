@@ -2,7 +2,9 @@ package com.example.school.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,11 +61,8 @@ public class ProfileController {
 	@GetMapping(value = "/profile")
 	public String getProfilePage(Model model) {
 		MyUserPrincipal u = ControllerUtils.getUserPrincipal();
-		List<CourseViewModel> userCourses = new ArrayList<>();
+		Set<CourseViewModel> userCourses = new HashSet<>();
 		//userCourses = courseService.getAllCoursesForPerson(userEmail);
-
-		ServiceReturnResult<Course> course = courseService.getCourseById("1");
-
 
 		model.addAttribute("userCourses", userCourses);
 		

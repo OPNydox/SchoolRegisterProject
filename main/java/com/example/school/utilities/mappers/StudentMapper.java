@@ -10,13 +10,13 @@ public class StudentMapper {
         ArrayList<StudentViewModel> result = new ArrayList<>();
 
         for (Student student : students) {
-            result.add(mapEntityTViewModel(student));
+            result.add(mapUserToViewModel(student));
         }
 
         return result;
     }
 
-    public static StudentViewModel mapEntityTViewModel(Student student) {
+    public static StudentViewModel mapUserToViewModel(Student student) {
         StudentViewModel result = new StudentViewModel();
         
         result = generateViewModel(student);

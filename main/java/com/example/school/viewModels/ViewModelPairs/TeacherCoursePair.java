@@ -6,13 +6,13 @@ import com.example.school.viewModels.TeacherViewModel;
 public class TeacherCoursePair {
     private String teacherEmail;
 
-    private String courseId;
+    private Long courseId;
 
-    public String getCourseId() {
+    public Long getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(String courseId) {
+    public void setCourseId(Long courseId) {
         this.courseId = courseId;
     }
 

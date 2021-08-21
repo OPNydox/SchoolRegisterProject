@@ -2,6 +2,7 @@ package com.example.school.viewModels.Interfaces;
 
 import com.example.school.utilities.enums.UserRole;
 import com.example.school.viewModels.CourseViewModel;
+import com.example.school.viewModels.GradeViewModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public abstract class UserViewModel extends ViewModel {
+public class UserViewModel extends ViewModel {
+    private String id;
+
     private String email;
 
     private String name;
@@ -21,10 +24,20 @@ public abstract class UserViewModel extends ViewModel {
 
     private Set<CourseViewModel> courses = new HashSet<>();
 
+    private Set<GradeViewModel> grades = new HashSet<>();
+
     public UserViewModel() {}
 
     public UserViewModel(String email, String name) {
         setEmail(email);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -65,5 +78,13 @@ public abstract class UserViewModel extends ViewModel {
 
     public void setCourses(Set<CourseViewModel> courses) {
         this.courses = courses;
+    }
+
+    public Set<GradeViewModel> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Set<GradeViewModel> grades) {
+        this.grades = grades;
     }
 }

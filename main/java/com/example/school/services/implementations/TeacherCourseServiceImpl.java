@@ -21,7 +21,7 @@ public class TeacherCourseServiceImpl implements ITeacherCourseService {
     private ICourseService courseService;
 
     @Override
-    public Iterable<TeacherViewModel> getTeachersVMForCourse(String courseId) {
+    public Iterable<TeacherViewModel> getTeachersVMForCourse(Long courseId) {
         Iterable<Teacher> teacherEnteties;
         Iterable<TeacherViewModel> teacherViewModels;
 
@@ -31,7 +31,7 @@ public class TeacherCourseServiceImpl implements ITeacherCourseService {
     }
     
     @Override
-    public Iterable<Teacher> getTeachersForCourse(String courseId) {
+    public Iterable<Teacher> getTeachersForCourse(Long courseId) {
         List<Teacher> teachersFond = new ArrayList<>();
         Course course;
         ServiceReturnResult<Course> courseFindResult = new ServiceReturnResult<>();

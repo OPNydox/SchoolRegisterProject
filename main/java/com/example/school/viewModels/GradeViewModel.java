@@ -10,9 +10,9 @@ public class GradeViewModel extends ViewModel {
 	
 	private String studentEmail;
 
-	private String studentId;
+	private Long studentId;
 
-	private String courseId;
+	private Long courseId;
 
 	public GradeViewModel() { }
 	
@@ -47,19 +47,19 @@ public class GradeViewModel extends ViewModel {
 		this.studentEmail = studentEmail;
 	}
 
-	public String getCourseId() {
+	public Long getCourseId() {
 		return courseId;
 	}
 
-	public String getStudentId() {
+	public Long getStudentId() {
 		return studentId;
 	}
 
-	public void setCourseId(String courseId) {
+	public void setCourseId(Long courseId) {
 		this.courseId = courseId;
 	}
 
-	public void setStudentId(String studentId) {
+	public void setStudentId(Long studentId) {
 		this.studentId = studentId;
 	}
 }

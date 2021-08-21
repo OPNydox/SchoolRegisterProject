@@ -4,7 +4,7 @@ import com.example.school.viewModels.Interfaces.ViewModel;
 
 public class CourseViewModel extends ViewModel {
 
-	private String id;
+	private Long id;
 
 	private String name;
 
@@ -45,11 +45,11 @@ public class CourseViewModel extends ViewModel {
 		this.honorarium = honorarium;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 }

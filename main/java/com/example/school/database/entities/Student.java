@@ -13,7 +13,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-@Embeddable
+@Entity
 @DiscriminatorValue("1")
 public class Student extends User implements Serializable, INullable {
 

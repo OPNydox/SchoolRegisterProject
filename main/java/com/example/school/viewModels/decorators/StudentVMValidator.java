@@ -2,6 +2,8 @@ package com.example.school.viewModels.decorators;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.school.viewModels.RegistrationViewModel;
 import org.springframework.stereotype.Component;
 
 import com.example.school.viewModels.StudentViewModel;
@@ -11,7 +13,7 @@ import com.example.school.viewModels.Interfaces.ViewModel;
 @Component
 public class StudentVMValidator extends VMValidatorBase {
 	
-	private StudentViewModel student;
+	private RegistrationViewModel student;
 	
 	public StudentVMValidator () {
 		super();
@@ -22,13 +24,14 @@ public class StudentVMValidator extends VMValidatorBase {
 		List<String> result = new ArrayList<String>();
 		
 		if (student == null) {
-			result.add("Student validator not initialized");
+			result.add("Invalid user data!");
 			return result;
 		}
 		
 		result.addAll(emailValidator.validateEmail(student.getEmail()));
 		result.addAll(stringValidator.validateString(student.getName(), "The student's name", 50));
 		result.addAll(stringValidator.validateString(student.getPassword(), "Student's passowrd", null));
+		result.addAll(checkIfPasswordsMatch());
 		return result;
 	}
 
@@ -38,9 +41,18 @@ public class StudentVMValidator extends VMValidatorBase {
 			return false;
 		}
 		
-		student = (StudentViewModel) model;
+		student = (RegistrationViewModel) model;
 		
 		return true;
 	}
 
+	private List<String> checkIfPasswordsMatch() {
+		List<String> errors = new ArrayList<>();
+
+		if (!student.getPassword().equals(student.getPasswordRepeat())) {
+			errors.add("Passwords do not match!");
+		}
+
+		return errors;
+	}
 }

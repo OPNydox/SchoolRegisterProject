@@ -6,18 +6,19 @@ import java.util.List;
 import com.example.school.database.entities.Student;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.StudentCoursePair;
+import com.example.school.viewModels.RegistrationViewModel;
 import com.example.school.viewModels.StudentViewModel;
 
 public interface IStudentService {
-	ServiceReturnResult<Student> createStudent(StudentViewModel student);
+	ServiceReturnResult<Student> createStudent(RegistrationViewModel studentCredentials);
 
 	Student createStudent(Student student);
 	
 	Student findStudentByEmail(String email);
 
-	ServiceReturnResult<StudentViewModel> findStudentById(String id);
+	ServiceReturnResult<StudentViewModel> findStudentById(Long id);
 	
-	ServiceReturnResult<Student> findStudentEntityById(String id);
+	ServiceReturnResult<Student> findStudentEntityById(Long id);
 	
 	List<Student> findAllStudents();
 

@@ -50,7 +50,7 @@ public class GradeController {
 	}
 
 	@GetMapping(value = "/grade")
-	public String getGradePage(@RequestParam String sid, @RequestParam String cid, Model model) {
+	public String getGradePage(@RequestParam Long sid, @RequestParam Long cid, Model model) {
 		GradeViewModel formModel = new GradeViewModel();
 
 		formModel.setCourseId(cid);

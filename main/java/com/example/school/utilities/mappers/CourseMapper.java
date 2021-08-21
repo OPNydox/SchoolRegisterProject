@@ -1,16 +1,16 @@
 package com.example.school.utilities.mappers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.example.school.database.entities.Course;
 import com.example.school.viewModels.CourseViewModel;
 
 public class CourseMapper {
-    public static CourseViewModel mapEtityoToCourseViewModel(Course course) {
+    public static CourseViewModel mapEntityToCourseViewModel(Course course) {
         CourseViewModel resultViewModel = new CourseViewModel();
 
-        resultViewModel.setId(Long.toString(course.getCourseId()));
+        resultViewModel.setId(course.getCourseId());
         resultViewModel.setHonorarium(Integer.toString(course.getHonorarium()));
         resultViewModel.setName(course.getCourseName());
         resultViewModel.setSubject(course.getSubject());
@@ -18,13 +18,13 @@ public class CourseMapper {
         return resultViewModel;
     }
 
-    public static List<CourseViewModel> mapEtityoToCourseViewModel (Iterable<Course> list) {
-        List<CourseViewModel> resultList = new ArrayList<>();
+    public static Set<CourseViewModel> mapEntityToCourseViewModel(Iterable<Course> list) {
+        Set<CourseViewModel> resultSet = new HashSet<>();
 
         for (Course course : list) {
-            resultList.add(mapEtityoToCourseViewModel(course));
+            resultSet.add(mapEntityToCourseViewModel(course));
         }
 
-        return resultList;
+        return resultSet;
     }
 }

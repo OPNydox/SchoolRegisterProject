@@ -1,6 +1,6 @@
 package com.example.school.services.interfaces;
 
-import java.util.List;
+import java.util.Set;
 
 import com.example.school.database.entities.Course;
 import com.example.school.utilities.ServiceReturnResult;
@@ -12,13 +12,13 @@ public interface ICourseService {
 	
 	Course getCourseByName(String courseName);
 
-	ServiceReturnResult<Course> getCourseById(String id);
+	ServiceReturnResult<Course> getCourseById(Long id);
 
-	ServiceReturnResult<CourseViewModel> getCourseVMById(String id);
+	ServiceReturnResult<CourseViewModel> getCourseVMById(Long id);
 	
 	void saveCourse(Course course);
 
-	List<CourseViewModel> getAllCoursesForPerson(String personEmail);
+	Set<CourseViewModel> getAllCoursesForPerson(String personEmail);
 
-	List<CourseViewModel> getAllCourses();
+	Set<CourseViewModel> getAllCourses();
 }

@@ -1,8 +1,6 @@
 package com.example.school.services.implementations;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.example.school.viewModels.Interfaces.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.school.database.entities.Course;
-import com.example.school.database.entities.User;
 import com.example.school.factories.CourseFactory;
 import com.example.school.repositories.CourseRepository;
 import com.example.school.services.interfaces.ICourseService;
-import com.example.school.utilities.NumberHandler;
 import com.example.school.utilities.ServiceReturnResult;
-import com.example.school.utilities.UserEntityHelper;
 import com.example.school.utilities.Verificator;
 import com.example.school.utilities.interfaces.IWriter;
 import com.example.school.utilities.mappers.CourseMapper;
@@ -83,43 +78,28 @@ public class CourseServiceImpl implements ICourseService {
 	}
 
 	@Override
-	public List<CourseViewModel> getAllCoursesForPerson(final String personEmail) {
+	public Set<CourseViewModel> getAllCoursesForPerson(final String userEmail) {
 		UserViewModel foundUser;
-		List<Course> listOfcourses;
-		List<CourseViewModel> resultList = new ArrayList<>();
-
-		foundUser = findUser(personEmail);
-		
-
-		//listOfcourses = UserEntityHelper.getCoursesFromUser(foundUser);
-
-		//resultList = CourseMapper.mapEtityoToCourseViewModel(listOfcourses);
-
-		//return resultList;
-		return new ArrayList<>();
-	}
-
-	private UserViewModel findUser(final String userEmail) {
-		UserViewModel foundUser;
+		Set<Course> courses;
 
 		foundUser = userService.findUserByUsername(userEmail);
 
-		return foundUser;
+		return foundUser.getCourses();
 	}
 
 	@Override
-	public List<CourseViewModel> getAllCourses() {
-		List<CourseViewModel> resultList = new ArrayList<>();
+	public Set<CourseViewModel> getAllCourses() {
+		Set<CourseViewModel> resultList;
 		Iterable<Course> courses;
 
 		courses = repository.findAll();
-		resultList = CourseMapper.mapEtityoToCourseViewModel(courses);
+		resultList = CourseMapper.mapEntityToCourseViewModel(courses);
 
 		return resultList;
 	}
 
 	@Override
-	public ServiceReturnResult<CourseViewModel> getCourseVMById(String id) {
+	public ServiceReturnResult<CourseViewModel> getCourseVMById(Long id) {
 		Course course;
 		CourseViewModel courseViewModel;
 		ServiceReturnResult<CourseViewModel> result = new ServiceReturnResult<>();
@@ -132,7 +112,7 @@ public class CourseServiceImpl implements ICourseService {
 		}
 
 		course = courseFindResult.getReturnResultObject();
-		courseViewModel = CourseMapper.mapEtityoToCourseViewModel(course);
+		courseViewModel = CourseMapper.mapEntityToCourseViewModel(course);
 
 		result.setReturnResultObject(courseViewModel);
 
@@ -140,12 +120,10 @@ public class CourseServiceImpl implements ICourseService {
 	}
 
 	@Override
-	public ServiceReturnResult<Course> getCourseById(String id) {
-		Long courseId;
+	public ServiceReturnResult<Course> getCourseById(Long courseId) {
 		Course foundCourse;
 		ServiceReturnResult<Course> result  = new ServiceReturnResult<>();
 
-		courseId = NumberHandler.parseStringToLong(id).getReturnResultObject();
 		foundCourse = getCourseFromRepo(courseId);
 		result.setReturnResultObject(foundCourse);
 

@@ -60,7 +60,7 @@ public class GradeFactory {
         return markResult.getReturnResultObject();
     }
 
-    private Student getStudent(String studentID, List<String> errorContainer) {
+    private Student getStudent(Long studentID, List<String> errorContainer) {
         ServiceReturnResult<Student> studentResult = new ServiceReturnResult<>();
 
         studentResult = this.studentService.findStudentEntityById(studentID);
@@ -73,7 +73,7 @@ public class GradeFactory {
         return (Student) studentResult.getReturnResultObject();
     }
 
-    private Course getCourse(String courseId, List<String> errorContainer) {
+    private Course getCourse(Long courseId, List<String> errorContainer) {
         ServiceReturnResult<Course> courseResult = new ServiceReturnResult<>();
 
         courseResult = this.courseService.getCourseById(courseId);

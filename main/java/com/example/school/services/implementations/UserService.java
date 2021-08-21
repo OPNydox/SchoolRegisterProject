@@ -1,7 +1,8 @@
 package com.example.school.services.implementations;
 
+import com.example.school.utilities.mappers.StudentMapper;
+import com.example.school.utilities.mappers.UserMapper;
 import com.example.school.viewModels.Interfaces.UserViewModel;
-import com.example.school.viewModels.StudentViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,6 @@ import com.example.school.repositories.UserRepository;
 import com.example.school.services.interfaces.IStudentService;
 import com.example.school.services.interfaces.ITeacherService;
 import com.example.school.services.interfaces.IUserService;
-import com.example.school.utilities.Verificator;
 import com.example.school.utilities.interfaces.IWriter;
 import com.example.school.viewModels.ViewModelPairs.UserCourseIdPair;
 
@@ -38,25 +38,11 @@ public class UserService implements IUserService {
 
 		userFound = UserRepository.findByEmail(username);
 
-		//userFound = studentService.findStudentByEmail(username);
-
-		if (Verificator.isEmpty(userFound)) {
-			userFound = findTeacher(username);
-		}
-		return new StudentViewModel();
-		//return StudentMapper.mapEntityTViewModel(userFound);
-	}
-
-	private User findTeacher(String username) {
-		User teacherFound = new User();
-		try {
-			teacherFound = teacherService.findTeacherByEmail(username);
-		} catch (ValueException e) {
-			writer.writeError(e.getMessage());
-			teacherFound.setEmpty(); 
+		if (userFound == null) {
+			return new UserViewModel();
 		}
 
-		return teacherFound;
+		return UserMapper.mapUserToViewModel(userFound);
 	}
 
 	@Override

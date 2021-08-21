@@ -22,7 +22,7 @@ public class StudentCountroller {
 	@PostMapping(value ="/studcreate", consumes="application/json", produces="application/json")
 	public ReturnResult studentTesting(@RequestBody StudentViewModel studentVM ) {
 		ReturnResult result = new ReturnResult();
-		Student student = studentService.createStudent(studentVM).getReturnResultObject();
+		Student student = new Student();
 		
 		if (student == null || student.isNull()) {
 			return ControllerHelper.returnError("Could not create student with such parameters");

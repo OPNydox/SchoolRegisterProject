@@ -6,7 +6,7 @@ import com.example.school.database.entities.Teacher;
 import com.example.school.viewModels.TeacherViewModel;
 
 public interface ITeacherCourseService {
-    Iterable<Teacher> getTeachersForCourse(String courseId);
+    Iterable<Teacher> getTeachersForCourse(Long courseId);
     
-    Iterable<TeacherViewModel> getTeachersVMForCourse(String courseId);
+    Iterable<TeacherViewModel> getTeachersVMForCourse(Long courseId);
 }

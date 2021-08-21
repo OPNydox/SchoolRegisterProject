@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.school.database.entities.User;
 import com.example.school.repositories.UserRepository;
+import com.example.school.viewModels.RegistrationViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.school.database.entities.Course;
@@ -15,7 +16,6 @@ import com.example.school.exceptions.ValueException;
 import com.example.school.factories.StudentFactory;
 import com.example.school.services.interfaces.ICourseService;
 import com.example.school.services.interfaces.IStudentService;
-import com.example.school.utilities.NumberHandler;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.StudentCoursePair;
 import com.example.school.utilities.Verificator;
@@ -43,7 +43,7 @@ public class StudentServiceImpl implements IStudentService {
 	private IWriter writer;
 
 	@Override
-	public ServiceReturnResult<Student> createStudent(StudentViewModel student) {
+	public ServiceReturnResult<Student> createStudent(RegistrationViewModel student) {
 		List<String> validationResult = new ArrayList<>();
 		ServiceReturnResult<Student> studentCreateResult = new ServiceReturnResult<>();
 		Student createdStudent;
@@ -57,11 +57,9 @@ public class StudentServiceImpl implements IStudentService {
 			return studentCreateResult;
 		}
 
-		studentCreateResult = studentFactory.getEntity(student);
+		studentCreateResult = studentFactory.createStudentEntity(student);
 
-		createdStudent = (Student) userRepository.save(studentCreateResult.getReturnResultObject());
-		studentCreateResult.setReturnResultObject(createdStudent);
-
+		userRepository.save((User)studentCreateResult.getReturnResultObject());
 		authGroupService.addAuth(student);
 
 		return studentCreateResult;
@@ -117,36 +115,26 @@ public class StudentServiceImpl implements IStudentService {
 	}
 
 	@Override
-	public ServiceReturnResult<StudentViewModel> findStudentById(String id) {
+	public ServiceReturnResult<StudentViewModel> findStudentById(Long id) {
 		ServiceReturnResult<Student> findStudentResult;
 		StudentViewModel studentViewModel;
 		ServiceReturnResult<StudentViewModel> returnResult = new ServiceReturnResult<>();
 
 		findStudentResult = findStudentEntityById(id);
 
-		studentViewModel = StudentMapper.mapEntityTViewModel(findStudentResult.getReturnResultObject());
+		studentViewModel = StudentMapper.mapUserToViewModel(findStudentResult.getReturnResultObject());
 		returnResult.setReturnResultObject(studentViewModel);
 
 		return returnResult;
 	}
 
 	@Override
-	public ServiceReturnResult<Student> findStudentEntityById(String id) {
-		Long longId;
+	public ServiceReturnResult<Student> findStudentEntityById(Long id) {
 		Optional<Student> foundStudentOptional;
 		ServiceReturnResult<Long> convertLongResult;
 		ServiceReturnResult<Student> returnResult = new ServiceReturnResult<>();
-		
-		convertLongResult = NumberHandler.parseStringToLong(id);
 
-		if (convertLongResult.hasErrors()) {
-			returnResult.addErrorMsg(convertLongResult.getErrorMessages());
-			return returnResult;
-		}
-
-		longId = convertLongResult.getReturnResultObject();
-
-		foundStudentOptional = userRepository.findById(longId);
+		foundStudentOptional = userRepository.findById(id);
 
 		if (foundStudentOptional.isEmpty()) {
 			returnResult.addErrorMsg("Student not found");

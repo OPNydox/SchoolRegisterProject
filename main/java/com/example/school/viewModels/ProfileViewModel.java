@@ -6,20 +6,20 @@ import java.util.List;
 import java.util.Set;
 
 public class ProfileViewModel {
-    private List<CourseViewModel> courses;
+    private Set<CourseViewModel> courses;
 
     private List<GradeViewModel> grades;
 
     public ProfileViewModel() {
-        courses = new ArrayList<>();
+        courses = new HashSet<>();
         grades  = new ArrayList<>();
     }
 
-    public List<CourseViewModel> getCourses() {
+    public Set<CourseViewModel> getCourses() {
         return courses;
     }
 
-    public void setCourses(List<CourseViewModel> courses) {
+    public void setCourses(Set<CourseViewModel> courses) {
         this.courses = courses;
     }
 

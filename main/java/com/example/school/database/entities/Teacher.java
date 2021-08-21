@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 import com.example.school.utilities.interfaces.INullable;
 
-@Embeddable
+@Entity
 @DiscriminatorValue("2")
 public class Teacher extends User  {
 	
