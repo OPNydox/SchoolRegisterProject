@@ -3,17 +3,16 @@ package com.example.school.viewModels.decorators;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.school.viewModels.RegistrationViewModel;
+import com.example.school.viewModels.StudentRegistrationViewModel;
 import org.springframework.stereotype.Component;
 
-import com.example.school.viewModels.StudentViewModel;
 import com.example.school.viewModels.Interfaces.ViewModel;
 
 
 @Component
 public class StudentVMValidator extends VMValidatorBase {
 	
-	private RegistrationViewModel student;
+	private StudentRegistrationViewModel student;
 	
 	public StudentVMValidator () {
 		super();
@@ -41,7 +40,7 @@ public class StudentVMValidator extends VMValidatorBase {
 			return false;
 		}
 		
-		student = (RegistrationViewModel) model;
+		student = (StudentRegistrationViewModel) model;
 		
 		return true;
 	}

@@ -60,7 +60,7 @@ public class UserViewModel extends ViewModel {
         return role;
     }
 
-    protected void setUserRole(UserRole userRole) {
+    public void setUserRole(UserRole userRole) {
         this.role = userRole;
     }
 

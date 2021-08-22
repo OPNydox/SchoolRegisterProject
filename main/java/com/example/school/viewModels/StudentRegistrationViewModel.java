@@ -3,21 +3,24 @@ package com.example.school.viewModels;
 import com.example.school.utilities.enums.UserRole;
 import com.example.school.viewModels.Interfaces.UserViewModel;
 
-public class RegistrationViewModel extends UserViewModel {
+public class StudentRegistrationViewModel extends UserViewModel {
 	String password;
 	
 	String passwordRepeat;
 	
 	String error;
 
-	public RegistrationViewModel(String name, String email, String password, String passwordRepeat) {
-		super(email, name);
+	{
 		this.setUserRole(UserRole.STUDENT);
+	}
+
+	public StudentRegistrationViewModel(String name, String email, String password, String passwordRepeat) {
+		super(email, name);
 		this.setPassword(password);
 		this.setPasswordRepeat(passwordRepeat);
 	}
 
-	public RegistrationViewModel() {}
+	public StudentRegistrationViewModel() {}
 
 	public String getPassword() {
 		return password;

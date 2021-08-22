@@ -1,15 +1,10 @@
 package com.example.school.factories;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
-import com.example.school.database.entities.Course;
-import com.example.school.database.entities.Grade;
-import com.example.school.database.entities.Presence;
 import com.example.school.database.entities.Student;
 import com.example.school.utilities.ServiceReturnResult;
-import com.example.school.viewModels.RegistrationViewModel;
-import com.example.school.viewModels.StudentViewModel;
+import com.example.school.viewModels.StudentRegistrationViewModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +15,7 @@ public class StudentFactory {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ServiceReturnResult<Student> createStudentEntity(RegistrationViewModel studentViewModel) {
+    public ServiceReturnResult<Student> createStudentEntity(StudentRegistrationViewModel studentViewModel) {
         Student student = new Student();
         ServiceReturnResult<Student> studentResult = new ServiceReturnResult<>();
 

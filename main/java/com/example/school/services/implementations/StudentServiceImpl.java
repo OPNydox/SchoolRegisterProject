@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.school.database.entities.User;
 import com.example.school.repositories.UserRepository;
-import com.example.school.viewModels.RegistrationViewModel;
+import com.example.school.viewModels.StudentRegistrationViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class StudentServiceImpl implements IStudentService {
 	private IWriter writer;
 
 	@Override
-	public ServiceReturnResult<Student> createStudent(RegistrationViewModel student) {
+	public ServiceReturnResult<Student> createStudent(StudentRegistrationViewModel student) {
 		List<String> validationResult = new ArrayList<>();
 		ServiceReturnResult<Student> studentCreateResult = new ServiceReturnResult<>();
 		Student createdStudent;
@@ -59,7 +58,7 @@ public class StudentServiceImpl implements IStudentService {
 
 		studentCreateResult = studentFactory.createStudentEntity(student);
 
-		userRepository.save((User)studentCreateResult.getReturnResultObject());
+		userRepository.save(studentCreateResult.getReturnResultObject());
 		authGroupService.addAuth(student);
 
 		return studentCreateResult;

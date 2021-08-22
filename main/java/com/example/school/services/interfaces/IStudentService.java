@@ -1,16 +1,15 @@
 package com.example.school.services.interfaces;
 
-import java.security.Provider.Service;
 import java.util.List;
 
 import com.example.school.database.entities.Student;
 import com.example.school.utilities.ServiceReturnResult;
 import com.example.school.utilities.StudentCoursePair;
-import com.example.school.viewModels.RegistrationViewModel;
+import com.example.school.viewModels.StudentRegistrationViewModel;
 import com.example.school.viewModels.StudentViewModel;
 
 public interface IStudentService {
-	ServiceReturnResult<Student> createStudent(RegistrationViewModel studentCredentials);
+	ServiceReturnResult<Student> createStudent(StudentRegistrationViewModel studentCredentials);
 
 	Student createStudent(Student student);
 	

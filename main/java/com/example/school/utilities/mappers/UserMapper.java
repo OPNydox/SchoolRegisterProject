@@ -1,8 +1,10 @@
 package com.example.school.utilities.mappers;
 
 import com.example.school.database.entities.User;
+import com.example.school.utilities.enums.UserRole;
 import com.example.school.viewModels.Interfaces.UserViewModel;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +26,20 @@ public class UserMapper {
         resultModel.setId(Long.toString(user.getUserId()));
         resultModel.setEmail(user.getEmail());
         resultModel.setPassword(user.getPassword());
+        switch (user.getUserType()) {
+            case 0:
+                resultModel.setUserRole(UserRole.ADMIN);
+                break;
+            case 1:
+                resultModel.setUserRole(UserRole.STUDENT);
+                break;
+            case 2:
+                resultModel.setUserRole(UserRole.TEACHER);
+                break;
+            default:
+                resultModel.setUserRole(UserRole.UNAUTHORIZED);
+
+        }
 
         return resultModel;
     }

@@ -110,6 +110,10 @@ public class User implements INullable {
 		this.userId = userId;
 	}
 
+	public int getUserType() {
+		return userType;
+	}
+
 	@Override
 	public boolean isNull() {
 		if (this.isEmpty ||this.getName() == null || this.getEmail() == null) {
