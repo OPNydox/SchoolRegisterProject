@@ -3,11 +3,12 @@ package com.example.school.viewModels.decorators;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.school.viewModels.TeacherRegistrationViewModel;
 import com.example.school.viewModels.TeacherViewModel;
 import com.example.school.viewModels.Interfaces.ViewModel;
 
 public class TeacherVMValidator extends VMValidatorBase {
-	private TeacherViewModel teacher;
+	private TeacherRegistrationViewModel teacher;
 	
 	public TeacherVMValidator() {
 		super();
@@ -34,7 +35,7 @@ public class TeacherVMValidator extends VMValidatorBase {
 		if (model == null) {
 			return false;
 		}
-		this.teacher = (TeacherViewModel) model;
+		this.teacher = (TeacherRegistrationViewModel) model;
 		
 		return true;
 	}

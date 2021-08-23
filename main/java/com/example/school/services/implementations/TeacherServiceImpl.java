@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.school.repositories.UserRepository;
+import com.example.school.services.interfaces.IAuthGroupService;
+import com.example.school.viewModels.TeacherRegistrationViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,16 +40,17 @@ public class TeacherServiceImpl implements ITeacherService {
 	private ICourseService courseService;
 
 	@Autowired
+	private IAuthGroupService authGroupService;
+
+	@Autowired
 	private IWriter writer;
 
 	@Override
-	public ServiceReturnResult<TeacherViewModel> addTeacher(TeacherViewModel teacherView) {
-		Teacher newTeacher = new Teacher();
+	public ServiceReturnResult<TeacherViewModel> addTeacher(TeacherRegistrationViewModel teacherView) {
+		Teacher newTeacher;
 		ServiceReturnResult<TeacherViewModel> addTeacherResult = new ServiceReturnResult<>();
 		ServiceReturnResult<Teacher> teacherResult = new ServiceReturnResult<>();
 		List<String> validationResult = new ArrayList<>();
-
-		addTeacherResult.setReturnResultObject(teacherView);
 
 		ModelDecorator decorator = new ModelDecorator(teacherView);
 
@@ -58,7 +61,7 @@ public class TeacherServiceImpl implements ITeacherService {
 			return addTeacherResult;
 		}
 
-		ServiceReturnResult<Teacher> factoryResult = new ServiceReturnResult<>();
+		ServiceReturnResult<Teacher> factoryResult;
 
 		factoryResult = this.teacherFactory.getEntity(teacherView);
 
@@ -68,9 +71,9 @@ public class TeacherServiceImpl implements ITeacherService {
 		}
 
 		newTeacher = factoryResult.getReturnResultObject();
-
 		newTeacher = (Teacher) userRepository.save(newTeacher);
 
+		authGroupService.addAuth(teacherView);
 		teacherResult.setReturnResultObject(newTeacher);
 
 		return addTeacherResult;

@@ -7,11 +7,12 @@ import com.example.school.database.entities.Teacher;
 import com.example.school.exceptions.EntityException;
 import com.example.school.exceptions.ValueException;
 import com.example.school.utilities.ServiceReturnResult;
+import com.example.school.viewModels.TeacherRegistrationViewModel;
 import com.example.school.viewModels.TeacherViewModel;
 import com.example.school.viewModels.ViewModelPairs.TeacherCoursePair;
 
 public interface ITeacherService {
-	ServiceReturnResult<TeacherViewModel> addTeacher(TeacherViewModel teacherView);
+	ServiceReturnResult<TeacherViewModel> addTeacher(TeacherRegistrationViewModel teacherView);
 
 	Teacher addTeacher(Teacher teacher);
 	

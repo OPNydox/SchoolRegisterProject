@@ -20,35 +20,11 @@ public class TeacherController {
 	
 	@Autowired
 	private ITeacherService teacherService;
-
-	@GetMapping("/create")
-	public String getCreateTeacherPage(Model model) {
-		if (!model.containsAttribute("teacherFormModel")) {
-			model.addAttribute("teacherFormModel", new TeacherViewModel());
-		}
-
-		return "teacherCreate";
-	}
-
-	@PostMapping("/create")
-	public String createTeacher(@ModelAttribute TeacherViewModel teacherViewModel, Model model) {
-		ServiceReturnResult<TeacherViewModel> teacherCreateResult = new ServiceReturnResult<>();
-
-		teacherCreateResult = teacherService.addTeacher(teacherViewModel);
-
-		if (teacherCreateResult.hasErrors()) {
-			model.addAttribute("teacherFormModel", teacherCreateResult);
-			model.addAttribute("errors", teacherCreateResult.getErrorMessages());
-			return "teacherCreate";
-		}
-
-		return "redirect:/profile";
-	}
 	
 	@RequestMapping(value = "techtest")
 	public String teacherTesting() {
 		TeacherViewModel teacher = new TeacherViewModel("Dimitar Dimitrov", "ddmitrov@abv.bg", "1234", "12.3");
-		teacherService.addTeacher(teacher);
+		//teacherService.addTeacher(teacher);
 		Teacher teacherFound = null;
 		try {
 			teacherFound = teacherService.findTeacherByEmail("ddmitrov@abv.bg");

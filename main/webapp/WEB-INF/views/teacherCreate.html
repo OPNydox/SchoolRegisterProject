@@ -4,7 +4,7 @@
   </head>
   <body>
     <div layout:fragment="content">
-        <form name="f" th:action="@{/teacher/create}" th:object="${courseFormObject}" method="post">               
+        <form name="f" th:action="@{/admin/create/teacher}" th:object="${courseFormObject}" method="post">               
             <fieldset>
                 <legend>Enter teacher creadentials</legend>
                	<div th:if="${error != ''}">
@@ -18,6 +18,10 @@
                 <div>
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email"/>        
+                </div>
+                <div>
+                    <label for="salary">Salary:</label>
+                    <input type="number" id="salary" name="salary"/>        
                 </div>
                 <div>
                     <label for="password">Password:</label>

@@ -45,7 +45,6 @@ public class StudentServiceImpl implements IStudentService {
 	public ServiceReturnResult<Student> createStudent(StudentRegistrationViewModel student) {
 		List<String> validationResult = new ArrayList<>();
 		ServiceReturnResult<Student> studentCreateResult = new ServiceReturnResult<>();
-		Student createdStudent;
 
 		ModelDecorator decorator = new ModelDecorator(student);
 

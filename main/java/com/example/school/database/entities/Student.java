@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.example.school.utilities.enums.UserRole;
 import com.example.school.utilities.interfaces.INullable;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.LazyCollection;
@@ -22,6 +23,7 @@ public class Student extends User implements Serializable, INullable {
 	
 	public Student(String name, String email, String password) {
 		super(name, email, password, true);
+		setUserType(UserRole.STUDENT);
 		setPresences(new HashSet<>());
 	}
 
@@ -36,5 +38,4 @@ public class Student extends User implements Serializable, INullable {
 	public void setPresences(Set<Presence> presences) {
 		this.presences = presences;
 	}
-
 }

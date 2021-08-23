@@ -27,9 +27,7 @@ public class RegisterController {
 	@PostMapping(value="/register")
 	public String registerPost(@RequestParam(value = "error", required = false) String error,
 							   @ModelAttribute StudentRegistrationViewModel studentRegistrationViewModel, Model model) {
-
 		studentService.createStudent(studentRegistrationViewModel);
-		
 		return "login";
 	}
 }

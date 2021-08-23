@@ -2,6 +2,7 @@ package com.example.school.database.entities;
 
 import javax.persistence.*;
 
+import com.example.school.utilities.enums.UserRole;
 import com.example.school.utilities.userUtils.UserTypeUtil;
 import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Component;
@@ -112,6 +113,10 @@ public class User implements INullable {
 
 	public int getUserType() {
 		return userType;
+	}
+
+	protected void setUserType(UserRole userRole) {
+		this.userType = userRole.getValue();
 	}
 
 	@Override
