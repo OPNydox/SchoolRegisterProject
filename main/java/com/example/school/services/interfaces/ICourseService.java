@@ -21,4 +21,6 @@ public interface ICourseService {
 	Set<CourseViewModel> getAllCoursesForPerson(String personEmail);
 
 	Set<CourseViewModel> getAllCourses();
+
+	boolean isUserEnrolledInCourse(Course course, Long userId);
 }

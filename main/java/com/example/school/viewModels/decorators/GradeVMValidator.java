@@ -24,8 +24,8 @@ public class GradeVMValidator extends VMValidatorBase {
 			return result;
 		}
 		
-		result.addAll(idValidator.validate(grade.getCourseId()));
-		result.addAll(idValidator.validate(grade.getStudentId()));
+		//result.addAll(idValidator.validate(grade.getCourseId()));
+		//result.addAll(idValidator.validate(grade.getStudentId()));
 		result.addAll(numberValidator.validateNumber(grade.getMark()));
 		
 		return result;

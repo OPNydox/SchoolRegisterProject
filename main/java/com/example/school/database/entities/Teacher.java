@@ -23,6 +23,7 @@ public class Teacher extends User  {
 
 	public Teacher() {
 		super();
+		setUserType(UserRole.TEACHER);
 	}
 
 	public double getSalary() {

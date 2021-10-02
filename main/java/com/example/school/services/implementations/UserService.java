@@ -38,7 +38,7 @@ public class UserService implements IUserService {
 	@Autowired
 	private IWriter writer;
 
-	public UserViewModel findUserByUsername(String username) {
+	public UserViewModel findUserVMByUsername(String username) {
 		User userFound;
 
 		userFound = userRepository.findByEmail(username);
@@ -51,6 +51,12 @@ public class UserService implements IUserService {
 	}
 
 	@Override
+	public User findUserByUsername(String username) {
+		return userRepository.findByEmail(username);
+	}
+
+
+	@Override
 	public ServiceReturnResult<UserViewModel> enrollUserInClass(UserViewModel user, Long courseId) {
 		ServiceReturnResult<UserViewModel> returnResult = new ServiceReturnResult<>();
 		ServiceReturnResult<Course> findCourseResult = courseService.getCourseById(courseId);
@@ -61,6 +67,9 @@ public class UserService implements IUserService {
 		}
 
 		Course foundCourse = findCourseResult.getReturnResultObject();
+		if (courseService.isUserEnrolledInCourse(foundCourse, userToEnroll.getUserId())) {
+			return returnResult;
+		}
 		userToEnroll.getCourses().add(foundCourse);
 		user.getCourses().add(CourseMapper.mapEntityToCourseViewModel(foundCourse));
 		returnResult.setReturnResultObject(user);

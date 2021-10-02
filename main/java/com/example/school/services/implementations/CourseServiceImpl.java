@@ -2,12 +2,13 @@ package com.example.school.services.implementations;
 
 import java.util.*;
 
+import com.example.school.database.entities.*;
+import com.example.school.viewModels.GradeViewModel;
 import com.example.school.viewModels.Interfaces.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.school.database.entities.Course;
 import com.example.school.factories.CourseFactory;
 import com.example.school.repositories.CourseRepository;
 import com.example.school.services.interfaces.ICourseService;
@@ -27,6 +28,9 @@ public class CourseServiceImpl implements ICourseService {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private GradeServiceImpl gradeService;
 
 	@Autowired
 	private IWriter writer;
@@ -79,11 +83,14 @@ public class CourseServiceImpl implements ICourseService {
 
 	@Override
 	public Set<CourseViewModel> getAllCoursesForPerson(final String userEmail) {
-		UserViewModel foundUser;
+		User foundUser;
+		Set<GradeViewModel> personGrades;
+		Set<CourseViewModel> result = new HashSet<>();
+		List<Course> foundCourses = (List<Course>) repository.findAll();
 
-		foundUser = userService.findUserByUsername(userEmail);
 
-		return foundUser.getCourses();
+
+		return result;
 	}
 
 	@Override
@@ -95,6 +102,23 @@ public class CourseServiceImpl implements ICourseService {
 		resultList = CourseMapper.mapEntityToCourseViewModel(courses);
 
 		return resultList;
+	}
+
+	@Override
+	public boolean isUserEnrolledInCourse(Course course, Long userId) {
+		for (Student student : course.getStudents()) {
+			if (student.getUserId() == userId) {
+				return true;
+			}
+		}
+
+		for (Teacher teacher : course.getTeachers()) {
+			if (teacher.getUserId() == userId) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override

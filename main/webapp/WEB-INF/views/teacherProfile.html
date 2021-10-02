@@ -1,0 +1,21 @@
+
+
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+	  layout:decorator="layout">
+	<head>
+	<title>Profile</title>
+	</head>
+
+	<body>
+		<div layout:fragment="content" class="row course-component">
+			<div class="col-12">
+				<div class="row">
+					<label class="main-label">My courses</label>
+				</div>
+				<div th:each="course : ${user.courses}" class="row list-group">
+					<a th:text="${course.name + ' ' + course.subject}" href="#" th:href="@{/course(id = ${course.id})}" class="list-group-item list-group-item-action text-center"></a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -34,10 +34,10 @@ public class User implements INullable {
 	@Transient
 	private boolean isEmpty;
 
-	@OneToMany(mappedBy = "student")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "student")
 	private Set<Grade> grades;
 
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinTable(
 			name = "user_course",
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"),

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.school.repositories.UserRepository;
+import com.example.school.viewModels.StudentProfileViewModel;
 import com.example.school.viewModels.StudentRegistrationViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,6 +105,14 @@ public class StudentServiceImpl implements IStudentService {
 		studentToEnlist.getCourses().add(courseToBeEnlisted);
 
 		updateStudent(studentToEnlist);
+
+		return result;
+	}
+
+	@Override
+	public StudentProfileViewModel getStudentProfileViewModel(StudentViewModel student) {
+		StudentProfileViewModel result = new StudentProfileViewModel();
+		result.setCourses(courseService.getAllCoursesForPerson(student.getEmail()));
 
 		return result;
 	}

@@ -10,17 +10,24 @@
 				<div class="row">
 					<label class="main-label">My courses</label>
 				</div>
-				<div th:each="course : ${userCourses}" class="row list-group">
+				<div th:each="course : ${user.courses}" class="row list-group">
 					<a th:text="${course.name + ' ' + course.subject}" href="#" th:href="@{/course(id = ${course.id})}" class="list-group-item list-group-item-action text-center"></a>
 				</div>
+				
 			</div>
 			<div class="col-6">
 				<div class="row">
 					<label class="main-label">Grades</label>
 				</div>
-				<div th:each="course : ${userCourses}" class="row list-group">
-					<a th:text="${course.name + ' ' + course.subject}" href="#" th:href="@{/course(id = ${course.id})}" class="list-group-item list-group-item-action text-center"></a>
-				</div>
+
+				<ul th:each="course : ${user.courses}" class="row list-group list-group-horizontal" style="height: 49px">
+					<li th:each="grade : ${course.grades}" class="list-group-item"> 
+						<a th:text="${grade.mark}" href="#" class=" list-group-item-action text-center"></a>
+					</li>
+				</ul>
+				
+			
+			
 			</div> 
 		</div>
 	</body>

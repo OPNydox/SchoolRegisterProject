@@ -3,8 +3,8 @@
         <title>Course</title>
     </head>
     <body>
-        <div layout:fragment="content">
-            <div>
+        <div layout:fragment="content" class="row course-component">
+            <div class="col-12">
                 <div class="row">
                     <h1 th:text="${course.name}"></h1>
                 </div>
@@ -15,34 +15,38 @@
                     <h1 th:text="${course.honorarium}"></h1>
                 </div>
                 <div class="row">
-                    <div class="col-6 col-offset-4 justify-content-left">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <h1>Students</h1>
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="student : ${students}">
-                                    <th>
-                                        <a th:text="${student.name}" href="#" class="list-group-item list-group-item-action "></a>
-                                    </th>
-                                    <th sec:authorize="hasRole('ROLE_ADMIN')">
-                                        <a th:text="Grade" href="#" th:href="@{grade/(cid=${course.id},sid=${student.id})}"></a>
-                                    </th>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-6 justify-content-right">
-                        <div>
-                            <h1>Teachers</h1>
+                    <div class="col-4">
+                        <div class="row">
+                            <label class="main-label">Students</label>
                         </div>
-                        <div th:each="teacher : ${teachers}" class="list-group">
-                            <a th:text="${teacher.name}" href="#" class="list-group-item list-group-item-action "></a>
+                        <div th:each="student : ${course.students}" class="row list-group">
+                            <a th:text="${student.name}" href="#" class="list-group-item list-group-item-action text-center"></a>
+                        </div>
+                    </div>
+                
+                    <div class="col-4">
+                        <div class="row">
+                            <label class="main-label">Actions</label>
+                        </div>
+                        <div class="row">
+                        <div class="col-6">
+                            <div th:each="student : ${course.students}" class="row list-group" sec:authorize="hasRole('ROLE_TEACHER')" >
+                                <a  href="#" th:href="@{/add/presence(sid = ${student.id}, cid = ${course.id})}"  class="list-group-item list-group-item-action text-center">Set Present</a>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div th:each="student : ${course.students}" class="list-group" sec:authorize="hasRole('ROLE_TEACHER')" >
+                                <a  href="#" th:href="@{/grade(sid = ${student.id}, cid = ${course.id})}" class="list-group-item list-group-item-action text-center">Grade</a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row">
+                            <label class="main-label">Teachers</label>
+                        </div>
+                        <div th:each="teacher : ${course.teachers}" class="row list-group">
+                            <a th:text="${teacher.name}" href="#" class="list-group-item list-group-item-action text-center"></a>
                         </div>
                     </div>
                 </div>

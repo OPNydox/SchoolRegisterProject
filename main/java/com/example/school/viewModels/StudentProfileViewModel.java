@@ -5,14 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ProfileViewModel {
+public class StudentProfileViewModel {
     private Set<CourseViewModel> courses;
 
-    private List<GradeViewModel> grades;
 
-    public ProfileViewModel() {
+    public StudentProfileViewModel() {
         courses = new HashSet<>();
-        grades  = new ArrayList<>();
     }
 
     public Set<CourseViewModel> getCourses() {
@@ -23,11 +21,4 @@ public class ProfileViewModel {
         this.courses = courses;
     }
 
-    public List<GradeViewModel> getGrades() {
-        return grades;
-    }
-
-    public void setGrades(List<GradeViewModel> grades) {
-        this.grades = grades;
-    }
 }

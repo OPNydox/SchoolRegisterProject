@@ -20,10 +20,11 @@ public class GradeMapper {
     public static GradeViewModel mapGradeToViewModel(Grade grade) {
         GradeViewModel gradeViewModel = new GradeViewModel();
 
-        gradeViewModel.setMark(gradeViewModel.getMark());
+        gradeViewModel.setMark(Double.toString(grade.getMark()));
         gradeViewModel.setClassName(grade.getClass().getName());
         gradeViewModel.setCourseId(grade.getCourseGrade().getCourseId());
         gradeViewModel.setStudentEmail(grade.getStudent().getEmail());
+        gradeViewModel.setStudentId(grade.getStudent().getUserId());
 
         return gradeViewModel;
     }

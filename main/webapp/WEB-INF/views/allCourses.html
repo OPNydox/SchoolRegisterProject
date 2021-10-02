@@ -4,25 +4,31 @@
 </head>
 
 <body>
-    <div layout:fragment="content">
-        <div class="row align-middle">
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Course Name</th>
-                        <th scope="col">Course Subject</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    <tr th:each="course : ${courses}">
-                        <th th:text="${course.name}"></th>
-                        <th th:text="${course.subject}"></th>
-                        <th><a href="#" th:href="@{/enroll(cid = ${course.id})}" th:text="Enroll"></a></th>
-                    </tr>
-                </tbody>
-            </table>
+    <div layout:fragment="content" class="row course-component">
+        <div class="col-5">
+            <div class="row">
+                <label class="main-label">Course Name</label>
+            </div>
+            <div th:each="course : ${courses}" class="row list-group">
+                <a th:text="${course.name}" href="#" th:href="@{/course(id = ${course.id})}" class="list-group-item list-group-item-action text-center"></a>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <label class="main-label">Course Subject</label>
+            </div>
+            <div th:each="course : ${courses}" class="row list-group">
+                <a th:text="${course.subject}" href="#" th:href="@{/course(id = ${course.id})}" class="list-group-item list-group-item-action text-center"></a>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="row ">
+                <label class="main-label">Action</label>
+            </div>
+            <div th:each="course : ${courses}" class="row list-group">
+                <a href="#" th:href="@{/enroll(cid = ${course.id})}" class="list-group-item list-group-item-action text-center">Enroll</a>
+            </div>
+            
         </div>
     </div>
 </body>

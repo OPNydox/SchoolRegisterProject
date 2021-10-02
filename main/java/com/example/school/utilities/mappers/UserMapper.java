@@ -26,6 +26,8 @@ public class UserMapper {
         resultModel.setId(Long.toString(user.getUserId()));
         resultModel.setEmail(user.getEmail());
         resultModel.setPassword(user.getPassword());
+        resultModel.setCourses(CourseMapper.mapEntityToCourseViewModel(user.getCourses()));
+        resultModel.setGrades(GradeMapper.mapGradeToViewModel(user.getGrades()));
         switch (user.getUserType()) {
             case 0:
                 resultModel.setUserRole(UserRole.ADMIN);

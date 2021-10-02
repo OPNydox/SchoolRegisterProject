@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.example.school.database.entities.User;
+import com.example.school.repositories.CourseRepository;
+import com.example.school.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +36,12 @@ public class PresenceServiceImpl implements IPresenceService{
 
 	@Autowired
 	private IWriter writer;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private CourseRepository courseRepository;
 
 	@Override
 	public Presence addPresence(PresenceViewModel presenceModel) {
@@ -131,5 +140,17 @@ public class PresenceServiceImpl implements IPresenceService{
 		result = List.copyOf(student.getPresences());
 		return result;
 	}
-	
+
+	@Override
+	public void addPresence(Long studentId, Long courseId) {
+		Presence presence = new Presence();
+		User student = (User) userRepository.findById(studentId).get();
+		Course course = (Course) courseRepository.findById(courseId).get();
+
+		presence.setStudent(student);
+		presence.setPresenceClass(course);
+
+		presenceRepository.save(presence);
+	}
+
 }

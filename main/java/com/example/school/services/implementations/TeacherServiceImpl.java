@@ -2,9 +2,12 @@ package com.example.school.services.implementations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.example.school.repositories.UserRepository;
 import com.example.school.services.interfaces.IAuthGroupService;
+import com.example.school.utilities.mappers.TeacherMapper;
+import com.example.school.viewModels.Interfaces.UserViewModel;
 import com.example.school.viewModels.TeacherRegistrationViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -132,6 +135,14 @@ public class TeacherServiceImpl implements ITeacherService {
 
 		addTeacherToCourse(teacher, course);
 		return addTeacherResult;
+	}
+
+	@Override
+	public Set<UserViewModel> getAllTeachers() {
+		Set<Teacher> teacherEntities = userRepository.findAllUsersByType(2);
+		Set<UserViewModel> teacherViewModels = TeacherMapper.mapTeacherEntityToUserViewModel(teacherEntities);
+
+		return teacherViewModels;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.example.school.controllers;
 
+import com.example.school.utilities.ControllerUtils;
+import com.example.school.viewModels.Interfaces.UserViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,15 @@ public class TeacherController {
 	
 	@Autowired
 	private ITeacherService teacherService;
+
+	@GetMapping(value = "/profile")
+	public String getTeacherProfilePage(Model model) {
+		UserViewModel userViewModel = ControllerUtils.getUserPrincipal().getUser();
+		model.addAttribute("user", userViewModel);
+
+		return "teacherProfile";
+
+	}
 	
 	@RequestMapping(value = "techtest")
 	public String teacherTesting() {

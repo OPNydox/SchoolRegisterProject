@@ -80,38 +80,10 @@ public class CourseController {
 
 	@GetMapping(value = "/course")
 	public String getCoursePage(@RequestParam Long id ,Model model) {
-		CourseViewModel course;
-		Iterable<StudentViewModel> students = new ArrayList<>();
-		Iterable<TeacherViewModel> teachers;
 		ServiceReturnResult<CourseViewModel> courseResult;
-		Iterable<StudentViewModel> studentsResult;
-		Iterable<Teacher> teachersResult;
 
 		courseResult = courseService.getCourseVMById(id);
-
-		if (courseResult.hasErrors()) {
-			model.addAttribute("error", "Could not load course.");
-			return "redirect:/error";
-		}
-
-		course = courseResult.getReturnResultObject();
-
-		model.addAttribute("course", course);
-
-		studentsResult = studentCourseService.getStudentsForCourse(id);
-
-		if (courseResult.hasErrors()) {
-			model.addAttribute("error", studentsResult);
-			return "redirect:/error";
-		}
-
-		students = studentsResult;
-		model.addAttribute("students", students);
-
-		teachersResult = teacherCourseService.getTeachersForCourse(id);
-
-		teachers = TeacherMapper.mapTeacherEntityToViewModel(teachersResult);
-		model.addAttribute("teachers", teachers);
+		model.addAttribute("course", courseResult.getReturnResultObject());
 
 		return "course";
 	}

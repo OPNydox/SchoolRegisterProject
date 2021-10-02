@@ -18,4 +18,6 @@ public interface IPresenceService {
 	List<Presence> getPresenceForStudentEmail(String email);
 	
 	List<Presence> getPresenceForStudent(Student student);
+
+	void addPresence(Long studentId, Long courseId);
 }

@@ -1,6 +1,10 @@
 package com.example.school.viewModels;
 
+import com.example.school.viewModels.Interfaces.UserViewModel;
 import com.example.school.viewModels.Interfaces.ViewModel;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CourseViewModel extends ViewModel {
 
@@ -11,6 +15,12 @@ public class CourseViewModel extends ViewModel {
 	private String subject;
 
 	private String honorarium;
+
+	private Set<GradeViewModel> grades = new HashSet<>();
+
+	private Set<UserViewModel> students = new HashSet<>();
+
+	private Set<UserViewModel> teachers = new HashSet<>();
 
 	public CourseViewModel() {}
 	
@@ -51,5 +61,29 @@ public class CourseViewModel extends ViewModel {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Set<GradeViewModel> getGrades() {
+		return grades;
+	}
+
+	public void setGrades(Set<GradeViewModel> grades) {
+		this.grades = grades;
+	}
+
+	public Set<UserViewModel> getStudents() {
+		return students;
+	}
+
+	public void setStudents(Set<UserViewModel> students) {
+		this.students = students;
+	}
+
+	public Set<UserViewModel> getTeachers() {
+		return teachers;
+	}
+
+	public void setTeachers(Set<UserViewModel> teachers) {
+		this.teachers = teachers;
 	}
 }

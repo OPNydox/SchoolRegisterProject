@@ -1,0 +1,23 @@
+
+
+
+
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+layout:decorator="layout">
+<head>
+<title>Profile</title>
+</head>
+
+<body>
+  <div layout:fragment="content" class="row course-component">
+      <div class="col-12">
+          <div class="row">
+              <label class="main-label">All Teachers</label>
+          </div>
+          <div th:each="teacher : ${teachers}" class="row list-group">
+            <a th:text="${teacher.name + ' ' + teacher.email}" href="#" th:href="@{/admin/profile}" class="list-group-item list-group-item-action text-center"></a>
+        </div>
+      </div>
+  </div>
+</body>
+</html>

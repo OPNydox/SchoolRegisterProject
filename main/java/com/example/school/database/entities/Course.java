@@ -18,7 +18,7 @@ public class Course implements INullable, Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long courseId;
-	
+
 	@Column(unique = true)
 	private String courseName;
 	
@@ -29,10 +29,10 @@ public class Course implements INullable, Serializable {
 	@Transient
 	private boolean isEmpty;
 	
-	@ManyToMany(mappedBy = "courses")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "courses")
 	private Set<User> users;
 	
-	@OneToMany(mappedBy = "courseGrade")
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "courseGrade")
 	private Set<Grade> grades;
 
 	public Course() {

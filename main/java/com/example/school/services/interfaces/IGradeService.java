@@ -1,14 +1,16 @@
 package com.example.school.services.interfaces;
 
-import com.example.school.database.entities.Grade;
 import com.example.school.utilities.ServiceReturnResult;
+import com.example.school.viewModels.CourseViewModel;
 import com.example.school.viewModels.GradeViewModel;
 
-import java.util.List;
+import java.util.Set;
 
 public interface IGradeService {
 	
 	ServiceReturnResult addGrade(GradeViewModel gradeModel);
 
-	List<GradeViewModel> getAllGradesForPerson(String personEmail);
+	Set<GradeViewModel> getAllGradesForPerson(String personEmail);
+
+	Set<GradeViewModel> getGradesForCourse(CourseViewModel course);
 }

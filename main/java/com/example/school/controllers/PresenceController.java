@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,7 @@ import com.example.school.utilities.ControllerHelper;
 import com.example.school.utilities.ReturnResult;
 import com.example.school.viewModels.PresenceViewModel;
 
-@RestController
+@Controller
 public class PresenceController {
 	
 	@Autowired
@@ -94,6 +95,13 @@ public class PresenceController {
 		result.getData().addAll(presences);
 		
 		return result;
+	}
+
+	@GetMapping("/add/presence")
+	public String addPresence(@RequestParam Long sid, @RequestParam Long cid, Model model) {
+		presenceService.addPresence(sid, cid);
+		String redirectString = "redirect:/course?id=" + cid;
+		return redirectString;
 	}
 
 }

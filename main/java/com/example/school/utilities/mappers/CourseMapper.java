@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.example.school.database.entities.Course;
+import com.example.school.database.entities.Student;
 import com.example.school.viewModels.CourseViewModel;
 
 public class CourseMapper {
@@ -14,6 +15,9 @@ public class CourseMapper {
         resultViewModel.setHonorarium(Integer.toString(course.getHonorarium()));
         resultViewModel.setName(course.getCourseName());
         resultViewModel.setSubject(course.getSubject());
+        resultViewModel.setStudents(StudentMapper.mapStudentEntityToSimpleUserViewModel(course.getStudents()));
+        resultViewModel.setTeachers(TeacherMapper.mapTeacherEntityToSimpleUserViewModel(course.getTeachers()));
+        resultViewModel.setGrades(GradeMapper.mapGradeToViewModel(course.getGrades()));
         
         return resultViewModel;
     }
